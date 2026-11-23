@@ -1,0 +1,1438 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/govtech-responsibleai/arc-v2-draft/main/packages/arc-core/schema/assessment.schema.json",
+  "title": "ARC assessment",
+  "description": "An assessment of one agentic AI system under the ARC Framework (format arcvisor/assessment, version 1). Written by ARCvisor and the arc-assessment skill.",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "arcvisor/assessment"
+    },
+    "formatVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+    },
+    "register": {
+      "description": "Register the assessment was last worked against",
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "sample": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "pasted": {
+      "description": "Description pasted in to draft the system answers",
+      "type": "string"
+    },
+    "repoUrl": {
+      "type": "string"
+    },
+    "system": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "deployment": {
+          "type": "string"
+        },
+        "architecture": {
+          "type": "string"
+        },
+        "autonomy": {
+          "type": "string"
+        },
+        "dataClassification": {
+          "type": "string"
+        },
+        "pii": {
+          "type": "string"
+        },
+        "publicFacing": {
+          "type": "string"
+        },
+        "criticality": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "threshold": {
+      "type": "string",
+      "enum": [
+        "conservative",
+        "moderate",
+        "aggressive"
+      ],
+      "description": "Relevance preset from the governance guide"
+    },
+    "caps": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "present": {
+            "type": "string",
+            "enum": [
+              "yes",
+              "unsure",
+              "no"
+            ],
+            "description": "yes: present; unsure: counted as present until decided; no: absent"
+          },
+          "providedBy": {
+            "type": "string"
+          },
+          "approval": {
+            "type": "string",
+            "enum": [
+              "",
+              "always",
+              "some",
+              "never"
+            ],
+            "description": "Whether a person approves before the capability acts"
+          },
+          "reason": {
+            "description": "Why it is present or absent, especially for capabilities ruled out",
+            "type": "string"
+          },
+          "evidence": {
+            "description": "File paths, with line numbers where useful",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "authority": {
+            "description": "The authority it is used at. Unstated: the highest the capability allows",
+            "type": "string",
+            "enum": [
+              "read",
+              "propose",
+              "act-with-approval",
+              "act-alone"
+            ]
+          },
+          "irreversible": {
+            "description": "Whether its effects can be undone. Unstated where the register asks: irreversible",
+            "type": "boolean"
+          },
+          "external": {
+            "description": "Whether its effects reach outside the organisation. Unstated where the register asks: external",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "components": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "present": {
+            "type": "string",
+            "enum": [
+              "yes",
+              "unsure",
+              "no"
+            ],
+            "description": "yes: present; unsure: counted as present until decided; no: absent"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "risks": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "context": {
+            "description": "How the risk would arise in this system",
+            "type": "string"
+          },
+          "impact": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 5
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "likelihood": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 5
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "impactReason": {
+            "type": "string"
+          },
+          "likelihoodReason": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "controls": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "as-is",
+              "adapted",
+              "not-adopted",
+              "waived"
+            ],
+            "description": "Level 0 controls allow only as-is, or waived when the specific thing the control concerns is not present in the system (with the evidence); Levels 1 and 2 allow as-is, adapted or not adopted"
+          },
+          "how": {
+            "description": "How it is implemented: what, where, thresholds",
+            "type": "string"
+          },
+          "evidence": {
+            "description": "What a reviewer can check: config, test, log query, review record",
+            "type": "string"
+          },
+          "owner": {
+            "type": "string"
+          },
+          "reason": {
+            "description": "Why a Level 1 or 2 control is not adopted, or what is absent for a waived Level 0 control",
+            "type": "string"
+          },
+          "proposal": {
+            "description": "Proposed change for a gap",
+            "type": "string"
+          },
+          "contradictionAccepted": {
+            "description": "A reviewer accepted the explanation for a code check that contradicts this entry",
+            "type": "object",
+            "properties": {
+              "by": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "at": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+              }
+            },
+            "required": [
+              "by",
+              "reason",
+              "at"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "residual": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "scenario": {
+            "type": "string"
+          },
+          "strategy": {
+            "type": "string",
+            "enum": [
+              "accept",
+              "monitor",
+              "mitigate"
+            ]
+          },
+          "actions": {
+            "type": "string"
+          },
+          "impact": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 5
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "likelihood": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 5
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "acceptedBy": {
+            "description": "The role accepting the residual risk",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "signoff": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "assessor": {
+          "type": "string"
+        },
+        "reviewer": {
+          "type": "string"
+        },
+        "authority": {
+          "description": "Residual-risk acceptance authority: name and role",
+          "type": "string"
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "",
+            "Approve",
+            "Approve with conditions",
+            "Defer"
+          ]
+        },
+        "conditions": {
+          "type": "string"
+        },
+        "nextReview": {
+          "type": "string"
+        },
+        "signedAt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "notes": {
+      "default": {},
+      "description": "Reviewer notes, keyed by risk or control ID (older files; new ones use threads)",
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "threads": {
+      "default": {},
+      "description": "Comment threads, keyed by risk or control ID, capability ID, or system.<field>",
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "resolved": {
+            "default": false,
+            "type": "boolean"
+          },
+          "comments": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "author": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                },
+                "text": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "author",
+                "at",
+                "text"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "type": "string",
+          "enum": [
+            "changes-requested",
+            "reviewed"
+          ],
+          "description": "The reviewer's verdict, separate from the deployment decision"
+        },
+        "by": {
+          "type": "string"
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "prov": {
+      "default": {},
+      "description": "Provenance of AI-drafted fields, keyed like system.purpose, cap.CAP-07, risk.RISK-001, control.CTRL-0089, residual.RISK-047",
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "enum": [
+          "ai",
+          "confirmed",
+          "edited",
+          "dismissed"
+        ],
+        "description": "ai: written into the record by AI, not yet confirmed by a person; confirmed: an AI suggestion accepted as drafted; edited: accepted and changed, or answered by a person instead; dismissed: an AI suggestion rejected"
+      }
+    },
+    "ai": {
+      "default": {
+        "caps": {},
+        "components": {},
+        "risks": {},
+        "system": {},
+        "controls": {},
+        "residual": {}
+      },
+      "description": "AI suggestions, kept apart from the record until a person accepts, edits or dismisses each one",
+      "type": "object",
+      "properties": {
+        "source": {
+          "description": "Who made the suggestions, e.g. \"arc-assessment skill\"",
+          "type": "string"
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+        },
+        "system": {
+          "default": {},
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "caps": {
+          "default": {},
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "present": {
+                "type": "string",
+                "enum": [
+                  "yes",
+                  "unsure",
+                  "no"
+                ],
+                "description": "yes: present; unsure: counted as present until decided; no: absent"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "providedBy": {
+                "type": "string"
+              },
+              "approval": {
+                "type": "string",
+                "enum": [
+                  "",
+                  "always",
+                  "some",
+                  "never"
+                ],
+                "description": "Whether a person approves before the capability acts"
+              },
+              "evidence": {
+                "description": "File paths, with line numbers where useful",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "authority": {
+                "type": "string",
+                "enum": [
+                  "read",
+                  "propose",
+                  "act-with-approval",
+                  "act-alone"
+                ]
+              },
+              "irreversible": {
+                "type": "boolean"
+              },
+              "external": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "present",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "components": {
+          "default": {},
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "present": {
+                "type": "string",
+                "enum": [
+                  "yes",
+                  "unsure",
+                  "no"
+                ],
+                "description": "yes: present; unsure: counted as present until decided; no: absent"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "evidence": {
+                "description": "File paths, with line numbers where useful",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "present",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "risks": {
+          "default": {},
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "context": {
+                "type": "string"
+              },
+              "impact": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "likelihood": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "impactReason": {
+                "type": "string"
+              },
+              "likelihoodReason": {
+                "type": "string"
+              },
+              "evidence": {
+                "description": "File paths, with line numbers where useful",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "controls": {
+          "default": {},
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "how": {
+                "type": "string"
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "proposal": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "residual": {
+          "default": {},
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "scenario": {
+                "type": "string"
+              },
+              "actions": {
+                "type": "string"
+              },
+              "impact": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "likelihood": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "code": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "description": "Repository the code was read from"
+            },
+            "branch": {
+              "type": "string"
+            },
+            "commit": {
+              "type": "string"
+            },
+            "readAt": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+            },
+            "filesRead": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "filesTotal": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "read": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "findings": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "area": {
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "files": {
+                    "default": [],
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "area",
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "unknown": {
+              "default": [],
+              "description": "System fields the code cannot answer",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "caps": {
+              "default": {},
+              "description": "Capability ID to the files that show it",
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "checks": {
+              "default": null,
+              "description": "Control ID to what the code check found",
+              "anyOf": [
+                {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "verdict": {
+                        "type": "string",
+                        "enum": [
+                          "found",
+                          "partial",
+                          "missing",
+                          "offcode",
+                          "nofeature"
+                        ],
+                        "description": "What a check of the code found for a control"
+                      },
+                      "note": {
+                        "type": "string"
+                      },
+                      "files": {
+                        "default": [],
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "contradicts": {
+                        "description": "The code conflicts with the control entry's description",
+                        "type": "boolean"
+                      },
+                      "excerpts": {
+                        "description": "The lines the verdict rests on, so a reviewer without repository access can see them",
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string"
+                            },
+                            "start": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 9007199254740991,
+                              "description": "Line number of the first line"
+                            },
+                            "lines": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "highlight": {
+                              "description": "First and last line to highlight",
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 9007199254740991
+                                },
+                                {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 9007199254740991
+                                }
+                              ],
+                              "items": false,
+                              "minItems": 2,
+                              "maxItems": 2
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "start",
+                            "lines"
+                          ],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "required": [
+                      "verdict",
+                      "note"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "checked": {
+              "default": null,
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "url"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "basis": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "version": {
+              "type": "string",
+              "description": "Register version the assessment was last signed against"
+            },
+            "risks": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Applicable risks at that time"
+            },
+            "controls": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "const": 0
+                  },
+                  {
+                    "type": "number",
+                    "const": 1
+                  },
+                  {
+                    "type": "number",
+                    "const": 2
+                  }
+                ]
+              },
+              "description": "Controls in scope at that time, with their levels"
+            }
+          },
+          "required": [
+            "version",
+            "risks",
+            "controls"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "signedCopy": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "system": {
+              "default": {},
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "owner": {
+                  "type": "string"
+                },
+                "purpose": {
+                  "type": "string"
+                },
+                "deployment": {
+                  "type": "string"
+                },
+                "architecture": {
+                  "type": "string"
+                },
+                "autonomy": {
+                  "type": "string"
+                },
+                "dataClassification": {
+                  "type": "string"
+                },
+                "pii": {
+                  "type": "string"
+                },
+                "publicFacing": {
+                  "type": "string"
+                },
+                "criticality": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "threshold": {
+              "type": "string",
+              "enum": [
+                "conservative",
+                "moderate",
+                "aggressive"
+              ],
+              "description": "Relevance preset from the governance guide"
+            },
+            "caps": {
+              "default": {},
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "present": {
+                    "type": "string",
+                    "enum": [
+                      "yes",
+                      "unsure",
+                      "no"
+                    ],
+                    "description": "yes: present; unsure: counted as present until decided; no: absent"
+                  },
+                  "providedBy": {
+                    "type": "string"
+                  },
+                  "approval": {
+                    "type": "string",
+                    "enum": [
+                      "",
+                      "always",
+                      "some",
+                      "never"
+                    ],
+                    "description": "Whether a person approves before the capability acts"
+                  },
+                  "reason": {
+                    "description": "Why it is present or absent, especially for capabilities ruled out",
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "description": "File paths, with line numbers where useful",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "authority": {
+                    "description": "The authority it is used at. Unstated: the highest the capability allows",
+                    "type": "string",
+                    "enum": [
+                      "read",
+                      "propose",
+                      "act-with-approval",
+                      "act-alone"
+                    ]
+                  },
+                  "irreversible": {
+                    "description": "Whether its effects can be undone. Unstated where the register asks: irreversible",
+                    "type": "boolean"
+                  },
+                  "external": {
+                    "description": "Whether its effects reach outside the organisation. Unstated where the register asks: external",
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "components": {
+              "default": {},
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "present": {
+                    "type": "string",
+                    "enum": [
+                      "yes",
+                      "unsure",
+                      "no"
+                    ],
+                    "description": "yes: present; unsure: counted as present until decided; no: absent"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "risks": {
+              "default": {},
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "context": {
+                    "description": "How the risk would arise in this system",
+                    "type": "string"
+                  },
+                  "impact": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 5
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "likelihood": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 5
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "impactReason": {
+                    "type": "string"
+                  },
+                  "likelihoodReason": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "controls": {
+              "default": {},
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "as-is",
+                      "adapted",
+                      "not-adopted",
+                      "waived"
+                    ],
+                    "description": "Level 0 controls allow only as-is, or waived when the specific thing the control concerns is not present in the system (with the evidence); Levels 1 and 2 allow as-is, adapted or not adopted"
+                  },
+                  "how": {
+                    "description": "How it is implemented: what, where, thresholds",
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "description": "What a reviewer can check: config, test, log query, review record",
+                    "type": "string"
+                  },
+                  "owner": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "description": "Why a Level 1 or 2 control is not adopted, or what is absent for a waived Level 0 control",
+                    "type": "string"
+                  },
+                  "proposal": {
+                    "description": "Proposed change for a gap",
+                    "type": "string"
+                  },
+                  "contradictionAccepted": {
+                    "description": "A reviewer accepted the explanation for a code check that contradicts this entry",
+                    "type": "object",
+                    "properties": {
+                      "by": {
+                        "type": "string"
+                      },
+                      "reason": {
+                        "type": "string"
+                      },
+                      "at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                      }
+                    },
+                    "required": [
+                      "by",
+                      "reason",
+                      "at"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "residual": {
+              "default": {},
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "scenario": {
+                    "type": "string"
+                  },
+                  "strategy": {
+                    "type": "string",
+                    "enum": [
+                      "accept",
+                      "monitor",
+                      "mitigate"
+                    ]
+                  },
+                  "actions": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 5
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "likelihood": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 5
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "acceptedBy": {
+                    "description": "The role accepting the residual risk",
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "signoff": {
+              "default": {},
+              "type": "object",
+              "properties": {
+                "assessor": {
+                  "type": "string"
+                },
+                "reviewer": {
+                  "type": "string"
+                },
+                "authority": {
+                  "description": "Residual-risk acceptance authority: name and role",
+                  "type": "string"
+                },
+                "decision": {
+                  "type": "string",
+                  "enum": [
+                    "",
+                    "Approve",
+                    "Approve with conditions",
+                    "Defer"
+                  ]
+                },
+                "conditions": {
+                  "type": "string"
+                },
+                "nextReview": {
+                  "type": "string"
+                },
+                "signedAt": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "revision",
+            "threshold"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "history": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "signedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+          },
+          "register": {
+            "type": "string"
+          },
+          "decision": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "revision",
+          "signedAt",
+          "register"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "format",
+    "formatVersion",
+    "revision",
+    "createdAt",
+    "updatedAt",
+    "threshold"
+  ],
+  "additionalProperties": false
+}

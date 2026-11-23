@@ -1,0 +1,43 @@
+{
+  "name": "arc-core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ARC Framework register rules and the assessment file format, shared by ARCvisor and the arc-assessment skill.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    },
+    "./node": {
+      "types": "./src/node.ts",
+      "default": "./dist/node.js"
+    },
+    "./schema.json": "./schema/assessment.schema.json"
+  },
+  "bin": {
+    "arc": "./dist/arc.mjs"
+  },
+  "files": [
+    "dist",
+    "schema",
+    "src"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "typecheck": "tsc --noEmit -p .",
+    "test": "node build.mjs && vitest run"
+  },
+  "dependencies": {
+    "js-yaml": "5.5.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2",
+    "vite": "8.3.5",
+    "vitest": "5.1.0"
+  }
+}

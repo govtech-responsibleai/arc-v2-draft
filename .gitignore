@@ -40,3 +40,8 @@ website/public/**/*.md
 website/public/llms-full.txt
 website/public/register/
 website/.lighthouseci/
+
+# Node workspaces (packages/arc-core, web)
+node_modules/
+packages/*/dist/
+web/dist/

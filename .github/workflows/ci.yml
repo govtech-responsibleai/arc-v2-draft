@@ -48,6 +48,12 @@ jobs:
         run: npm run build
         working-directory: website
 
+      - name: Build ARCvisor into the site at /arcvisor/ (its tests and the arc-core tests run in web.yml and arc-core.yml)
+        run: |
+          npm ci
+          npm run build --workspace arcvisor
+          cp -R web/dist website/dist/arcvisor
+
       - name: Test the ARC assessment skill against this register (offline)
         run: python skills/tests/test_arc_assessment.py
 
@@ -95,6 +101,12 @@ jobs:
         env:
           # Optional: the Google Search Console verification token, set as a repository variable
           GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
+
+      - name: Build ARCvisor into the site at /arcvisor/
+        run: |
+          npm ci
+          npm run build --workspace arcvisor
+          cp -R web/dist website/dist/arcvisor
 
       # Replaces gh-pages with a single commit of the built site, as `mkdocs gh-deploy --force` did,
       # so the Pages settings stay as they are. .nojekyll stops GitHub ignoring Astro's _astro/ folder.

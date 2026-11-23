@@ -123,7 +123,8 @@ export default defineConfig({
           ],
         },
       ],
-      plugins: [starlightLinksValidator({ errorOnRelativeLinks: false })],
+      // ARCvisor is a separate app copied into the build at /arcvisor/ (see .github/workflows/ci.yml), so it is not a page here
+      plugins: [starlightLinksValidator({ errorOnRelativeLinks: false, exclude: [`${BASE}arcvisor`, `${BASE}arcvisor/**`] })],
     }),
   ],
 });

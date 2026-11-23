@@ -1,0 +1,17 @@
+{
+  "name": "agentic-risk-capability-framework",
+  "private": true,
+  "description": "Workspace for the ARC Framework's JavaScript packages: arc-core and the ARCvisor web app (web/).",
+  "workspaces": [
+    "packages/*",
+    "web"
+  ],
+  "engines": {
+    "node": "^22.12.0 || ^24.0.0 || >=26.0.0"
+  },
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  }
+}
