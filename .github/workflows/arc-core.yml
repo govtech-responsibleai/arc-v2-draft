@@ -1,0 +1,29 @@
+name: arc-core
+
+on:
+  pull_request:
+  push:
+    branches: [main, dev]
+
+permissions:
+  contents: read
+
+jobs:
+  arc-core:
+    name: arc-core tests, bundle and schema
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Type-check
+        run: npm run typecheck --workspace arc-core
+      - name: Test against this repository's register (builds the bundle and the schema first)
+        run: npm test --workspace arc-core
+      - name: Committed JSON Schema matches the build
+        run: git diff --exit-code -- packages/arc-core/schema/
+      - name: CLI runs against the register
+        run: node packages/arc-core/dist/arc.mjs assess --capabilities CAP-07,CAP-11 | head -5

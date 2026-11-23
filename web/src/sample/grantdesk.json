@@ -1,0 +1,868 @@
+{
+  "grantdesk": {
+    "pasted": "GrantDesk assistant helps our grant officers process applications for an enterprise development grant. When an officer opens a case, the agent reads the application form and attachments (PDFs, some scanned), checks the company against the business registry API, searches the web for news and the company's own website, and writes an eligibility summary against the scheme criteria into the case notes. It also drafts clarification emails to applicants, which sit in the officer's outbox until the officer sends them. It cannot approve, reject or pay out grants.\n\nIt's a single agent on our orchestration framework, calling a hosted LLM through the agency model gateway, with tools exposed by two internal MCP servers (documents and case database). About 40 officers use it and we're piloting it on one scheme. Applications include directors' identity numbers, contact details and company financial statements.",
+    "system": {
+      "name": "GrantDesk assistant",
+      "owner": "Grants Operations (example agency)",
+      "purpose": "Helps about 40 grant officers process applications for an enterprise development grant: reads each application and its attachments, checks the company against the business registry and public web sources, writes an eligibility summary against the scheme criteria, and drafts clarification emails. Officers make every funding decision.",
+      "deployment": "Internal tool, piloted in production on one grant scheme. Runs in the agency's government cloud tenancy.",
+      "architecture": "Single agent on an orchestration framework, calling a hosted LLM through the agency model gateway. Tools: document reader (PDF and scanned images), business registry API client, web search API, case-management database (read cases, write notes), email drafting into the officer's outbox. The document and database tools are exposed through two internal MCP servers.",
+      "autonomy": "Reads files, queries the registry, searches the web and writes case notes without approval. Emails are saved as drafts; an officer reviews and sends each one. It cannot approve, reject or disburse a grant.",
+      "dataClassification": "Confidential",
+      "pii": "Applicant contact names, emails and phone numbers; directors' identity numbers in supporting documents; company financial statements.",
+      "publicFacing": "No",
+      "criticality": "High"
+    },
+    "caps": {
+      "CAP-01": {
+        "present": "no",
+        "reason": "It runs a fixed workflow set by the developers (read, check, summarise, draft) rather than making its own plans."
+      },
+      "CAP-02": {
+        "present": "no",
+        "reason": "Single agent; it does not hand tasks to other agents."
+      },
+      "CAP-03": {
+        "present": "yes",
+        "reason": "It chooses between the document reader, registry API, web search and case database for each step.",
+        "providedBy": "The agent's tool router",
+        "approval": "never"
+      },
+      "CAP-04": {
+        "present": "unsure",
+        "lastYear": "yes",
+        "reason": "It reads scanned documents and writes summaries and email drafts. The register's definition covers natural-language generation as well as image understanding, so this probably applies. Confirm with your governance team.",
+        "providedBy": "Document reader; summary and email drafting",
+        "approval": "some"
+      },
+      "CAP-05": {
+        "present": "no",
+        "reason": "It drafts emails, but an officer reviews and sends each one. The register defines this capability as sending without prior human review."
+      },
+      "CAP-06": {
+        "present": "no",
+        "reason": "It cannot approve, reject or disburse grants, or commit the agency to anything."
+      },
+      "CAP-07": {
+        "present": "yes",
+        "reason": "It searches the web for news about applicants and reads their websites.",
+        "providedBy": "Web search API tool",
+        "approval": "never"
+      },
+      "CAP-08": {
+        "present": "no",
+        "reason": "It does not operate a graphical interface."
+      },
+      "CAP-09": {
+        "present": "yes",
+        "reason": "It calls the business registry API.",
+        "providedBy": "Business registry API client",
+        "approval": "never"
+      },
+      "CAP-10": {
+        "present": "no",
+        "reason": "No code-execution tool is configured."
+      },
+      "CAP-11": {
+        "present": "yes",
+        "reason": "It reads application files and reads and writes case notes in the case-management database.",
+        "providedBy": "Document reader; case database (MCP)",
+        "approval": "never"
+      },
+      "CAP-12": {
+        "present": "no",
+        "reason": "It does not change system settings or infrastructure."
+      }
+    },
+    "risks": {
+      "RISK-001": {
+        "context": "The model comes through the agency gateway from an approved provider, so a poisoned model is unlikely; if it happened, applicant data and summaries would be exposed or skewed.",
+        "impact": 4,
+        "likelihood": 1
+      },
+      "RISK-002": {
+        "context": "The agent could stray from the scheme criteria, for example adding its own view on whether a company deserves funding.",
+        "impact": 3,
+        "likelihood": 3
+      },
+      "RISK-003": {
+        "context": "Eligibility summaries depend on reading financial statements correctly; a misreading could mislead an officer's assessment.",
+        "impact": 4,
+        "likelihood": 3
+      },
+      "RISK-004": {
+        "context": "The two internal MCP servers expose the case database and documents; weak authentication would let other callers read or write case records.",
+        "impact": 4,
+        "likelihood": 2
+      },
+      "RISK-005": {
+        "context": "The case-database tool can write notes on any case, not only the one the officer has open.",
+        "impact": 3,
+        "likelihood": 3
+      },
+      "RISK-006": {
+        "context": "Both MCP servers are built in-house, which lowers the chance of a malicious server, but a compromised one could alter what the agent reads.",
+        "impact": 4,
+        "likelihood": 2
+      },
+      "RISK-007": {
+        "context": "Search and database queries are built from applicant-supplied text such as company names.",
+        "impact": 3,
+        "likelihood": 3
+      },
+      "RISK-008": {
+        "context": "The system prompt describes the scheme criteria loosely, so summaries could differ in what they count as eligible.",
+        "impact": 3,
+        "likelihood": 3
+      },
+      "RISK-009": {
+        "context": "Application text is placed in the prompt next to the instructions; an applicant could word their application to steer the summary.",
+        "impact": 4,
+        "likelihood": 4
+      },
+      "RISK-010": {
+        "context": "The agent reads its own earlier case notes when an officer reopens a case, so a wrong note persists.",
+        "impact": 3,
+        "likelihood": 3
+      },
+      "RISK-011": {
+        "context": "Notes about one company could surface while the agent works on another company's case if retrieval is not scoped to the case.",
+        "impact": 4,
+        "likelihood": 2
+      },
+      "RISK-012": {
+        "context": "Single-agent system; this applies only if more agents are added.",
+        "impact": 2,
+        "likelihood": 1
+      },
+      "RISK-013": {
+        "context": "Single-agent system; there is no channel between agents today.",
+        "impact": 2,
+        "likelihood": 1
+      },
+      "RISK-014": {
+        "context": "Retries between search and summarising could loop on a hard case and use up the model quota.",
+        "impact": 2,
+        "likelihood": 2
+      },
+      "RISK-015": {
+        "context": "The agent's service account can write to the whole case-management database.",
+        "impact": 4,
+        "likelihood": 3
+      },
+      "RISK-016": {
+        "context": "The agent cannot change its own permissions; escalation would need a misconfigured MCP server.",
+        "impact": 4,
+        "likelihood": 2
+      },
+      "RISK-017": {
+        "context": "Officers notice bad summaries one case at a time; nobody watches behaviour across cases.",
+        "impact": 3,
+        "likelihood": 3
+      },
+      "RISK-018": {
+        "context": "If a funding decision is appealed, the agency must show what the agent summarised and from which sources.",
+        "impact": 4,
+        "likelihood": 3
+      },
+      "RISK-023": {
+        "context": "The agent may skip the registry check, or rely on web search where the registry is the authoritative source.",
+        "impact": 3,
+        "likelihood": 3
+      },
+      "RISK-024": {
+        "context": "Internal tool producing formal summaries and emails; little exposure to toxic output.",
+        "impact": 2,
+        "likelihood": 1
+      },
+      "RISK-025": {
+        "context": "Summaries comment on applicants' finances, and could present financial judgements as if they were assessments.",
+        "impact": 3,
+        "likelihood": 2
+      },
+      "RISK-026": {
+        "context": "Outputs are case summaries and formal emails; controversial content is unlikely.",
+        "impact": 2,
+        "likelihood": 1
+      },
+      "RISK-027": {
+        "context": "Directors' identity numbers and contact details from attachments could appear in summaries or email drafts.",
+        "impact": 4,
+        "likelihood": 3
+      },
+      "RISK-028": {
+        "context": "The agent could invent a revenue figure or registry fact in a summary that an officer then relies on.",
+        "impact": 4,
+        "likelihood": 3
+      },
+      "RISK-029": {
+        "context": "The agent summarises applicants' own documents for internal use.",
+        "impact": 1,
+        "likelihood": 1
+      },
+      "RISK-034": {
+        "context": "Web search reaches the applicant's own website, which the applicant controls.",
+        "impact": 4,
+        "likelihood": 3
+      },
+      "RISK-035": {
+        "context": "News and review sites about applicants may be out of date or wrong.",
+        "impact": 3,
+        "likelihood": 3
+      },
+      "RISK-038": {
+        "context": "The registry API is bespoke, with paging and status codes the model may misread.",
+        "impact": 3,
+        "likelihood": 3
+      },
+      "RISK-041": {
+        "context": "The agent can edit case notes and could overwrite an officer's own notes.",
+        "impact": 3,
+        "likelihood": 2
+      },
+      "RISK-042": {
+        "context": "Query volume is small: dozens of cases a day.",
+        "impact": 2,
+        "likelihood": 1
+      },
+      "RISK-043": {
+        "context": "The agent reads confidential financial statements and personal data across all cases.",
+        "impact": 4,
+        "likelihood": 3
+      },
+      "RISK-044": {
+        "context": "Applicants upload the PDFs the agent reads, so hidden instructions in a file are a realistic route.",
+        "impact": 4,
+        "likelihood": 4
+      },
+      "RISK-047": {
+        "context": "The agent reads untrusted applicant files and websites, holds confidential case data, and can send data out through search queries.",
+        "impact": 5,
+        "likelihood": 3
+      },
+      "RISK-048": {
+        "context": "The orchestration framework and the MCP SDK come from public package registries.",
+        "impact": 4,
+        "likelihood": 2
+      },
+      "RISK-049": {
+        "context": "The agent is tested in a staging tenancy that can reach the live registry API and the internet.",
+        "impact": 3,
+        "likelihood": 2
+      },
+      "RISK-050": {
+        "context": "The agent reports which checks it ran, and officers rely on that report rather than on logs.",
+        "impact": 3,
+        "likelihood": 2
+      },
+      "RISK-051": {
+        "context": "Single-agent system; this applies only if more agents are added.",
+        "impact": 2,
+        "likelihood": 1
+      },
+      "RISK-052": {
+        "context": "Officers handle 30 to 50 cases a week and may accept summaries and drafts without opening the sources.",
+        "impact": 4,
+        "likelihood": 4
+      },
+      "RISK-054": {
+        "context": "The framework and both MCP servers were deployed from templates; their defaults have not been reviewed.",
+        "impact": 4,
+        "likelihood": 2
+      }
+    },
+    "controls": {
+      "CTRL-0006": "There is no high-impact action to approve: emails are saved as drafts and an officer sends each one, and the agent has no approve, reject or disburse action.",
+      "CTRL-0007": "The model gateway logs every request and response with case ID and officer ID. Logs are kept for two years in the agency SIEM and sampled monthly.",
+      "CTRL-0016": "The system prompt says the agent summarises evidence against the scheme criteria, and lists what it must not do: recommend approval or rejection, contact applicants, or change case status.",
+      "CTRL-0019": "Application text, attachments and web content are wrapped in tagged blocks, and the system prompt tells the model to treat their contents as data.",
+      "CTRL-0047": "The gateway's PII filter masks identity numbers and phone numbers in summaries and email drafts; officers see full values only in the case record.",
+      "CTRL-0062": "The gateway's prompt-injection classifier checks extracted PDF text and fetched web pages before they reach the agent; a hit blocks the step and flags the case.",
+      "CTRL-0065": "The admin console has a stop control that disables the agent's service account and revokes both MCP tokens. Tested quarterly.",
+      "CTRL-0083": "Uploads pass the portal's antivirus scan and the injection classifier before the agent can open them.",
+      "CTRL-0089": "Outbound traffic goes through the agency egress proxy, which allows only the registry API, the search API and the model gateway. Search queries go through the search API, never as raw URLs."
+    },
+    "residual": {
+      "RISK-047": {
+        "scenario": "An injected instruction in an applicant's PDF gets past the classifier and makes the agent put case data into a search query to an allowed search API.",
+        "actions": "Strip case identifiers from search queries; alert on queries longer than 200 characters; quarterly red-team test with planted documents.",
+        "impact": 4,
+        "likelihood": 2
+      },
+      "RISK-044": {
+        "scenario": "A new injection technique in an uploaded file is not caught by the classifier and skews the eligibility summary.",
+        "actions": "Officers see a banner when a file contained instructions; monthly review of flagged cases; update classifier when vendors publish new patterns.",
+        "impact": 3,
+        "likelihood": 2
+      },
+      "RISK-009": {
+        "scenario": "An applicant words their application so the summary overstates eligibility, without any detectable injection.",
+        "actions": "Summaries quote the source passage for each criterion; officers must open the source for any criterion marked met.",
+        "impact": 3,
+        "likelihood": 3
+      },
+      "RISK-052": {
+        "scenario": "Under heavy caseloads officers accept summaries without checking sources, so errors reach decisions.",
+        "actions": "Track how often officers open sources before deciding; alert the team lead if it drops below 60% in a week.",
+        "impact": 4,
+        "likelihood": 3
+      },
+      "RISK-028": {
+        "scenario": "A fabricated figure in a summary is not caught because it looks plausible.",
+        "actions": "Every figure in a summary links to its source page; weekly sample of 10 summaries checked against sources.",
+        "impact": 4,
+        "likelihood": 2
+      }
+    },
+    "lastYear": {
+      "registerVersion": "1.1.0",
+      "createdAt": "2025-11-10T02:00:00.000Z",
+      "defaultHow": "Covered by the agency AI deployment baseline; the evidence column gives the checklist item.",
+      "evidence": "AI deployment baseline checklist for GrantDesk, signed 21 Nov 2025",
+      "owner": "GrantDesk product team",
+      "residualFallback": "Controls reduce this risk but do not remove it; remaining exposure is watched through the monthly case-quality review.",
+      "residualActions": "Monthly sample of 20 cases reviewed by the governance lead.",
+      "adapted": {
+        "CTRL-0006": null,
+        "CTRL-0063": "Search is limited to the registry, government domains and three national news sites through the search API's site filter."
+      },
+      "notAdopted": {
+        "CTRL-0012": "Both MCP servers have a single internal client authenticated through the agency identity provider, so per-client consent adds nothing.",
+        "CTRL-0020": "A second extraction model would double the cost per case. We rely on delimiters (CTRL-0019) and the injection classifier (CTRL-0062)."
+      },
+      "signoff": {
+        "assessor": "Lead engineer, GrantDesk",
+        "reviewer": "AI governance lead, Digital Office",
+        "authority": "Director, Grants Operations",
+        "decision": "Approve with conditions",
+        "conditions": "Re-assess before web search goes beyond the search API, and at each register MINOR version.",
+        "nextReview": "November 2026, or when a capability is added",
+        "signedAt": "2025-11-28T10:00:00.000Z"
+      }
+    },
+    "repo": {
+      "url": "https://github.com/example-agency/grantdesk-assistant",
+      "branch": "main",
+      "filesTotal": 212,
+      "filesRead": 46,
+      "read": [
+        "README.md",
+        "agent/graph.py",
+        "agent/config.yaml",
+        "agent/prompts/system.md",
+        "agent/prompts/summary.md",
+        "agent/guardrails.py",
+        "agent/telemetry.py",
+        "agent/tools/__init__.py",
+        "agent/tools/documents.py",
+        "agent/tools/registry_api.py",
+        "agent/tools/web_search.py",
+        "agent/tools/case_db.py",
+        "agent/tools/email_draft.py",
+        "gateway/client.py",
+        "gateway/config.yaml",
+        "mcp/case_server/server.py",
+        "mcp/case_server/auth.py",
+        "mcp/case_server/models.py",
+        "mcp/docs_server/server.py",
+        "infra/egress-allowlist.yaml",
+        "infra/k8s/deployment.yaml",
+        "infra/k8s/serviceaccount.yaml",
+        "infra/staging.tf",
+        "ops/kill_switch.py",
+        ".ci/pipeline.yml",
+        "requirements.txt",
+        "tests/eval/redteam_cases.yaml",
+        "tests/eval/compare_models.py"
+      ],
+      "findings": [
+        [
+          "Agent",
+          "One agent running a fixed graph of four steps (read, check, summarise, draft), stopped after 25 steps.",
+          [
+            "agent/graph.py"
+          ]
+        ],
+        [
+          "Model",
+          "Calls a hosted model through the agency model gateway; the model is named in the gateway config.",
+          [
+            "gateway/client.py",
+            "gateway/config.yaml"
+          ]
+        ],
+        [
+          "Tools",
+          "Seven tool functions: read_document, query_registry, search_web, fetch_url, read_case, write_case_note, save_email_draft.",
+          [
+            "agent/tools/__init__.py"
+          ]
+        ],
+        [
+          "MCP servers",
+          "Two servers built in this repository. case_server uses OAuth through the agency identity provider; docs_server accepts a static API key.",
+          [
+            "mcp/case_server/auth.py",
+            "mcp/docs_server/server.py"
+          ]
+        ],
+        [
+          "Outbound connections",
+          "The model gateway, the registry API, the search API, and any applicant website through fetch_url.",
+          [
+            "agent/tools/web_search.py",
+            "infra/egress-allowlist.yaml"
+          ]
+        ],
+        [
+          "Data",
+          "Reads application documents and cases; writes case notes, with soft delete and an audit table.",
+          [
+            "mcp/case_server/models.py"
+          ]
+        ],
+        [
+          "Human approval",
+          "Emails are saved as drafts. No function sends, approves, rejects or pays.",
+          [
+            "agent/tools/email_draft.py"
+          ]
+        ]
+      ],
+      "unknown": [
+        "owner",
+        "dataClassification",
+        "criticality"
+      ],
+      "system": {
+        "name": "GrantDesk assistant",
+        "purpose": "Assists grant officers with enterprise development grant applications: reads the application documents, checks the business registry and the web, writes an eligibility summary into the case notes, and drafts clarification emails.",
+        "deployment": "Kubernetes deployment behind an internal-only ingress. A separate staging environment is defined in Terraform.",
+        "architecture": "Single agent: a fixed graph of read, check, summarise and draft steps, limited to 25 steps. Model calls go through the agency model gateway. Seven tool functions, two of them backed by in-house MCP servers (documents and case database).",
+        "autonomy": "Every tool runs without approval. save_email_draft writes to the officer's drafts folder; the code has no function that sends email, changes a case's status or makes a payment.",
+        "pii": "The case schema holds applicant contact names, emails and phone numbers. The PII masker targets identity numbers, so documents are expected to contain them.",
+        "publicFacing": "No"
+      },
+      "caps": {
+        "CAP-03": [
+          "agent/tools/__init__.py"
+        ],
+        "CAP-04": [
+          "agent/tools/documents.py",
+          "agent/prompts/summary.md"
+        ],
+        "CAP-05": [
+          "agent/tools/email_draft.py"
+        ],
+        "CAP-07": [
+          "agent/tools/web_search.py"
+        ],
+        "CAP-09": [
+          "agent/tools/registry_api.py"
+        ],
+        "CAP-11": [
+          "agent/tools/case_db.py",
+          "agent/tools/documents.py"
+        ]
+      },
+      "controls": {
+        "CTRL-0001": [
+          "offcode",
+          "The gateway config names an approved model from the agency catalogue. Vetting the provider is a procurement step, outside the code.",
+          [
+            "gateway/config.yaml"
+          ]
+        ],
+        "CTRL-0002": [
+          "offcode",
+          "No-training and no-logging terms are contractual. The client sets no opt-out flag; the gateway contract is meant to cover it.",
+          [
+            "gateway/client.py"
+          ]
+        ],
+        "CTRL-0007": [
+          "found",
+          "Every model request and response is logged with case_id and officer_id before it returns.",
+          [
+            "gateway/client.py:31-58"
+          ]
+        ],
+        "CTRL-0009": [
+          "partial",
+          "case_server uses OAuth 2.1 through the agency identity provider, but docs_server accepts a static API key from an environment variable.",
+          [
+            "mcp/case_server/auth.py",
+            "mcp/docs_server/server.py:12"
+          ]
+        ],
+        "CTRL-0011": [
+          "partial",
+          "The agent's token has scope cases:write on every case, not only the case being processed.",
+          [
+            "mcp/case_server/auth.py:40"
+          ]
+        ],
+        "CTRL-0013": [
+          "partial",
+          "CI runs both MCP servers against fixtures in an isolated job before deploying. The staging environment they then run in is not isolated (see CTRL-0092).",
+          [
+            ".ci/pipeline.yml:22-48"
+          ]
+        ],
+        "CTRL-0014": [
+          "found",
+          "Both MCP servers are built from this repository; no third-party server is configured.",
+          [
+            "mcp/"
+          ]
+        ],
+        "CTRL-0016": [
+          "found",
+          "The system prompt states the role and lists non-goals: no recommendations, no contact with applicants, no status changes.",
+          [
+            "agent/prompts/system.md"
+          ]
+        ],
+        "CTRL-0019": [
+          "found",
+          "Documents and web pages are wrapped by wrap_untrusted() before they reach the model.",
+          [
+            "agent/guardrails.py:12-30"
+          ]
+        ],
+        "CTRL-0021": [
+          "missing",
+          "write_case_note accepts any text. Nothing limits what the agent stores in case notes, which it reads back on later visits.",
+          [
+            "agent/tools/case_db.py:51"
+          ]
+        ],
+        "CTRL-0024": [
+          "nofeature",
+          "Single agent: the code has no messages between agents.",
+          []
+        ],
+        "CTRL-0028": [
+          "nofeature",
+          "Single agent: there is no multi-agent system to monitor.",
+          []
+        ],
+        "CTRL-0032": [
+          "found",
+          "OpenTelemetry traces and logs are exported to the agency collector.",
+          [
+            "agent/telemetry.py"
+          ]
+        ],
+        "CTRL-0034": [
+          "offcode",
+          "Reviewing logs is a team routine. The code only produces the logs.",
+          []
+        ],
+        "CTRL-0038": [
+          "partial",
+          "There are 24 adversarial test cases, but CI runs them only on manual trigger, not on a schedule or when the model changes.",
+          [
+            "tests/eval/redteam_cases.yaml",
+            ".ci/pipeline.yml:60"
+          ]
+        ],
+        "CTRL-0040": [
+          "partial",
+          "The graph stops after 25 steps. There is no cap on tool calls or tokens per case.",
+          [
+            "agent/graph.py:18"
+          ]
+        ],
+        "CTRL-0041": [
+          "found",
+          "All seven tools have descriptions, typed inputs and return types.",
+          [
+            "agent/tools/__init__.py"
+          ]
+        ],
+        "CTRL-0047": [
+          "found",
+          "mask_pii() runs on summaries and email drafts, masking identity numbers, phone numbers and emails.",
+          [
+            "agent/guardrails.py:34-61"
+          ]
+        ],
+        "CTRL-0049": [
+          "offcode",
+          "The officers' interface is in another repository, so this one cannot show hallucination cues.",
+          []
+        ],
+        "CTRL-0051": [
+          "missing",
+          "No input check for requests to reproduce copyrighted content.",
+          []
+        ],
+        "CTRL-0062": [
+          "missing",
+          "Documents and web pages reach the model without a prompt-injection check. Delimiters (CTRL-0019) are the only defence.",
+          [
+            "agent/tools/documents.py",
+            "agent/tools/web_search.py"
+          ]
+        ],
+        "CTRL-0065": [
+          "found",
+          "ops/kill_switch.py disables the agent's service account and revokes both MCP tokens.",
+          [
+            "ops/kill_switch.py"
+          ]
+        ],
+        "CTRL-0067": [
+          "partial",
+          "registry_api.py documents each endpoint, but not the paging scheme or the error codes the model has to handle.",
+          [
+            "agent/tools/registry_api.py"
+          ]
+        ],
+        "CTRL-0069": [
+          "nofeature",
+          "The agent runs no generated code.",
+          []
+        ],
+        "CTRL-0074": [
+          "partial",
+          "Dependencies are pinned, but CI has no vulnerability-scan step.",
+          [
+            "requirements.txt",
+            ".ci/pipeline.yml"
+          ]
+        ],
+        "CTRL-0077": [
+          "found",
+          "Case notes are soft-deleted and every change is kept in an audit table.",
+          [
+            "mcp/case_server/models.py:77"
+          ]
+        ],
+        "CTRL-0078": [
+          "found",
+          "case_server limits each client to 10 requests a second.",
+          [
+            "mcp/case_server/server.py:28"
+          ]
+        ],
+        "CTRL-0083": [
+          "partial",
+          "Files arrive after the portal's antivirus scan, which is outside this repository. Nothing here scans them for injected instructions.",
+          [
+            "agent/tools/documents.py"
+          ]
+        ],
+        "CTRL-0089": [
+          "partial",
+          "Production egress is default-deny, but the rule added for fetch_url allows any HTTPS host. That reopens the outbound channel RISK-047 describes.",
+          [
+            "infra/egress-allowlist.yaml:9-21"
+          ]
+        ],
+        "CTRL-0091": [
+          "partial",
+          "Versions are pinned without hashes, and nothing re-checks the MCP servers' tool definitions when they load.",
+          [
+            "requirements.txt"
+          ]
+        ],
+        "CTRL-0092": [
+          "missing",
+          "Staging allows all outbound traffic and uses the live registry API key.",
+          [
+            "infra/staging.tf:40-66"
+          ]
+        ],
+        "CTRL-0096": [
+          "partial",
+          "Containers run as a non-root user, but the framework's debug UI is switched on in the production config.",
+          [
+            "infra/k8s/deployment.yaml",
+            "agent/config.yaml:7"
+          ]
+        ],
+        "CTRL-0003": [
+          "nofeature",
+          "The model is hosted behind the gateway; nothing loads model weights.",
+          []
+        ],
+        "CTRL-0004": [
+          "offcode",
+          "Reading the model's system card is part of choosing the model, not code.",
+          []
+        ],
+        "CTRL-0005": [
+          "partial",
+          "compare_models.py benchmarks two models on 30 past cases, but the results are not kept in the repository.",
+          [
+            "tests/eval/compare_models.py"
+          ]
+        ],
+        "CTRL-0006": [
+          "found",
+          "No tool sends, approves, rejects or pays. save_email_draft only writes to the officer's drafts.",
+          [
+            "agent/tools/email_draft.py"
+          ]
+        ],
+        "CTRL-0008": [
+          "missing",
+          "No alerting on changes in the agent's behaviour.",
+          []
+        ],
+        "CTRL-0010": [
+          "partial",
+          "case_server validates the token on every request; docs_server only checks a static key.",
+          [
+            "mcp/case_server/auth.py"
+          ]
+        ],
+        "CTRL-0012": [
+          "missing",
+          "Neither server uses per-client consent.",
+          []
+        ],
+        "CTRL-0015": [
+          "partial",
+          "Tool outputs are wrapped as untrusted, but registry responses are not checked against a schema.",
+          [
+            "agent/guardrails.py",
+            "agent/tools/registry_api.py"
+          ]
+        ],
+        "CTRL-0017": [
+          "missing",
+          "The prompts define no success criteria for the workflow's steps.",
+          [
+            "agent/prompts/system.md"
+          ]
+        ],
+        "CTRL-0018": [
+          "found",
+          "The system prompt tells the agent to stop and ask the officer when the criteria are ambiguous.",
+          [
+            "agent/prompts/system.md"
+          ]
+        ],
+        "CTRL-0020": [
+          "missing",
+          "The same model reads the raw application text and writes the summary.",
+          []
+        ],
+        "CTRL-0022": [
+          "missing",
+          "No content filter on case-note writes.",
+          [
+            "agent/tools/case_db.py"
+          ]
+        ],
+        "CTRL-0023": [
+          "found",
+          "Every note write is recorded in the audit table with the agent's identity and the case ID.",
+          [
+            "mcp/case_server/models.py:77"
+          ]
+        ],
+        "CTRL-0029": [
+          "partial",
+          "The service account reaches only the case and document servers, but can write to every case.",
+          [
+            "infra/k8s/serviceaccount.yaml"
+          ]
+        ],
+        "CTRL-0030": [
+          "found",
+          "The agent runs as its own service account, svc-grantdesk-agent.",
+          [
+            "infra/k8s/serviceaccount.yaml"
+          ]
+        ],
+        "CTRL-0031": [
+          "found",
+          "case_server checks each token's audience and issuer.",
+          [
+            "mcp/case_server/auth.py:22"
+          ]
+        ],
+        "CTRL-0033": [
+          "found",
+          "Spans follow the OpenTelemetry GenAI conventions and carry case_id.",
+          [
+            "agent/telemetry.py"
+          ]
+        ],
+        "CTRL-0042": [
+          "found",
+          "No tool action is irreversible: notes are soft-deleted and emails stay as drafts.",
+          [
+            "agent/tools/"
+          ]
+        ],
+        "CTRL-0043": [
+          "found",
+          "Each tool call is a trace span with its arguments, result size and outcome.",
+          [
+            "agent/telemetry.py"
+          ]
+        ],
+        "CTRL-0048": [
+          "partial",
+          "The summary prompt asks for a page reference for every figure, but nothing checks that the references exist.",
+          [
+            "agent/prompts/summary.md"
+          ]
+        ],
+        "CTRL-0050": [
+          "offcode",
+          "Links to sources would appear in the officers' interface, which is in another repository.",
+          []
+        ],
+        "CTRL-0060": [
+          "partial",
+          "fetch_url strips scripts and styles, then passes the page text on unfiltered.",
+          [
+            "agent/tools/web_search.py:44"
+          ]
+        ],
+        "CTRL-0061": [
+          "partial",
+          "Searches use a search API, but fetch_url scrapes applicant websites directly.",
+          [
+            "agent/tools/web_search.py"
+          ]
+        ],
+        "CTRL-0063": [
+          "found",
+          "search_web limits results to government domains, the registry and three news sites.",
+          [
+            "agent/tools/web_search.py:12"
+          ]
+        ],
+        "CTRL-0081": [
+          "missing",
+          "Documents are not checked for personal data before the model reads them.",
+          []
+        ],
+        "CTRL-0082": [
+          "partial",
+          "The agent can read every case, not only the one the officer has open.",
+          [
+            "mcp/case_server/auth.py:40"
+          ]
+        ],
+        "CTRL-0090": [
+          "missing",
+          "No policy layer separates untrusted content from tool calls.",
+          []
+        ],
+        "CTRL-0094": [
+          "offcode",
+          "Approval and override rates would come from the officers' interface, in another repository.",
+          []
+        ]
+      }
+    }
+  }
+}

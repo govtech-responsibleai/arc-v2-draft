@@ -31,7 +31,7 @@ ORG = 'govtech-responsibleai'
 OFFICIAL = 'agentic-risk-capability-framework'
 OFFICIAL_SITE = f'https://{ORG}.github.io/{OFFICIAL}/'
 KIT = Path(__file__).parent
-TEXT = {'.md', '.py', '.yml', '.yaml', '.js', '.mjs', '.ts', '.astro', '.html', '.txt', '.json', '.toml', '.css', '.cff'}
+TEXT = {'.md', '.py', '.yml', '.yaml', '.js', '.mjs', '.ts', '.tsx', '.astro', '.html', '.txt', '.json', '.toml', '.css', '.cff'}
 SKIP = ('archive/', 'review/', 'site/', 'incidents/')
 
 
