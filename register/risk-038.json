@@ -1,0 +1,62 @@
+{
+ "id": "RISK-038",
+ "type": "risk",
+ "statement": "Incorrect use of unfamiliar programmatic interfaces",
+ "description": "This risk arises when an agent interacts with programmatic interfaces it has not been trained or configured to use correctly, particularly bespoke or non-standard interfaces outside established protocols such as MCP servers. As a result, the agent may misinterpret interface semantics, invoke operations incorrectly, or produce unintended effects due to improper integration or usage.",
+ "elements": [
+  {
+   "id": "CAP-09",
+   "name": "Other Programmatic Interfaces"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0041",
+   "level": 0,
+   "statement": "Provide comprehensive descriptions for each tool including intended use, required inputs, and potential outputs"
+  },
+  {
+   "id": "CTRL-0067",
+   "level": 0,
+   "statement": "Ensure proper documentation of programmatic interfaces for agent use"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2305.15334",
+  "https://arxiv.org/abs/2309.15817"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T2",
+    "title": "Tool misuse"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-038/"
+}

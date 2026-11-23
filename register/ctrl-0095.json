@@ -1,0 +1,69 @@
+{
+ "id": "CTRL-0095",
+ "type": "control",
+ "level": 1,
+ "statement": "Apply due diligence and technical bounds to third-party agents before delegating to them or transacting with them",
+ "recommendations": "An external agent is a supplier whose behaviour you cannot inspect. Before integration, obtain contractual commitments on data handling, retention, and change notification, and evidence of the provider's testing and security practices. Technically, give each third-party agent its own scoped, short-lived credentials bound to the specific tasks delegated, exchange only the data those tasks require through validated schemas, log every exchange on your side, and keep the ability to cut the integration off immediately. Verify the agent's identity on each interaction (signed agent cards, mutual TLS) so that a lookalike cannot take its place, and review its behaviour and outputs periodically as its provider updates it.",
+ "enforcement": [
+  "organisation",
+  "infrastructure"
+ ],
+ "owner": "governance",
+ "phase": [
+  "design",
+  "build",
+  "operate"
+ ],
+ "evidence": "The third-party agent's contract clauses on data handling, retention and change notification, its scoped short-lived credential configuration, and the local log of exchanges.",
+ "test": "Present an agent card with an invalid signature and confirm delegation is refused, then revoke the real agent's credential and confirm exchanges stop at once.",
+ "risks": [
+  {
+   "id": "RISK-053",
+   "statement": "Dependence on third-party agents as counterparties or delegates"
+  }
+ ],
+ "references": [
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf",
+  "https://a2a-protocol.org/latest/topics/enterprise-ready/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.1",
+    "title": "Supply chain security – ensure components are from trusted sources"
+   },
+   {
+    "id": "3.4",
+    "title": "Implement security controls between agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.2.1",
+    "title": "Clear allocation of responsibilities"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI04",
+    "title": "Agentic Supply Chain Vulnerabilities"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV7",
+    "title": "Developing secure agents – Manage third-party components"
+   },
+   {
+    "id": "DS3",
+    "title": "Designing secure agents – Identity management"
+   },
+   {
+    "id": "AA1",
+    "title": "Appendix A, prerequisites – Design"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0095/"
+}

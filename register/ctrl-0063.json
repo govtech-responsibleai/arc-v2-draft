@@ -1,0 +1,55 @@
+{
+ "id": "CTRL-0063",
+ "type": "control",
+ "level": 1,
+ "statement": "Prioritise search results from verified, high-quality domains",
+ "recommendations": "Agents retrieving information from unreliable or low-quality websites may present inaccurate, outdated, or biased content to users, leading to misinformed decisions. Configure search and retrieval systems to prioritise results from verified, authoritative sources such as government domains (.gov), educational institutions (.edu), established news organisations, and recognised industry authorities.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The search tool configuration listing preferred and excluded domains and the ranking rule that applies them.",
+ "test": "Run a query where a low-quality site outranks an official source in raw results and confirm the agent's retrieved set leads with the official source.",
+ "risks": [
+  {
+   "id": "RISK-035",
+   "statement": "Unreliable information or websites"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.1",
+    "title": "Supply chain security – ensure components are from trusted sources"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI06",
+    "title": "Memory and Context Poisoning"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS1",
+    "title": "Designing secure agents – Controlled context"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0063/"
+}

@@ -1,0 +1,63 @@
+{
+ "id": "CTRL-0013",
+ "type": "control",
+ "level": 0,
+ "statement": "Test all untested MCP servers in a sandboxed environment before deploying to production",
+ "recommendations": "Untested MCP servers may contain vulnerabilities, malicious code, or unexpected behaviours that could compromise your production systems or data. Deploy MCP servers first to an isolated sandbox environment (e.g., containerised test environment, separate network segment, or dedicated development infrastructure) to evaluate their security posture, behaviour, and reliability. Monitor server activity during testing for anomalous network connections, excessive resource consumption, unauthorised file access, or other suspicious behaviours. Only promote MCP servers to production after successful security review, functional testing, and verification that the server behaves as documented.",
+ "enforcement": [
+  "organisation",
+  "infrastructure"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "deploy"
+ ],
+ "evidence": "The sandbox test report for each MCP server, recording observed network connections, file access and resource use, with the promotion approval.",
+ "test": "Add an MCP server with no sandbox test report to the production configuration and confirm the release review rejects it.",
+ "risks": [
+  {
+   "id": "RISK-006",
+   "statement": "Tool poisoning by malicious actors"
+  },
+  {
+   "id": "RISK-064",
+   "statement": "Harm from a connected tool server or agent to the system that connects to it"
+  }
+ ],
+ "references": [
+  "https://modelcontextprotocol.io/specification/draft/basic/security_best_practices"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.9",
+    "title": "Segregate environments and segment networks"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.2",
+    "title": "Test agents before deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI04",
+    "title": "Agentic Supply Chain Vulnerabilities"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV7",
+    "title": "Developing secure agents – Manage third-party components"
+   },
+   {
+    "id": "DV4",
+    "title": "Developing secure agents – Red teaming"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0013/"
+}

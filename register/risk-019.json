@@ -1,0 +1,67 @@
+{
+ "id": "RISK-019",
+ "type": "risk",
+ "statement": "Generating plans that fail to meet the user's requirements",
+ "description": "This risk arises when an agent generates plans or goals that do not accurately reflect the user’s stated objectives, constraints, or preferences. As a result, the system may pursue incorrect or suboptimal actions, waste resources, or deliver outcomes that do not satisfy user expectations.",
+ "elements": [
+  {
+   "id": "CAP-01",
+   "name": "Planning and Goal Management"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0036",
+   "level": 1,
+   "statement": "Regularly evaluate and test planning behaviour under representative workloads and failure scenarios"
+  },
+  {
+   "id": "CTRL-0042",
+   "level": 1,
+   "statement": "Require explicit human confirmation before executing high-impact or irreversible tool actions"
+  },
+  {
+   "id": "CTRL-0035",
+   "level": 2,
+   "statement": "Require agents to decompose user goals into explicit sub-goals and validate necessity before proceeding"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/pdf/2402.01622v4",
+  "https://aclanthology.org/2025.naacl-long.93.pdf"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T6",
+    "title": "Intent breaking and goal manipulation"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-019/"
+}

@@ -1,0 +1,68 @@
+{
+ "id": "RISK-041",
+ "type": "risk",
+ "statement": "Unintended overwriting or deletion of files or data",
+ "description": "This risk arises when an agent modifies, overwrites, or deletes files, database tables, or datasets without explicit user instruction or authorisation. As a result, critical information may be lost or corrupted, leading to data integrity issues, operational disruption, or the need for costly recovery efforts.",
+ "elements": [
+  {
+   "id": "CAP-11",
+   "name": "File and Data Management"
+  }
+ ],
+ "min_authority": {
+  "CAP-11": "act-with-approval"
+ },
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0076",
+   "level": 0,
+   "statement": "Require human approval for destructive changes to databases, tables, or files that cannot be readily undone"
+  },
+  {
+   "id": "CTRL-0077",
+   "level": 0,
+   "statement": "Enable versioning or soft-delete for managed object stores to allow recovery from accidental modifications"
+  },
+  {
+   "id": "CTRL-0094",
+   "level": 0,
+   "statement": "Measure the quality of human oversight and redesign approval steps that have become rubber stamps"
+  },
+  {
+   "id": "CTRL-0075",
+   "level": 1,
+   "statement": "Do not grant write access to agents unless strictly necessary"
+  }
+ ],
+ "sources": [
+  "https://syssec.dpss.inesc-id.pt/papers/pedro_icse25.pdf"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T2",
+    "title": "Tool misuse"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-041/"
+}

@@ -1,0 +1,81 @@
+{
+ "id": "CTRL-0015",
+ "type": "control",
+ "level": 1,
+ "statement": "Treat all tool metadata and outputs as untrusted input requiring validation",
+ "recommendations": "Tool metadata (descriptions, parameter names, schema definitions) can contain prompt injection attacks that manipulate agent behaviour even without tool invocation, whilst tool outputs may contain malicious content designed to compromise downstream systems. Validate and sanitise all tool metadata before exposing it to the LLM, treating tool descriptions with the same scrutiny as external user input and implementing content filtering to detect embedded instructions or adversarial prompts. Apply strict schema validation to tool outputs and sanitise responses before using them in prompts, displaying them to users, or passing them to other systems. Implement monitoring and logging of tool metadata and outputs to enable detection of injection attempts and post-incident analysis of compromised tool behaviour.",
+ "enforcement": [
+  "harness",
+  "model"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The tool-layer code that validates tool outputs against schemas and scans tool descriptions for embedded instructions, with its log of rejections.",
+ "test": "Register a test tool whose description and output both carry an embedded instruction and confirm the description is flagged and the output rejected before reaching the model.",
+ "risks": [
+  {
+   "id": "RISK-006",
+   "statement": "Tool poisoning by malicious actors"
+  },
+  {
+   "id": "RISK-007",
+   "statement": "Lack of input sanitisation"
+  },
+  {
+   "id": "RISK-048",
+   "statement": "Compromise through the tool, skill, and dependency supply chain"
+  }
+ ],
+ "references": [
+  "https://embracethered.com/blog/posts/2025/model-context-protocol-security-risks-and-exploits/",
+  "https://simonwillison.net/2025/Apr/9/mcp-prompt-injection/",
+  "https://www.practical-devsecops.com/mcp-security-vulnerabilities/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.1",
+    "title": "Validate inputs to models and agents"
+   },
+   {
+    "id": "3.3",
+    "title": "Secure the invocation of external tools (e.g. MCP servers)"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   },
+   {
+    "id": "ASI04",
+    "title": "Agentic Supply Chain Vulnerabilities"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP2",
+    "title": "Operating agents securely – Validate outputs"
+   },
+   {
+    "id": "DV3",
+    "title": "Developing secure agents – Input management"
+   },
+   {
+    "id": "DS4",
+    "title": "Designing secure agents – Defence in depth"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0015/"
+}

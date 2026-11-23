@@ -1,0 +1,83 @@
+{
+ "id": "RISK-054",
+ "type": "risk",
+ "statement": "Insecure default configuration of agent frameworks and runtimes",
+ "description": "This risk arises when the frameworks and runtimes an agent is built on ship with insecure defaults — authentication disabled, services listening on all interfaces, permissive origin checks on local control channels, unsafe deserialisation of persisted state, or default credentials — and deployers inherit them unchanged. As a result, any reachable attacker can drive the agent and use the credentials and tools it holds, as shown by a one-click remote-code-execution flaw in a widely installed open-source agent and a chain of deserialisation flaws in agent orchestration frameworks.",
+ "elements": [
+  {
+   "id": "DSN-02",
+   "name": "Roles and Access Controls"
+  }
+ ],
+ "failure_mode": "Tool or Resource Malfunction",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-03",
+   "name": "Infrastructure and network",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-04",
+   "name": "Identity and access management",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0009",
+   "level": 0,
+   "statement": "Use only tool servers and APIs, including MCP servers, that implement robust authentication mechanisms in production environments"
+  },
+  {
+   "id": "CTRL-0096",
+   "level": 0,
+   "statement": "Harden agent frameworks and runtimes before exposing them, and patch framework vulnerabilities promptly"
+  }
+ ],
+ "sources": [
+  "https://thehackernews.com/2026/06/langgraph-flaw-chain-exposes-self.html",
+  "https://nvd.nist.gov/vuln/detail/CVE-2026-25253",
+  "https://github.com/advisories/GHSA-g48c-2wqr-h844"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   },
+   {
+    "id": "ASI05",
+    "title": "Unexpected Code Execution (RCE)"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T3",
+    "title": "Privilege compromise"
+   },
+   {
+    "id": "T11",
+    "title": "Unexpected RCE and code attacks"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0132",
+    "title": "Misconfigured or Publicly Exposed AI Services"
+   },
+   {
+    "id": "AML.T0049",
+    "title": "Exploit Public-Facing Application"
+   },
+   {
+    "id": "AML.T0083",
+    "title": "Credentials from AI Agent Configuration"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-054/"
+}

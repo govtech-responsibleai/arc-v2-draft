@@ -1,0 +1,62 @@
+{
+ "id": "CTRL-0053",
+ "type": "control",
+ "level": 0,
+ "statement": "Require human approval for communications on sensitive matters",
+ "recommendations": "Agents making unsupported commitments, inaccurate assurances, or statements that exceed organisational capabilities in official communications may expose the organisation to reputational damage, legal liability, or unmet expectations. Implement mandatory human review and approval workflows for communications on sensitive matters including contractual commitments, financial promises, policy statements, regulatory responses, or public-facing announcements. Define clear criteria for what constitutes \"sensitive matters\" requiring approval, ensuring consistent application across the organisation. Enforce the approval in the sending path, so that the agent cannot dispatch a message in a sensitive category until it is approved; an instruction to the agent to seek approval is not enough. Pair this control with CTRL-0094 so that approvals remain real decisions.",
+ "enforcement": [
+  "harness",
+  "organisation"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build",
+  "operate"
+ ],
+ "evidence": "The sensitive-category criteria, the sending-path rule that holds messages in those categories, and approval records naming approver, message and time.",
+ "test": "Have the agent draft a message containing a contractual commitment and confirm it remains unsent until an authorised approver releases it.",
+ "risks": [
+  {
+   "id": "RISK-031",
+   "statement": "Inaccurate promises or statements in official communications"
+  }
+ ],
+ "references": [
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+  "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.4",
+    "title": "Ensure adequate human oversight"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.2.2",
+    "title": "Design for meaningful human oversight"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI09",
+    "title": "Human-Agent Trust Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP3",
+    "title": "Operating agents securely – Human in the loop"
+   },
+   {
+    "id": "DS2",
+    "title": "Designing secure agents – Oversight mechanisms"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0053/"
+}

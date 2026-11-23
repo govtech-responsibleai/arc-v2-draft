@@ -1,0 +1,51 @@
+{
+ "id": "RISK-046",
+ "type": "risk",
+ "statement": "System overload due to inefficient or excessive operations",
+ "description": "This risk arises when an agent issues poorly optimised, excessively frequent, or redundant system-level operations or queries. As a result, computing resources may be exhausted, system performance may degrade, or services may become unavailable due to unnecessary load.",
+ "elements": [
+  {
+   "id": "CAP-12",
+   "name": "System Management"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-03",
+   "name": "Infrastructure and network",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0086",
+   "level": 0,
+   "statement": "Limit the number of concurrent queries to external systems by agents"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/html/2407.20859v1",
+  "https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T4",
+    "title": "Resource overload"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-046/"
+}

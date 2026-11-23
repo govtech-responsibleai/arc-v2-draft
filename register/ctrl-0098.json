@@ -1,0 +1,72 @@
+{
+ "id": "CTRL-0098",
+ "type": "control",
+ "level": 0,
+ "statement": "Keep credentials and backups out of reach of agent-run code",
+ "recommendations": "Code that an agent writes runs with whatever credentials it can find, so tool-level safeguards do not limit it. Give agent-run code its own credentials, scoped to the task and to non-production resources by default, and keep other secrets, such as infrastructure tokens, deployment keys, production database credentials, and cloud provider keys, out of the files, environment variables, and directories the agent can read; use a secrets manager the agent cannot query, and scan the agent's workspace for stray credentials before granting access. Store backups and version history where neither the agent nor the credentials it holds can delete them, so that recovery (CTRL-0077) survives an agent's mistake.",
+ "enforcement": [
+  "infrastructure"
+ ],
+ "owner": "platform",
+ "phase": [
+  "design",
+  "build",
+  "operate"
+ ],
+ "evidence": "The agent runtime's secrets configuration showing task-scoped credentials only, the latest scan of its workspace for other credentials, and backup storage policies that deny deletion to the agent's identities.",
+ "test": "From code the agent runs, try to read a production credential and to delete a backup, and confirm that both are refused.",
+ "risks": [
+  {
+   "id": "RISK-049",
+   "statement": "Escape from evaluation or sandbox containment onto live systems"
+  },
+  {
+   "id": "RISK-056",
+   "statement": "Actions beyond the agent's tools through code execution and reachable credentials"
+  }
+ ],
+ "references": [
+  "https://hackread.com/cursor-ai-agent-wipes-pocketos-database-backups/",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.6",
+    "title": "Implement authentication, authorisation and access controls"
+   },
+   {
+    "id": "2.8",
+    "title": "Apply least privilege; secure-by-default configurations"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   },
+   {
+    "id": "ASI05",
+    "title": "Unexpected Code Execution (RCE)"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP5",
+    "title": "Operating agents securely – Privileges and authentication"
+   },
+   {
+    "id": "DP6",
+    "title": "Deploying agents securely – Isolation"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0098/"
+}

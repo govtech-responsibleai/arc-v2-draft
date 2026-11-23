@@ -1,0 +1,88 @@
+{
+ "id": "CTRL-0090",
+ "type": "control",
+ "level": 1,
+ "statement": "Enforce data-flow and capability policies at runtime with a deterministic policy layer that separates untrusted content from privileged actions",
+ "recommendations": "Classifier-based injection guardrails are probabilistic and do not close the attack. Complement them with an architectural boundary in which untrusted content never directly drives privileged actions - for example a privileged planner that never sees raw untrusted data working with a quarantined model that extracts values from it (the dual-LLM pattern), capability or information-flow labels that follow data through the system, and a policy engine that checks each tool call against what the data it depends on is allowed to do. Published designs such as CaMeL, Progent, and related reference monitors largely eliminate injection success on agent benchmarks; adopt one, or an equivalent policy layer in your framework, for systems that combine untrusted content with sensitive data or consequential actions.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build"
+ ],
+ "evidence": "The policy engine's rules in version control stating which tools accept data carrying each trust label, and its log of denied tool calls.",
+ "test": "Run AgentDojo with the policy layer enabled and confirm instructions injected into tool outputs trigger no privileged tool call.",
+ "risks": [
+  {
+   "id": "RISK-009",
+   "statement": "Unsanitised inputs in system instructions"
+  },
+  {
+   "id": "RISK-034",
+   "statement": "Prompt injection via malicious websites"
+  },
+  {
+   "id": "RISK-036",
+   "statement": "Prompt injection risks through computer use"
+  },
+  {
+   "id": "RISK-044",
+   "statement": "Prompt injection via malicious files or data"
+  },
+  {
+   "id": "RISK-047",
+   "statement": "Data exfiltration through combined access to untrusted content, sensitive data, and an outbound channel"
+  },
+  {
+   "id": "RISK-059",
+   "statement": "Prompt injection through inbound messages"
+  }
+ ],
+ "references": [
+  "https://arxiv.org/abs/2503.18813",
+  "https://arxiv.org/abs/2504.11703",
+  "https://arxiv.org/abs/2503.18666"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.9",
+    "title": "Segregate environments and segment networks"
+   },
+   {
+    "id": "4.1",
+    "title": "Validate inputs to models and agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DP5",
+    "title": "Deploying agents securely – Guardrails and constraints"
+   },
+   {
+    "id": "DS4",
+    "title": "Designing secure agents – Defence in depth"
+   },
+   {
+    "id": "OP5",
+    "title": "Operating agents securely – Privileges and authentication"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0090/"
+}

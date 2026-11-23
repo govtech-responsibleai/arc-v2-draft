@@ -1,0 +1,90 @@
+{
+ "id": "RISK-058",
+ "type": "risk",
+ "statement": "Instruction and configuration files as a way in",
+ "description": "This risk arises when an agent loads instructions, rules, settings, hooks, skills, or tool configuration from files that someone other than its operator can write: a rules file in a cloned repository, an instruction file in a downloads folder, a project-level settings file, or a tool configuration that the agent itself can edit. These files are read automatically, often before any trust prompt, and what they contain is treated as the operator's own instructions or runs as commands. As a result, anyone who can place or change such a file can direct the agent or run code on the machine it works on, and the change persists across sessions, as when malicious packages planted hidden instructions in coding assistants' instruction files, a cloned repository's settings took effect before the user was asked to trust it, and a crafted chat message led a coding agent to rewrite its own tool configuration.",
+ "elements": [
+  {
+   "id": "CMP-02",
+   "name": "Instructions"
+  }
+ ],
+ "failure_mode": "External Manipulation",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0019",
+   "level": 0,
+   "statement": "Keep untrusted inputs out of system instructions, and enclose any untrusted content given to the model in delimiters marked as data"
+  },
+  {
+   "id": "CTRL-0091",
+   "level": 0,
+   "statement": "Require verified provenance for tools, skills, and dependencies, and re-verify them on every update"
+  },
+  {
+   "id": "CTRL-0100",
+   "level": 0,
+   "statement": "Load instruction, settings, and tool-configuration files only from locations the operator controls, and ask before using any that arrive with a workspace"
+  },
+  {
+   "id": "CTRL-0101",
+   "level": 0,
+   "statement": "Give agents no write access to their own instructions, configuration, permissions, logs, or monitors"
+  }
+ ],
+ "sources": [
+  "https://socket.dev/blog/trapdoor-crypto-stealer-npm-pypi-crates",
+  "https://research.checkpoint.com/2026/rce-and-api-token-exfiltration-through-claude-code-project-files-cve-2025-59536/",
+  "https://nvd.nist.gov/vuln/detail/CVE-2025-54135",
+  "https://www.pillar.security/blog/new-vulnerability-in-github-copilot-and-cursor-how-hackers-can-weaponize-code-agents"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   },
+   {
+    "id": "ASI04",
+    "title": "Agentic Supply Chain Vulnerabilities"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T6",
+    "title": "Intent breaking and goal manipulation"
+   },
+   {
+    "id": "T17",
+    "title": "Supply chain compromise"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0051.001",
+    "title": "LLM Prompt Injection: Indirect"
+   },
+   {
+    "id": "AML.T0010.005",
+    "title": "Supply Chain Compromise: AI Agent Tool"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-058/"
+}

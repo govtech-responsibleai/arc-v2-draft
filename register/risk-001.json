@@ -1,0 +1,98 @@
+{
+ "id": "RISK-001",
+ "type": "risk",
+ "statement": "Use of untrusted or compromised LLMs",
+ "description": "This risk arises when LLMs obtained from untrusted or insufficiently vetted sources have been intentionally poisoned or backdoored during training or distribution, causing them to behave maliciously or unpredictably under specific conditions. Such models may leak sensitive information, bypass safeguards, or execute hidden behaviors that undermine system integrity and trust.",
+ "elements": [
+  {
+   "id": "CMP-01",
+   "name": "LLM"
+  }
+ ],
+ "failure_mode": "External Manipulation",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0001",
+   "level": 0,
+   "statement": "Use only LLMs from verified and trusted model developers"
+  },
+  {
+   "id": "CTRL-0002",
+   "level": 0,
+   "statement": "Obtain legally binding no-training and no-logging agreements from LLM API service providers"
+  },
+  {
+   "id": "CTRL-0007",
+   "level": 0,
+   "statement": "Log all LLM inputs and outputs for regular review"
+  },
+  {
+   "id": "CTRL-0003",
+   "level": 1,
+   "statement": "Use only established and verified model loaders in production environments"
+  },
+  {
+   "id": "CTRL-0042",
+   "level": 1,
+   "statement": "Require explicit human confirmation before executing high-impact or irreversible tool actions"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2408.02946v6"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI04",
+    "title": "Agentic Supply Chain Vulnerabilities"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T17",
+    "title": "Supply chain compromise"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0010.003",
+    "title": "Supply Chain Compromise: Model Repository"
+   },
+   {
+    "id": "AML.T0115.001",
+    "title": "Publish Poisoned AI Artifacts: Models"
+   },
+   {
+    "id": "AML.T0018.000",
+    "title": "Manipulate AI Model: Poison AI Model"
+   },
+   {
+    "id": "AML.T0020",
+    "title": "Training Data Poisoning"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-001/"
+}

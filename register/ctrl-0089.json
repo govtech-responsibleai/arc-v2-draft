@@ -1,0 +1,72 @@
+{
+ "id": "CTRL-0089",
+ "type": "control",
+ "level": 0,
+ "statement": "Enforce default-deny network egress for agent runtimes, allowing only approved destinations",
+ "recommendations": "Every exfiltration and every containment escape needs an outbound channel, and agents acquire new ones with each tool. Run agent runtimes behind an egress policy that denies all outbound connections by default and allows only named destinations required for the task, applied at the network layer (proxy, firewall, or sandbox policy) rather than in the prompt. Include browsing and API tools in the policy, block requests that carry data in URLs or headers to unapproved hosts, and validate at the egress boundary that any credential presented belongs to the deployment — an allowlisted API endpoint is still an exfiltration channel if the agent can use it with an attacker's account. Log and alert on denied connections; they are an early signal of injection or misbehaviour.",
+ "enforcement": [
+  "infrastructure"
+ ],
+ "owner": "platform",
+ "phase": [
+  "design",
+  "deploy",
+  "operate"
+ ],
+ "evidence": "The egress proxy or firewall rule set for the agent runtime showing default deny and the named permitted destinations, with alerts on denied connections.",
+ "test": "From inside the agent runtime, request an unlisted host and call a permitted API with another account's key, and confirm both are refused and alerted.",
+ "risks": [
+  {
+   "id": "RISK-037",
+   "statement": "Exposure of sensitive data"
+  },
+  {
+   "id": "RISK-047",
+   "statement": "Data exfiltration through combined access to untrusted content, sensitive data, and an outbound channel"
+  },
+  {
+   "id": "RISK-049",
+   "statement": "Escape from evaluation or sandbox containment onto live systems"
+  }
+ ],
+ "references": [
+  "https://www.anthropic.com/engineering/how-we-contain-claude",
+  "https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.6",
+    "title": "Implement authentication, authorisation and access controls"
+   },
+   {
+    "id": "2.9",
+    "title": "Segregate environments and segment networks"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DP6",
+    "title": "Deploying agents securely – Isolation"
+   },
+   {
+    "id": "DV5",
+    "title": "Developing secure agents – Resilience"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0089/"
+}

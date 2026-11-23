@@ -1,0 +1,59 @@
+{
+ "id": "CTRL-0028",
+ "type": "control",
+ "level": 0,
+ "statement": "Continuously monitor multi-agent systems for cascade failure indicators",
+ "recommendations": "Cascade failures can rapidly propagate through multi-agent systems, but early detection enables intervention before widespread system degradation occurs. Implement monitoring that tracks indicators of cascading failures including agent looping behaviour, repeated error patterns, diverging outputs across similar agents, and abnormal request rates between agents. Configure alerting thresholds that trigger when cascade indicators exceed acceptable levels, such as the same agent repeatedly calling the same endpoint, multiple agents simultaneously failing similar requests, or circular dependencies in agent communication patterns.",
+ "enforcement": [
+  "infrastructure",
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "deploy",
+  "operate"
+ ],
+ "evidence": "The dashboards and alert rules covering inter-agent request rates, repeated identical calls, simultaneous failures and circular call chains.",
+ "test": "Set two agents calling each other in a loop in staging and confirm an alert naming both fires within the configured window.",
+ "risks": [
+  {
+   "id": "RISK-012",
+   "statement": "Cascading errors in multi-agent architectures"
+  },
+  {
+   "id": "RISK-051",
+   "statement": "Unsanctioned coordination between agents"
+  }
+ ],
+ "references": [
+  "https://live.paloaltonetworks.com/t5/community-blogs/safeguarding-ai-agents-an-in-depth-look-at-a2a-protocol-risks/ba-p/1235996"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.3",
+    "title": "Continuous monitoring and logging"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.3",
+    "title": "Continuously monitor and test when deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI08",
+    "title": "Cascading Failures"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP1",
+    "title": "Operating agents securely – Monitoring and auditing"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0028/"
+}

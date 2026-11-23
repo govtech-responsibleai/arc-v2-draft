@@ -1,0 +1,69 @@
+{
+ "id": "CTRL-0083",
+ "type": "control",
+ "level": 0,
+ "statement": "Disallow unknown or external files unless they have been scanned for threats",
+ "recommendations": "External files may contain maliciously crafted content designed to inject hidden instructions, manipulate agent behaviour, or introduce security threats when processed. Implement mandatory scanning for all unknown or external files before allowing agents to access them, using antivirus software, malware scanners, or specialised tools that detect prompt injection attempts embedded in file content.",
+ "enforcement": [
+  "harness",
+  "infrastructure"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The file-intake pipeline configuration showing the malware and injection scanners every external file passes, with a scan verdict stored per file hash.",
+ "test": "Upload a standard antivirus test file and a document carrying hidden instructions and confirm neither becomes readable by the agent.",
+ "risks": [
+  {
+   "id": "RISK-044",
+   "statement": "Prompt injection via malicious files or data"
+  },
+  {
+   "id": "RISK-047",
+   "statement": "Data exfiltration through combined access to untrusted content, sensitive data, and an outbound channel"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html",
+  "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.1",
+    "title": "Validate inputs to models and agents"
+   },
+   {
+    "id": "2.1",
+    "title": "Supply chain security – ensure components are from trusted sources"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   },
+   {
+    "id": "ASI04",
+    "title": "Agentic Supply Chain Vulnerabilities"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV3",
+    "title": "Developing secure agents – Input management"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0083/"
+}

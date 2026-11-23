@@ -1,0 +1,93 @@
+{
+ "id": "CTRL-0038",
+ "type": "control",
+ "level": 0,
+ "statement": "Conduct safety verification with domain-relevant stress tests and adversarial scenarios before deployment and on a regular cadence afterwards",
+ "recommendations": "Deploying agents without rigorous safety testing risks exposing users to harmful behaviours, security vulnerabilities, or compliance violations that only emerge under adversarial or edge-case conditions. Establish comprehensive pre-deployment testing that evaluates agent safety across domain-specific stress scenarios, including adversarial inputs designed to trigger unsafe behaviour, edge cases that challenge safety boundaries, and failure modes that test resilience under degraded conditions. Design test scenarios based on known risks in your domain (e.g., financial fraud attempts for banking agents, medical misinformation for healthcare agents, data exfiltration for enterprise assistants) and establish clear pass/fail criteria that must be met before deployment. Document test results, identified vulnerabilities, and implemented mitigations for future reference and regular review. Repeat the exercise on a fixed cadence and whenever the model, tools, or capabilities change - attacks evolve faster than deployments. Use established agent security and safety benchmarks (for example AgentDojo, Agent Security Bench, and AgentHarm) as a baseline and add scenarios drawn from your own incidents and from published ones.",
+ "enforcement": [
+  "organisation"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "deploy",
+  "operate"
+ ],
+ "evidence": "The dated safety test report listing domain stress scenarios, pass criteria, results, findings and mitigations, with a rerun after each model or tool change.",
+ "test": "Run AgentDojo, AgentHarm and the system's own domain scenarios against the release candidate and confirm the results meet the recorded pass criteria.",
+ "risks": [
+  {
+   "id": "RISK-002",
+   "statement": "Insufficient alignment of LLM behaviour"
+  },
+  {
+   "id": "RISK-003",
+   "statement": "Insufficient LLM capability and reliability"
+  },
+  {
+   "id": "RISK-020",
+   "statement": "Generating plans that overlook safety implications"
+  },
+  {
+   "id": "RISK-050",
+   "statement": "Deceptive behaviour toward overseers"
+  },
+  {
+   "id": "RISK-057",
+   "statement": "Pursuit of a goal by means the principal did not sanction"
+  },
+  {
+   "id": "RISK-061",
+   "statement": "Dependence on a model provider"
+  },
+  {
+   "id": "RISK-067",
+   "statement": "Use of the agent by its own principal against others"
+  }
+ ],
+ "references": [
+  "https://arxiv.org/abs/2406.13352",
+  "https://arxiv.org/abs/2410.02644",
+  "https://arxiv.org/abs/2410.09024"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "3.2",
+    "title": "Conduct security testing"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.2",
+    "title": "Test agents before deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   },
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV4",
+    "title": "Developing secure agents – Red teaming"
+   },
+   {
+    "id": "DV2",
+    "title": "Developing secure agents – Appropriate evaluation"
+   },
+   {
+    "id": "OP1",
+    "title": "Operating agents securely – Monitoring and auditing"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0038/"
+}

@@ -1,0 +1,122 @@
+{
+ "id": "RISK-047",
+ "type": "risk",
+ "statement": "Data exfiltration through combined access to untrusted content, sensitive data, and an outbound channel",
+ "description": "This risk arises when an agent that takes in untrusted content (web pages, files, inbound email, chat, support tickets, form submissions, or API responses) also holds access to sensitive data and has any outbound channel, such as browsing, API calls, messages, or tool calls that carry data in URLs. Instructions injected through the content can then direct the agent to send data out through a legitimate channel, for example by fetching an attacker's URL with data in it, by replying or forwarding to an attacker's address, or by posting to a shared channel. Each capability may be individually controlled; the exposure comes from their combination, and the way in and the way out can be the same channel. As a result, confidential data can leave the organisation without any single control being bypassed, as demonstrated by EchoLeak, where a single crafted email led Microsoft 365 Copilot to send internal data to an attacker, and ForcedLeak, where instructions in a web-form submission led Salesforce Agentforce to exfiltrate CRM records.",
+ "elements": [],
+ "combination": {
+  "id": "lethal-trifecta",
+  "name": "Lethal trifecta",
+  "roles": [
+   "untrusted-content",
+   "sensitive-data",
+   "outbound-channel"
+  ]
+ },
+ "failure_mode": "External Manipulation",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0062",
+   "level": 0,
+   "statement": "Implement input guardrails to detect prompt injection and adversarial attacks"
+  },
+  {
+   "id": "CTRL-0083",
+   "level": 0,
+   "statement": "Disallow unknown or external files unless they have been scanned for threats"
+  },
+  {
+   "id": "CTRL-0089",
+   "level": 0,
+   "statement": "Enforce default-deny network egress for agent runtimes, allowing only approved destinations"
+  },
+  {
+   "id": "CTRL-0097",
+   "level": 0,
+   "statement": "Do not give one agent untrusted content, access to sensitive data, and an unrestricted outbound channel at once; remove one, or gate the outbound channel outside the agent"
+  },
+  {
+   "id": "CTRL-0060",
+   "level": 1,
+   "statement": "Implement escape filtering before incorporating web content into prompts"
+  },
+  {
+   "id": "CTRL-0090",
+   "level": 1,
+   "statement": "Enforce data-flow and capability policies at runtime with a deterministic policy layer that separates untrusted content from privileged actions"
+  },
+  {
+   "id": "CTRL-0020",
+   "level": 2,
+   "statement": "Use a dedicated LLM to extract required fields from inputs and filter out extraneous text or embedded instructions"
+  },
+  {
+   "id": "CTRL-0082",
+   "level": 2,
+   "statement": "Do not grant agents access to personally identifiable or sensitive data unless strictly required"
+  }
+ ],
+ "sources": [
+  "https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/",
+  "https://www.varonis.com/blog/forcedleak",
+  "https://arxiv.org/abs/2509.10540",
+  "https://www.anthropic.com/engineering/how-we-contain-claude",
+  "https://www.frontiermodelforum.org/uploads/2026/06/FMF-Issue-Brief-on-Emerging-Security-Practices-for-AI-Agents.pdf"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   },
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T6",
+    "title": "Intent breaking and goal manipulation"
+   },
+   {
+    "id": "T2",
+    "title": "Tool misuse"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0051.001",
+    "title": "LLM Prompt Injection: Indirect"
+   },
+   {
+    "id": "AML.T0078",
+    "title": "Drive-by Compromise"
+   },
+   {
+    "id": "AML.T0085",
+    "title": "Data from AI Services"
+   },
+   {
+    "id": "AML.T0086",
+    "title": "Exfiltration via AI Agent Tool Invocation"
+   },
+   {
+    "id": "AML.T0077",
+    "title": "LLM Response Rendering"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-047/"
+}

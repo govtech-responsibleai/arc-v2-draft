@@ -1,0 +1,72 @@
+{
+ "id": "CTRL-0047",
+ "type": "control",
+ "level": 0,
+ "statement": "Implement output guardrails to detect and redact personally identifiable information",
+ "recommendations": "Agents may reproduce personally identifiable information from training data, memory, or prior interactions in their outputs, violating privacy obligations, exposing individuals to harm, or breaching data protection requirements such as GDPR or PDPA. Deploy output guardrails that scan all agent-generated content for PII categories including names, email addresses, phone numbers, identification numbers, financial account details, and other sensitive personal data before delivery to users. Use PII detection tools, pattern matching, or named entity recognition models to identify and redact or block outputs containing PII. Configure appropriate handling based on context — some PII may be acceptable if it belongs to the current user, whilst PII belonging to other individuals should be strictly prevented from disclosure.",
+ "enforcement": [
+  "harness",
+  "model"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The output filter configuration listing the personal data types detected and the action for each, with redaction counts in the guardrail log.",
+ "test": "Prompt the agent to repeat a seeded record holding another person's identity number, phone number and email and confirm all three arrive redacted.",
+ "risks": [
+  {
+   "id": "RISK-011",
+   "statement": "Sensitive data leakage across memory contexts"
+  },
+  {
+   "id": "RISK-027",
+   "statement": "Regurgitating personally identifiable information"
+  },
+  {
+   "id": "RISK-037",
+   "statement": "Exposure of sensitive data"
+  },
+  {
+   "id": "RISK-043",
+   "statement": "Exposure of sensitive data through file or database access"
+  },
+  {
+   "id": "RISK-066",
+   "statement": "Personal data collected, kept, or passed on beyond what the task needs"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+  "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.2",
+    "title": "Validate outputs from models and agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV5",
+    "title": "Developing secure agents – Resilience"
+   },
+   {
+    "id": "DP5",
+    "title": "Deploying agents securely – Guardrails and constraints"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0047/"
+}

@@ -1,0 +1,285 @@
+<!DOCTYPE html><html lang="en" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar data-astro-cid-g5ptsecz><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Example 1: Agentic Fact Checker | ARC 2.0 draft</title><link rel="canonical" href="https://govtech-responsibleai.github.io/arc-v2-draft/implementation/examples/fact-checker/"/><link rel="sitemap" href="/arc-v2-draft/sitemap-index.xml"/><link rel="alternate" type="text/plain" title="llms.txt" href="https://govtech-responsibleai.github.io/arc-v2-draft/llms.txt"/><link rel="shortcut icon" href="/arc-v2-draft/favicon.svg" type="image/svg+xml"/><meta name="generator" content="Astro v7.4.13"/><meta name="generator" content="Starlight v0.43.1"/><meta property="og:title" content="Example 1: Agentic Fact Checker"/><meta property="og:type" content="article"/><meta property="og:url" content="https://govtech-responsibleai.github.io/arc-v2-draft/implementation/examples/fact-checker/"/><meta property="og:locale" content="en"/><meta property="og:description" content="Worked example: an ARC assessment of a multi-agent fact checker that searches the web and an internal knowledge base."/><meta property="og:site_name" content="ARC 2.0 draft"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="Worked example: an ARC assessment of a multi-agent fact checker that searches the web and an internal knowledge base."/><meta name="twitter:site" content="@GovTechSG"/><meta name="robots" content="noindex, nofollow"/><meta property="og:image" content="https://govtech-responsibleai.github.io/arc-v2-draft/og/implementation/examples/fact-checker.png"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta name="twitter:image" content="https://govtech-responsibleai.github.io/arc-v2-draft/og/implementation/examples/fact-checker.png"/><link rel="alternate" type="text/markdown" href="/arc-v2-draft/implementation/examples/fact-checker.md"/><script>
+	(() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+	})();
+</script><link rel="stylesheet" href="/arc-v2-draft/_astro/print.C9eyqPGL.css" media="print"><link rel="stylesheet" href="/arc-v2-draft/_astro/middleware.C8WEzMzf.css"><script type="module" src="/arc-v2-draft/_astro/page.cNngjUgL.js"></script></head><body data-astro-cid-g5ptsecz><a class="sl-skip-link" href="#_top" data-astro-cid-qb7clj6f>Skip to content</a><div class="page sl-flex" data-astro-cid-yntsjkba><header class="header" data-astro-cid-yntsjkba><div class="header" data-astro-cid-by6fddyj><div class="title-wrapper sl-flex" data-astro-cid-by6fddyj><a href="/arc-v2-draft/" class="site-title sl-flex" data-astro-cid-6rvad3va><img alt="ARC" src="/arc-v2-draft/_astro/arc-robot.C9D0VP4f.svg" width="16" height="16" data-astro-cid-6rvad3va><span translate="no" data-astro-cid-6rvad3va>ARC 2.0 draft</span></a></div><div class="sl-flex print:hidden" data-astro-cid-by6fddyj><site-search data-translations="{&quot;placeholder&quot;:&quot;Search&quot;}" data-astro-cid-b5kgnn7o="true"><button data-open-modal disabled aria-label="Search" aria-keyshortcuts="Control+K" data-astro-cid-b5kgnn7o><svg data-astro-cid-b5kgnn7o="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block" aria-hidden="true" data-astro-cid-b5kgnn7o>Search</span><kbd class="sl-hidden md:sl-flex" style="display: none" data-astro-cid-b5kgnn7o><kbd data-astro-cid-b5kgnn7o>Ctrl</kbd><kbd data-astro-cid-b5kgnn7o>K</kbd></kbd></button><dialog style="padding: 0" aria-label="Search" data-astro-cid-b5kgnn7o><div class="dialog-frame sl-flex" data-astro-cid-b5kgnn7o><button data-close-modal class="sl-flex md:sl-hidden" data-astro-cid-b5kgnn7o>Cancel</button><div class="search-container" data-astro-cid-b5kgnn7o><div id="starlight__search" data-astro-cid-b5kgnn7o></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/arc-v2-draft/_astro/Search.astro_astro_type_script_index_0_lang.X2HftCOz.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group" data-astro-cid-by6fddyj><div class="sl-flex social-icons" data-astro-cid-by6fddyj><a href="https://github.com/govtech-responsibleai/arc-v2-draft" rel="me" class="sl-flex" data-astro-cid-n2mnl6yq><span class="sr-only" data-astro-cid-n2mnl6yq>GitHub</span><svg data-astro-cid-n2mnl6yq="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg></a><a href="https://www.linkedin.com/company/govtech-singapore" rel="me" class="sl-flex" data-astro-cid-n2mnl6yq><span class="sr-only" data-astro-cid-n2mnl6yq>LinkedIn</span><svg data-astro-cid-n2mnl6yq="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M20.47 2H3.53a1.45 1.45 0 0 0-1.47 1.43v17.14A1.45 1.45 0 0 0 3.53 22h16.94a1.45 1.45 0 0 0 1.47-1.43V3.43A1.45 1.45 0 0 0 20.47 2ZM8.09 18.74h-3v-9h3v9ZM6.59 8.48a1.56 1.56 0 0 1 0-3.12 1.57 1.57 0 1 1 0 3.12Zm12.32 10.26h-3v-4.83c0-1.21-.43-2-1.52-2A1.65 1.65 0 0 0 12.85 13a2 2 0 0 0-.1.73v5h-3v-9h3V11a3 3 0 0 1 2.71-1.5c2 0 3.45 1.29 3.45 4.06v5.18Z"/></svg></a><a href="https://x.com/GovTechSG" rel="me" class="sl-flex" data-astro-cid-n2mnl6yq><span class="sr-only" data-astro-cid-n2mnl6yq>X</span><svg data-astro-cid-n2mnl6yq="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M 18.242188 2.25 L 21.554688 2.25 L 14.324219 10.507812 L 22.828125 21.75 L 16.171875 21.75 L 10.953125 14.933594 L 4.992188 21.75 L 1.679688 21.75 L 9.40625 12.914062 L 1.257812 2.25 L 8.082031 2.25 L 12.792969 8.480469 Z M 17.082031 19.773438 L 18.914062 19.773438 L 7.082031 4.125 L 5.113281 4.125 Z M 17.082031 19.773438 "/></svg></a></div><starlight-theme-select data-astro-cid-smhvfpqh="true"><label style="--sl-select-width: 6.25em" data-astro-cid-2z5xp7gb><span class="sr-only" data-astro-cid-2z5xp7gb>Select theme</span><span class="icon label-icon" data-astro-cid-2z5xp7gb><svg class="sl-theme-icon-dark" data-astro-cid-smhvfpqh="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg class="sl-theme-icon-light" data-astro-cid-smhvfpqh="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg class="sl-theme-icon-auto" data-astro-cid-smhvfpqh="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></span><select autocomplete="off" data-astro-cid-2z5xp7gb><option value="dark" data-astro-cid-2z5xp7gb>Dark</option><option value="light" data-astro-cid-2z5xp7gb>Light</option><option value="auto" selected data-astro-cid-2z5xp7gb>Auto</option></select><svg class="icon caret" data-astro-cid-2z5xp7gb="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>(() => {
+		const theme = (typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme'));
+		if (theme) document.querySelectorAll('starlight-theme-select select').forEach((s) => { s.value = theme; });
+	})();</script><script type="module">var e=`starlight-theme`,t=e=>e===`auto`||e===`dark`||e===`light`?e:`auto`,n=()=>t(typeof localStorage<`u`&&localStorage.getItem(e));function r(t){typeof localStorage<`u`&&localStorage.setItem(e,t===`light`||t===`dark`?t:``)}var i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(e){document.querySelectorAll(`starlight-theme-select select`).forEach(t=>{t.value=e}),document.documentElement.dataset.theme=e===`auto`?i():e,r(e)}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{n()===`auto`&&a(`auto`)});var o=class extends HTMLElement{constructor(){super(),a(n()),this.querySelector(`select`)?.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&a(t(e.currentTarget.value))})}};customElements.define(`starlight-theme-select`,o);</script><script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script></div></div></header><nav class="sidebar print:hidden" aria-label="Main" data-astro-cid-yntsjkba><button popovertarget="starlight__sidebar" class="sl-menu-button sl-flex md:sl-hidden print:hidden" data-astro-cid-r2osgdlg><svg class="open-menu" data-astro-cid-r2osgdlg="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg class="close-menu" data-astro-cid-r2osgdlg="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg><span class="sr-only" data-astro-cid-r2osgdlg>Menu</span></button><script type="module">var e=class extends HTMLElement{constructor(){super();let e=matchMedia(`(min-width: 50em)`),t=()=>{this.popover=e.matches?null:`auto`};t(),e.addEventListener(`change`,()=>t()),this.addEventListener(`toggle`,({newState:e})=>this.trapFocus(e===`open`))}trapFocus(e){document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}};customElements.define(`sl-sidebar-pane`,e);</script><sl-sidebar-pane popover id="starlight__sidebar" class="sidebar-pane" data-astro-cid-yntsjkba="true"><div class="sidebar-content sl-flex" data-astro-cid-yntsjkba><sl-sidebar-state-persist data-hash="1fe3280" data-astro-cid-ipdry5cl="true"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level" data-astro-cid-rmhv4bp6><li data-astro-cid-rmhv4bp6><details open data-astro-cid-rmhv4bp6><summary data-astro-cid-rmhv4bp6><span class="group-label" data-astro-cid-rmhv4bp6><span class="large" data-astro-cid-rmhv4bp6>Framework</span></span><svg class="caret" data-astro-cid-rmhv4bp6="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;" data-astro-cid-hkc32dio><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul data-astro-cid-rmhv4bp6><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/in-five-minutes/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>ARC in five minutes</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/introduction/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Introduction</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/elements/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Elements</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/risks/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Risks</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/capability-combinations/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Capability combinations</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/controls/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Controls</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/glossary/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Glossary</span></a></li></ul></details></li><li data-astro-cid-rmhv4bp6><details open data-astro-cid-rmhv4bp6><summary data-astro-cid-rmhv4bp6><span class="group-label" data-astro-cid-rmhv4bp6><span class="large" data-astro-cid-rmhv4bp6>Use ARC</span></span><svg class="caret" data-astro-cid-rmhv4bp6="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;" data-astro-cid-hkc32dio><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul data-astro-cid-rmhv4bp6><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/explorer/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>What applies to my system?</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/implementation/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Implementing ARC</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/implementation/for-governance-teams/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>For governance teams</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/implementation/for-ai-developers/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>For AI developers</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/implementation/examples/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Worked examples</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/implementation/assessment-template/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Assessment template</span></a></li></ul></details></li><li data-astro-cid-rmhv4bp6><details open data-astro-cid-rmhv4bp6><summary data-astro-cid-rmhv4bp6><span class="group-label" data-astro-cid-rmhv4bp6><span class="large" data-astro-cid-rmhv4bp6>Register</span></span><svg class="caret" data-astro-cid-rmhv4bp6="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;" data-astro-cid-hkc32dio><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul data-astro-cid-rmhv4bp6><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Overview</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/risk-register/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>All risks</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/controls/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>All controls</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/elements/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>All elements</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/register-full-text/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Full text</span></a></li><li data-astro-cid-rmhv4bp6><details data-astro-cid-rmhv4bp6><summary data-astro-cid-rmhv4bp6><span class="group-label" data-astro-cid-rmhv4bp6><span class="large" data-astro-cid-rmhv4bp6>Crosswalks</span></span><svg class="caret" data-astro-cid-rmhv4bp6="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;" data-astro-cid-hkc32dio><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul data-astro-cid-rmhv4bp6><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/crosswalks/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Overview</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/crosswalks/owasp-asi/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>OWASP Top 10 for Agentic Apps</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/crosswalks/owasp-threats/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>OWASP agentic threats</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/crosswalks/csa/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>CSA addendum</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/crosswalks/imda/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>IMDA framework</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/crosswalks/mitre-atlas/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>MITRE ATLAS</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/crosswalks/five-eyes/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Five Eyes guidance</span></a></li></ul></details></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/data/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Data</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/keeping-current/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Keeping it current</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/changelog/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Changelog</span></a></li></ul></details></li><li data-astro-cid-rmhv4bp6><details open data-astro-cid-rmhv4bp6><summary data-astro-cid-rmhv4bp6><span class="group-label" data-astro-cid-rmhv4bp6><span class="large" data-astro-cid-rmhv4bp6>About</span></span><svg class="caret" data-astro-cid-rmhv4bp6="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;" data-astro-cid-hkc32dio><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul data-astro-cid-rmhv4bp6><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/about/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>About ARC</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/resources/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Resources</span></a></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex" data-astro-cid-p4azlveh><div class="social-icons" data-astro-cid-p4azlveh><a href="https://github.com/govtech-responsibleai/arc-v2-draft" rel="me" class="sl-flex" data-astro-cid-n2mnl6yq><span class="sr-only" data-astro-cid-n2mnl6yq>GitHub</span><svg data-astro-cid-n2mnl6yq="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg></a><a href="https://www.linkedin.com/company/govtech-singapore" rel="me" class="sl-flex" data-astro-cid-n2mnl6yq><span class="sr-only" data-astro-cid-n2mnl6yq>LinkedIn</span><svg data-astro-cid-n2mnl6yq="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M20.47 2H3.53a1.45 1.45 0 0 0-1.47 1.43v17.14A1.45 1.45 0 0 0 3.53 22h16.94a1.45 1.45 0 0 0 1.47-1.43V3.43A1.45 1.45 0 0 0 20.47 2ZM8.09 18.74h-3v-9h3v9ZM6.59 8.48a1.56 1.56 0 0 1 0-3.12 1.57 1.57 0 1 1 0 3.12Zm12.32 10.26h-3v-4.83c0-1.21-.43-2-1.52-2A1.65 1.65 0 0 0 12.85 13a2 2 0 0 0-.1.73v5h-3v-9h3V11a3 3 0 0 1 2.71-1.5c2 0 3.45 1.29 3.45 4.06v5.18Z"/></svg></a><a href="https://x.com/GovTechSG" rel="me" class="sl-flex" data-astro-cid-n2mnl6yq><span class="sr-only" data-astro-cid-n2mnl6yq>X</span><svg data-astro-cid-n2mnl6yq="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M 18.242188 2.25 L 21.554688 2.25 L 14.324219 10.507812 L 22.828125 21.75 L 16.171875 21.75 L 10.953125 14.933594 L 4.992188 21.75 L 1.679688 21.75 L 9.40625 12.914062 L 1.257812 2.25 L 8.082031 2.25 L 12.792969 8.480469 Z M 17.082031 19.773438 L 18.914062 19.773438 L 7.082031 4.125 L 5.113281 4.125 Z M 17.082031 19.773438 "/></svg></a></div><starlight-theme-select data-astro-cid-smhvfpqh="true"><label style="--sl-select-width: 6.25em" data-astro-cid-2z5xp7gb><span class="sr-only" data-astro-cid-2z5xp7gb>Select theme</span><span class="icon label-icon" data-astro-cid-2z5xp7gb><svg class="sl-theme-icon-dark" data-astro-cid-smhvfpqh="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg class="sl-theme-icon-light" data-astro-cid-smhvfpqh="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg class="sl-theme-icon-auto" data-astro-cid-smhvfpqh="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></span><select autocomplete="off" data-astro-cid-2z5xp7gb><option value="dark" data-astro-cid-2z5xp7gb>Dark</option><option value="light" data-astro-cid-2z5xp7gb>Light</option><option value="auto" selected data-astro-cid-2z5xp7gb>Auto</option></select><svg class="icon caret" data-astro-cid-2z5xp7gb="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>(() => {
+		const theme = (typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme'));
+		if (theme) document.querySelectorAll('starlight-theme-select select').forEach((s) => { s.value = theme; });
+	})();</script></div></div></div></sl-sidebar-pane></nav><div class="main-frame" data-astro-cid-yntsjkba><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex" data-astro-cid-lrzkfocr><aside class="right-sidebar-container print:hidden" data-astro-cid-lrzkfocr><div class="right-sidebar" data-astro-cid-lrzkfocr><div class="lg:sl-hidden" data-astro-cid-qok35upx><mobile-starlight-toc data-min-h="2" data-max-h="3" data-astro-cid-66cqc7ze="true"><nav aria-labelledby="starlight__on-this-page--mobile" data-astro-cid-66cqc7ze><details id="starlight__mobile-toc" data-astro-cid-66cqc7ze><summary id="starlight__on-this-page--mobile" class="sl-flex" data-astro-cid-66cqc7ze><span class="toggle sl-flex" data-astro-cid-66cqc7ze>On this page<svg class="caret" data-astro-cid-66cqc7ze="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;" data-astro-cid-hkc32dio><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current" data-astro-cid-66cqc7ze></span></summary><div class="dropdown" data-astro-cid-66cqc7ze><ul class="isMobile" style="--depth: 0;" data-astro-cid-jugkfwgx><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#_top" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Overview</span></a></li><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#step-1-identify-capabilities" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Step 1: Identify Capabilities</span></a></li><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#step-2-evaluate-risks" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Step 2: Evaluate Risks</span></a></li><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#step-3-implement-controls" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Step 3: Implement Controls</span></a></li><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#step-4-assess-residual-risks" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Step 4: Assess Residual Risks</span></a></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/arc-v2-draft/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.C3fM4Kra.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block" data-astro-cid-qok35upx><div class="sl-container" data-astro-cid-qok35upx><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">On this page</h2><ul style="--depth: 0;" data-astro-cid-jugkfwgx><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#_top" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Overview</span></a></li><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#step-1-identify-capabilities" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Step 1: Identify Capabilities</span></a></li><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#step-2-evaluate-risks" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Step 2: Evaluate Risks</span></a></li><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#step-3-implement-controls" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Step 3: Implement Controls</span></a></li><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#step-4-assess-residual-risks" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Step 4: Assess Residual Risks</span></a></li></ul></nav></starlight-toc><script type="module" src="/arc-v2-draft/_astro/TableOfContents.astro_astro_type_script_index_0_lang.BpJaGz7G.js"></script></div></div></div></aside><div class="main-pane" data-astro-cid-lrzkfocr><main data-pagefind-body lang="en" dir="ltr" data-astro-cid-g5ptsecz><div class="sl-banner" data-pagefind-ignore data-astro-cid-ofbg3qve><strong>Draft for review.</strong> ARC 2.0, draft 1 (23 November 2026). This is not the published framework, which is <a href="https://govtech-responsibleai.github.io/agentic-risk-capability-framework/">version 1.3.0</a>. <a href="https://github.com/govtech-responsibleai/arc-v2-draft#how-to-comment">How to comment</a></div><div class="content-panel" data-astro-cid-a7po4psb><div class="sl-container" data-astro-cid-a7po4psb><h1 id="_top" data-astro-cid-bebwqqxs>Example 1: Agentic Fact Checker</h1></div></div><div class="content-panel" data-astro-cid-a7po4psb><div class="sl-container" data-astro-cid-a7po4psb><div class="sl-markdown-content"><p>This worked example applies the <a href="/arc-v2-draft/implementation/for-ai-developers/">four steps for AI developers</a> to one system.</p>
+<p>Fact-checking is a time-consuming process requiring deep analysis of claims, evidence, and their sufficiency. Our colleagues in the AI Practice recently developed an agentic fact-checking system (read their <a href="https://playbooks.aip.gov.sg/agentic-ai-primer/09_applications_for_singapore_govt/">Agentic AI Primer</a> for details), using a complex multi-agent architecture to validate the veracity of any claim.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="step-1-identify-capabilities">Step 1: Identify Capabilities</h2><a class="sl-anchor-link" href="#step-1-identify-capabilities"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Step 1: Identify Capabilities”</span></a></div>
+<img src="../../../assets/agentic-fact-checker.png" alt="Architecture for Agentic Fact Checker" style="width: min(750px, 60%); display: block; margin: 0 auto;">
+<font style="font-style: italic; text-align: center;">Figure 1: Architecture for the Agentic Fact Checker (taken from the Agentic AI Primer)</font>
+<p>The Agentic Fact Checker system comprises six distinct agents:</p>
+<table>
+<thead>
+<tr>
+<th>Agent Type</th>
+<th>Agent Name</th>
+<th>Task</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Core Orchestration</td>
+<td>Planner</td>
+<td>Coordinates overall fact-checking workflow and task distribution</td>
+</tr>
+<tr>
+<td>Core Orchestration</td>
+<td>Answer Decomposer</td>
+<td>Breaks down complex statements into verifiable claims</td>
+</tr>
+<tr>
+<td>Verification Agents</td>
+<td>Check-worthy Assessor</td>
+<td>Evaluates which claims require fact-checking</td>
+</tr>
+<tr>
+<td>Verification Agents</td>
+<td>Evidence Assessor</td>
+<td>Synthesises information from multiple sources to make factuality determinations</td>
+</tr>
+<tr>
+<td>Information Retrieval Agents</td>
+<td>Web Searcher</td>
+<td>Accesses external web sources via search APIs</td>
+</tr>
+<tr>
+<td>Information Retrieval Agents</td>
+<td>Internal KB Searcher</td>
+<td>Queries internal knowledge base for relevant information</td>
+</tr>
+</tbody>
+</table>
+<p>Based on the capability taxonomy, this system demonstrates:</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Capability</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cognitive</td>
+<td>CAP-01: Planning and Goal Management</td>
+<td>The Planner coordinates the workflow and determines whether systematic decomposition is needed.</td>
+</tr>
+<tr>
+<td>Cognitive</td>
+<td>CAP-02: Agent Delegation</td>
+<td>The Planner assigns subtasks to specialized agents (decomposer, assessors, searchers) and coordinates their activities.</td>
+</tr>
+<tr>
+<td>Cognitive</td>
+<td>CAP-03: Tool Use</td>
+<td>The Evidence Assessor evaluates and selects between web search and internal knowledge base tools.</td>
+</tr>
+<tr>
+<td>Interaction</td>
+<td>CAP-04: Multimodal Understanding and Generation</td>
+<td>All agents process text statements; Evidence Assessor generates factuality assessments in natural language.</td>
+</tr>
+<tr>
+<td>Interaction</td>
+<td>CAP-07: Internet and Search Access</td>
+<td>The Web Searcher retrieves up-to-date information from external web sources via search APIs.</td>
+</tr>
+<tr>
+<td>Operational</td>
+<td>CAP-11: File and Data Management</td>
+<td>The Internal KB Searcher queries and accesses internal knowledge bases.</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="step-2-evaluate-risks">Step 2: Evaluate Risks</h2><a class="sl-anchor-link" href="#step-2-evaluate-risks"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Step 2: Evaluate Risks”</span></a></div>
+<p>We identify risks from baseline components and capabilities, assessing likelihood and impact given the fact-checking context. Assuming organisational relevance threshold requires both impact ≥3 AND likelihood ≥3, we identify the following priority risks:</p>
+<p><strong>Priority Risks (Impact ≥3, Likelihood ≥3):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Risk ID</th>
+<th>Element</th>
+<th>Risk Statement</th>
+<th>Assessment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RISK-002</td>
+<td>CMP-01 (LLM)</td>
+<td>Insufficient alignment of LLM behaviour</td>
+<td><strong>[Impact: 4, Likelihood: 4]</strong> LLM misalignment could cause it to ignore safety constraints or misinterpret fact-checking instructions, undermining verification accuracy.</td>
+</tr>
+<tr>
+<td>RISK-007</td>
+<td>CMP-03 (Tools)</td>
+<td>Lack of input sanitisation</td>
+<td><strong>[Impact: 5, Likelihood: 4]</strong> Critical given web search tools. Unsanitized web content from malicious sites could inject prompts to manipulate verification results.</td>
+</tr>
+<tr>
+<td>RISK-028</td>
+<td>CAP-04 (Multimodal Understanding)</td>
+<td>Generation of non-factual or hallucinated content</td>
+<td><strong>[Impact: 5, Likelihood: 4]</strong> Hallucinated "facts" directly undermine the system's core purpose of verifying truthfulness.</td>
+</tr>
+<tr>
+<td>RISK-034</td>
+<td>CAP-07 (Internet Access)</td>
+<td>Prompt injection via malicious websites</td>
+<td><strong>[Impact: 5, Likelihood: 4]</strong> Critical vulnerability given reliance on web sources. Adversarial sites could embed instructions to override verification logic.</td>
+</tr>
+<tr>
+<td>RISK-035</td>
+<td>CAP-07 (Internet Access)</td>
+<td>Unreliable information or websites</td>
+<td><strong>[Impact: 5, Likelihood: 4]</strong> Core risk—retrieving and trusting unreliable sources undermines verification accuracy and could propagate misinformation.</td>
+</tr>
+<tr>
+<td>RISK-044</td>
+<td>CAP-11 (File &amp; Data Management)</td>
+<td>Prompt injection via malicious files or data</td>
+<td><strong>[Impact: 4, Likelihood: 3]</strong> If internal knowledge base contains user-contributed content, malicious data could inject prompts affecting all verification tasks.</td>
+</tr>
+<tr>
+<td>RISK-047</td>
+<td>Lethal trifecta (combination rule)</td>
+<td>Data exfiltration through combined access to untrusted content, sensitive data, and an outbound channel</td>
+<td><strong>[Impact: 5, Likelihood: 3]</strong> Applies because the system both browses the web and reads the internal knowledge base: an injected instruction on a web page could direct the agent to send internal content out through a search query or URL.</td>
+</tr>
+</tbody>
+</table>
+<p><em>(Lower-priority risks documented but not shown here for brevity)</em></p>
+<p><strong>How the capabilities are used.</strong> Internet and Search Access is read-only by definition. File and Data Management is used at <em>read</em>, on the organisation's own knowledge base. The system keeps nothing between sessions and connects to no outside tool servers or agents, so neither conditional component (Memory, Protocols) is present. Its profile is in <a href="https://github.com/govtech-responsibleai/arc-v2-draft/blob/main/examples/systems/fact-checker.yaml"><code dir="auto">examples/systems/fact-checker.yaml</code></a>.</p>
+<p><strong>Combination check.</strong> The lethal trifecta is <em>present</em>: Internet and Search Access supplies untrusted content and an outbound channel, and File and Data Management supplies sensitive data. RISK-047 therefore applies, and CTRL-0097 must be implemented (see RISK-047 below). Oversight within reach is <em>not present</em>: no capability lets the agents change what governs them. Agent Delegation is a reminder to list what each of the six agents can do; all of it is already declared.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="step-3-implement-controls">Step 3: Implement Controls</h2><a class="sl-anchor-link" href="#step-3-implement-controls"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Step 3: Implement Controls”</span></a></div>
+<!-- arc:example fact-checker risks=45 level0=28 lethal-trifecta=present oversight-within-reach=not-present -->
+<p>This system has 45 applicable risks: 22 baseline, 19 from single capabilities, and four from combinations (RISK-047, plus the multi-agent risks RISK-012, RISK-013 and RISK-051 that Agent Delegation brings in). RISK-041, unintended overwriting or deletion, is left out because the system only reads its knowledge base. Between them the 45 risks carry 28 Level 0 controls. All 28 are implemented as-is and recorded in the assessment; the table below shows the priority risks only — every Level 0 control of each, plus the Level 1 and 2 controls we selected:</p>
+<table>
+<thead>
+<tr>
+<th>Risk ID</th>
+<th>Selected Controls</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RISK-002</td>
+<td><strong>CTRL-0007</strong> (Level 0): Log all LLM inputs and outputs for regular review<br><strong>CTRL-0038</strong> (Level 0): Conduct safety verification before deployment and on a regular cadence<br><strong>CTRL-0005</strong> (Level 1): Conduct structured evaluation of multiple LLMs<br><strong>CTRL-0042</strong> (Level 1): Require explicit human confirmation before executing high-impact or irreversible tool actions</td>
+<td>• Log every prompt and completion with the claim ID; sample 5% weekly for review<br>• Run an adversarial test set of manipulated claims and injected sources before each model or prompt change<br>• Evaluated three candidate frontier models on fact-checking benchmarks; selected the one with the strongest instruction-following and refusal behaviour<br>• Require human review before publishing final verification verdicts</td>
+</tr>
+<tr>
+<td>RISK-007</td>
+<td><strong>CTRL-0015</strong> (Level 1): Treat all tool metadata and outputs as untrusted input</td>
+<td>• Validate all web search results against strict JSON schemas<br>• Sanitize tool outputs before incorporating into agent prompts<br>• Filter tool descriptions for embedded instructions</td>
+</tr>
+<tr>
+<td>RISK-028</td>
+<td><strong>CTRL-0048</strong> (Level 2): Implement methods to reduce hallucination rates<br><strong>CTRL-0049</strong> (Level 0): Implement UI/UX cues for hallucination risk<br><strong>CTRL-0050</strong> (Level 1): Enable users to verify answers against sources</td>
+<td>• Implement RAG using verified knowledge bases to ground responses<br>• Display disclaimers highlighting potential for inaccuracies<br>• Provide inline citations linking to source passages for verification</td>
+</tr>
+<tr>
+<td>RISK-034</td>
+<td><strong>CTRL-0060</strong> (Level 1): Implement escape filtering before incorporating web content<br><strong>CTRL-0061</strong> (Level 1): Use structured retrieval APIs rather than web scraping<br><strong>CTRL-0062</strong> (Level 0): Implement input guardrails to detect prompt injection</td>
+<td>• Sanitize all retrieved web content before adding to prompts<br>• Use Google Search API for structured results rather than raw HTML scraping<br>• Deploy prompt injection detector to scan web content</td>
+</tr>
+<tr>
+<td>RISK-035</td>
+<td><strong>CTRL-0063</strong> (Level 1): Prioritise search results from verified, high-quality domains</td>
+<td>• Configure search API to prioritise .gov, .edu, and established news sources<br>• Require cross-source validation for claims from unknown domains</td>
+</tr>
+<tr>
+<td>RISK-044</td>
+<td><strong>CTRL-0062</strong> (Level 0): Implement input guardrails to detect prompt injection<br><strong>CTRL-0083</strong> (Level 0): Disallow unknown or external files unless scanned<br><strong>CTRL-0097</strong> (Level 0): Do not give one agent untrusted content, sensitive data, and an unrestricted outbound channel at once (see RISK-047)</td>
+<td>• Validate all new data contributions to knowledge base before ingestion<br>• Scan uploaded files for embedded prompt injection attempts<br>• Maintain allowlist of approved data sources</td>
+</tr>
+<tr>
+<td>RISK-047</td>
+<td><strong>CTRL-0089</strong> (Level 0): Enforce default-deny network egress for agent runtimes<br><strong>CTRL-0097</strong> (Level 0): Do not give one agent untrusted content, sensitive data, and an unrestricted outbound channel at once<br><strong>CTRL-0090</strong> (Level 1): Enforce data-flow policies with a deterministic policy layer</td>
+<td>• Agent runtime may reach only the search API and the internal knowledge base; all other egress is blocked<br>• Search queries are generated by a component that never sees knowledge-base content, so retrieved internal text cannot be smuggled into an outbound query<br>• The combination is broken by splitting the agents: the Web Searcher has no access to the knowledge base and returns only structured fields (source, quotation, date), and the Internal KB Searcher cannot make web requests</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="step-4-assess-residual-risks">Step 4: Assess Residual Risks</h2><a class="sl-anchor-link" href="#step-4-assess-residual-risks"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Step 4: Assess Residual Risks”</span></a></div>
+<p>After implementing controls, key residual risks remain:</p>
+<table>
+<thead>
+<tr>
+<th>Risk ID</th>
+<th>Residual Risk Description</th>
+<th>Mitigation Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RISK-034</td>
+<td><strong>Sophisticated Prompt Injection</strong>: Advanced adversarial websites may craft novel injection attacks that bypass current guardrails and filters.</td>
+<td>• Monitor all API calls and agent outputs for anomalous patterns<br>• Regularly update prompt injection detectors with new attack patterns<br>• Establish incident response procedures for detected bypasses</td>
+</tr>
+<tr>
+<td>RISK-028</td>
+<td><strong>Cascading Hallucination</strong>: False information generated early in the verification workflow may propagate through subsequent agents, creating systematic verification bias.</td>
+<td>• Implement multi-agent cross-checking where independent agents verify claims<br>• Add user feedback mechanisms to flag incorrect verdicts<br>• Compare internal agent reasoning chains to detect inconsistencies</td>
+</tr>
+<tr>
+<td>RISK-035</td>
+<td><strong>Domain-Specific Source Assessment</strong>: System may struggle distinguishing authoritative from unreliable sources in highly specialized or emerging domains with limited established references.</td>
+<td>• Begin deployment with small-scale pilots in well-defined domains<br>• Validate verification outputs with subject matter experts<br>• Maintain domain-specific allowlists of trusted sources</td>
+</tr>
+</tbody>
+</table>
+<p>These residual risks and mitigation strategies will be reviewed quarterly and updated based on observed system behaviour and emerging threats.</p>
+</div><footer class="sl-flex" data-astro-cid-ddtxxk7k><div class="meta sl-flex" data-astro-cid-ddtxxk7k><a href="https://github.com/govtech-responsibleai/arc-v2-draft/edit/main/docs/implementation/examples/fact-checker.md" class="sl-flex print:hidden" data-astro-cid-qlekgd3o><svg data-astro-cid-qlekgd3o="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.2em;" data-astro-cid-hkc32dio><path d="M22 7.24a1 1 0 0 0-.29-.71l-4.24-4.24a1 1 0 0 0-1.1-.22 1 1 0 0 0-.32.22l-2.83 2.83L2.29 16.05a1 1 0 0 0-.29.71V21a1 1 0 0 0 1 1h4.24a1 1 0 0 0 .76-.29l10.87-10.93L21.71 8c.1-.1.17-.2.22-.33a1 1 0 0 0 0-.24v-.14l.07-.05ZM6.83 20H4v-2.83l9.93-9.93 2.83 2.83L6.83 20ZM18.17 8.66l-2.83-2.83 1.42-1.41 2.82 2.82-1.41 1.42Z"/></svg>Edit page</a></div><div class="pagination-links print:hidden" dir="ltr" data-astro-cid-b5raizh3></div></footer><p class="arc-feedback">Something wrong or unclear on this page? <a href="https://forms.gle/KoXecxDuPHf8izP2A">Tell the ARC team</a>.</p></div></div></main></div></div></div></div><footer class="arc-site-footer"><div class="arc-site-footer-inner"><a class="arc-govtech" href="https://www.tech.gov.sg/"><img class="arc-logo-light" src="/arc-v2-draft/_astro/govtech-logo.BSeeDsrB.png" width="138" height="48" alt="GovTech Singapore" loading="lazy" decoding="async"><img class="arc-logo-dark" src="/arc-v2-draft/_astro/govtech-logo-dark.iUWigleM.png" width="138" height="48" alt="GovTech Singapore" loading="lazy" decoding="async"></a><div class="arc-footer-text"><p>The ARC Framework is developed by the Responsible AI team at <a href="https://www.tech.gov.sg/">GovTech Singapore</a>, and released under the <a href="https://github.com/govtech-responsibleai/arc-v2-draft/blob/main/LICENSE">Apache 2.0 licence</a>.</p><ul class="arc-footer-links"><li><a href="/arc-v2-draft/about/">About ARC</a></li><li><a href="https://github.com/govtech-responsibleai/arc-v2-draft">GitHub</a></li><li><a href="https://blog.ai.gov.sg/">Our blog, ai@govtech</a></li><li><a href="https://playbooks.aip.gov.sg/responsibleai/">Responsible AI Playbook</a></li></ul></div></div></footer></body></html>

@@ -1,0 +1,61 @@
+{
+ "id": "CTRL-0072",
+ "type": "control",
+ "level": 1,
+ "statement": "Monitor runtime and memory consumption of agent-generated code",
+ "recommendations": "Agent-generated code may contain inefficient implementations, infinite loops, or memory leaks that degrade system performance or exhaust resources. Implement runtime monitoring that tracks execution time, memory consumption, CPU usage, and other resource metrics for all agent-generated code during execution. Configure alerts that trigger when code exceeds predefined resource thresholds, such as maximum execution time, memory limits, or CPU usage, enabling automatic termination of runaway processes.",
+ "enforcement": [
+  "infrastructure",
+  "harness"
+ ],
+ "owner": "platform",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The sandbox limits for execution time, memory and CPU, the alert rule attached to them, and records of terminated runs.",
+ "test": "Run agent-generated code containing an infinite loop and an unbounded memory allocation and confirm each is terminated at its limit and an alert is raised.",
+ "risks": [
+  {
+   "id": "RISK-039",
+   "statement": "Production or execution of poor or ineffective code"
+  },
+  {
+   "id": "RISK-040",
+   "statement": "Production or execution of vulnerable or malicious code"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+  "https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "3.1",
+    "title": "Ensure availability controls against disruption or failure"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.3",
+    "title": "Continuously monitor and test when deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP4",
+    "title": "Operating agents securely – Performance monitoring"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0072/"
+}

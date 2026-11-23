@@ -1,0 +1,77 @@
+{
+ "id": "CTRL-0069",
+ "type": "control",
+ "level": 0,
+ "statement": "Run agent-generated code only in isolated compute environments with network access blocked by default",
+ "recommendations": "Agent-generated code may contain vulnerabilities, bugs, or malicious logic that could compromise systems, leak data, exfiltrate information, or establish unauthorised network connections. Implement virtual isolation for all agent-generated code execution using containerised environments (e.g., Docker), virtual machines, or dedicated sandboxes that limit access to sensitive resources, networks, and data. Configure default-deny network policies that block all inbound and outbound network connections unless explicitly required and authorised for specific use cases. When network access is necessary, enforce allowlists restricting connections to known-safe endpoints such as internal APIs or approved external services.",
+ "enforcement": [
+  "infrastructure"
+ ],
+ "owner": "platform",
+ "phase": [
+  "design",
+  "build",
+  "deploy"
+ ],
+ "evidence": "The code-execution sandbox definition showing no host mounts, dropped privileges and a default-deny network policy listing any permitted endpoints.",
+ "test": "Have the agent run code that opens a connection to an external host and reads a host file path and confirm both fail inside the sandbox.",
+ "risks": [
+  {
+   "id": "RISK-039",
+   "statement": "Production or execution of poor or ineffective code"
+  },
+  {
+   "id": "RISK-040",
+   "statement": "Production or execution of vulnerable or malicious code"
+  },
+  {
+   "id": "RISK-049",
+   "statement": "Escape from evaluation or sandbox containment onto live systems"
+  },
+  {
+   "id": "RISK-056",
+   "statement": "Actions beyond the agent's tools through code execution and reachable credentials"
+  }
+ ],
+ "references": [
+  "https://www.ncsc.gov.uk/blogs/managing-the-cyber-risk-of-agentic-ai",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.9",
+    "title": "Segregate environments and segment networks"
+   },
+   {
+    "id": "2.8",
+    "title": "Apply least privilege; secure-by-default configurations"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI05",
+    "title": "Unexpected Code Execution (RCE)"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DP6",
+    "title": "Deploying agents securely – Isolation"
+   },
+   {
+    "id": "AA1",
+    "title": "Appendix A, prerequisites – Design"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0069/"
+}

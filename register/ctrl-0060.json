@@ -1,0 +1,59 @@
+{
+ "id": "CTRL-0060",
+ "type": "control",
+ "level": 1,
+ "statement": "Implement escape filtering before incorporating web content into prompts",
+ "recommendations": "Malicious websites may embed hidden instructions or manipulative prompts in their content designed to hijack agent behaviour when retrieved and processed. Implement escape filtering that sanitises web content before incorporating it into agent prompts, removing or neutralising potential injection attacks such as hidden instructions, delimiter manipulation attempts, or prompt override commands.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build"
+ ],
+ "evidence": "The web-content sanitiser in the retrieval code and its unit tests covering hidden text, delimiter strings and override phrases.",
+ "test": "Retrieve a test page containing hidden-text instructions and the prompt's own delimiter tokens and confirm both are stripped or escaped in the logged prompt.",
+ "risks": [
+  {
+   "id": "RISK-034",
+   "statement": "Prompt injection via malicious websites"
+  },
+  {
+   "id": "RISK-047",
+   "statement": "Data exfiltration through combined access to untrusted content, sensitive data, and an outbound channel"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+  "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.1",
+    "title": "Validate inputs to models and agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV3",
+    "title": "Developing secure agents – Input management"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0060/"
+}

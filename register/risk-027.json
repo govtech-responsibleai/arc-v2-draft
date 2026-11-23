@@ -1,0 +1,56 @@
+{
+ "id": "RISK-027",
+ "type": "risk",
+ "statement": "Regurgitating personally identifiable information",
+ "description": "This risk arises when an agent reproduces personally identifiable information in its generated outputs, whether drawn from training data, memory, or prior interactions. As a result, the system may violate privacy obligations, expose individuals to harm, or breach data protection requirements.",
+ "elements": [
+  {
+   "id": "CAP-04",
+   "name": "Multimodal Understanding and Generation"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0047",
+   "level": 0,
+   "statement": "Implement output guardrails to detect and redact personally identifiable information"
+  }
+ ],
+ "sources": [
+  "https://www.edpb.europa.eu/system/files/2025-04/ai-privacy-risks-and-mitigations-in-llms.pdf"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI06",
+    "title": "Memory and Context Poisoning"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T1",
+    "title": "Memory poisoning"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-027/"
+}

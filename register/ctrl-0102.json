@@ -1,0 +1,65 @@
+{
+ "id": "CTRL-0102",
+ "type": "control",
+ "level": 1,
+ "statement": "Issue agents short-lived, task-scoped credentials, keep an inventory of them, and revoke them when an agent or integration is retired",
+ "recommendations": "Long-lived tokens held by agents, and by the vendors and platforms that act for them, are a standing target. Issue credentials per agent and per task with the shortest lifetime the work allows, prefer workload identity or brokered tokens to stored secrets, and keep them out of plain files, shell history, and agent memory. Keep an inventory of every credential and third-party grant that an agent holds, with an owner for each. Review the inventory on a fixed schedule, and revoke credentials when an agent is decommissioned, an integration is removed, a vendor is offboarded, or the person who authorised a grant leaves. Treat a compromise at an agent vendor as a compromise of every token that vendor held.",
+ "enforcement": [
+  "infrastructure",
+  "organisation"
+ ],
+ "owner": "security",
+ "phase": [
+  "design",
+  "operate",
+  "retire"
+ ],
+ "evidence": "The inventory of agent credentials and third-party grants, with owner, scope, expiry, and last review date, and the revocation records for retired agents and integrations.",
+ "test": "Pick a retired agent or a removed integration and confirm that each credential it held is rejected.",
+ "risks": [
+  {
+   "id": "RISK-060",
+   "statement": "Agent credentials that are over-broad, long-lived, or outlive their use"
+  }
+ ],
+ "references": [
+  "https://cloud.google.com/blog/topics/threat-intelligence/data-theft-salesforce-instances-via-salesloft-drift",
+  "https://composio.dev/blog/composio-may-2026-security-incident"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.6",
+    "title": "Implement authentication, authorisation and access controls"
+   },
+   {
+    "id": "2.4",
+    "title": "Identify, track and protect AI system assets"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS3",
+    "title": "Designing secure agents – Identity management"
+   },
+   {
+    "id": "OP5",
+    "title": "Operating agents securely – Privileges and authentication"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0102/"
+}

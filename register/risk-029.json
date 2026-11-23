@@ -1,0 +1,40 @@
+{
+ "id": "RISK-029",
+ "type": "risk",
+ "statement": "Generation of copyrighted content",
+ "description": "This risk arises when an agent generates content that reproduces or closely resembles copyrighted material without appropriate rights or attribution. As a result, the system may infringe intellectual property laws, expose the organisation to legal liability, or violate licensing and usage terms.",
+ "elements": [
+  {
+   "id": "CAP-04",
+   "name": "Multimodal Understanding and Generation"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Safety"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-05",
+   "name": "Illegal and CBRNE activities",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0051",
+   "level": 1,
+   "statement": "Implement input guardrails to detect and decline requests to generate copyrighted content"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2407.07087"
+ ],
+ "crosswalks": {
+  "owasp_asi": [],
+  "owasp_agentic_threats": [],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-029/"
+}

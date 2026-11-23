@@ -1,0 +1,67 @@
+{
+ "id": "RISK-008",
+ "type": "risk",
+ "statement": "Vague or underspecified instructions",
+ "description": "This risk arises when instructions provided to an LLM are ambiguous, incomplete, or poorly scoped, leading the model to make unintended assumptions when interpreting tasks or constraints. As a result, the LLM may behave unpredictably, bypass safeguards, or take actions that introduce safety or security risks.",
+ "elements": [
+  {
+   "id": "CMP-02",
+   "name": "Instructions"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0016",
+   "level": 0,
+   "statement": "Define clearly the agent's role, scope, and non-goals in the system prompt"
+  },
+  {
+   "id": "CTRL-0017",
+   "level": 1,
+   "statement": "Define clear success criteria for the agent's tasks"
+  },
+  {
+   "id": "CTRL-0018",
+   "level": 2,
+   "statement": "Define default behaviour when the agent encounters ambiguous situations"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2502.13295",
+  "https://arxiv.org/abs/2505.13360v1"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T6",
+    "title": "Intent breaking and goal manipulation"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-008/"
+}

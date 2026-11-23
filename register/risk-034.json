@@ -1,0 +1,85 @@
+{
+ "id": "RISK-034",
+ "type": "risk",
+ "statement": "Prompt injection via malicious websites",
+ "description": "This risk arises when an agent retrieves or processes content from malicious or untrusted websites that are designed to inject instructions or manipulative prompts into the system. As a result, the agent may follow unintended commands, override intended constraints, or take actions that compromise system behaviour or integrity.",
+ "elements": [
+  {
+   "id": "CAP-07",
+   "name": "Internet and Search Access"
+  }
+ ],
+ "failure_mode": "External Manipulation",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0062",
+   "level": 0,
+   "statement": "Implement input guardrails to detect prompt injection and adversarial attacks"
+  },
+  {
+   "id": "CTRL-0060",
+   "level": 1,
+   "statement": "Implement escape filtering before incorporating web content into prompts"
+  },
+  {
+   "id": "CTRL-0061",
+   "level": 1,
+   "statement": "Use structured retrieval APIs for web searches rather than web scraping"
+  },
+  {
+   "id": "CTRL-0090",
+   "level": 1,
+   "statement": "Enforce data-flow and capability policies at runtime with a deterministic policy layer that separates untrusted content from privileged actions"
+  }
+ ],
+ "sources": [
+  "https://unit42.paloaltonetworks.com/agentic-ai-threats/"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T6",
+    "title": "Intent breaking and goal manipulation"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0051.001",
+    "title": "LLM Prompt Injection: Indirect"
+   },
+   {
+    "id": "AML.T0078",
+    "title": "Drive-by Compromise"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-034/"
+}

@@ -1,0 +1,60 @@
+{
+ "id": "CTRL-0103",
+ "type": "control",
+ "level": 1,
+ "statement": "Pin the model version, re-run evaluations before any model change, and keep a tested fallback",
+ "recommendations": "A hosted model can change or disappear without any change on your side. Call models by a dated or versioned identifier, not by an alias that moves. Record the provider's retirement dates and subscribe to its status and change notices. Before adopting a new model or version, re-run the evaluations and safety verification that the system was approved on (see CTRL-0005 and CTRL-0038), paying attention to tool calling and instruction following, which change between versions. Monitor output quality in production so that a silent degradation is noticed. For systems that must stay available, keep a second model or a manual procedure that has been tested, and decide in advance what the agent is allowed to do while it is running on the fallback.",
+ "enforcement": [
+  "harness",
+  "organisation"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The configuration that names the pinned model version, the evaluation results recorded against that version, and the record of the last fallback test.",
+ "test": "Point the system at the fallback model or procedure and confirm that it completes a standard task set within the limits agreed for fallback operation.",
+ "risks": [
+  {
+   "id": "RISK-061",
+   "statement": "Dependence on a model provider"
+  }
+ ],
+ "references": [
+  "https://www.anthropic.com/engineering/a-postmortem-of-three-recent-issues",
+  "https://support.zendesk.com/hc/en-us/articles/10932821917082-Service-Incident-June-19-2026-AI-Agents-OpenAI-service-delays-and-error-issues"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "3.1",
+    "title": "Ensure availability controls against disruption or failure"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.3",
+    "title": "Continuously monitor and test when deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI08",
+    "title": "Cascading Failures"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV5",
+    "title": "Developing secure agents – Resilience"
+   },
+   {
+    "id": "OP4",
+    "title": "Operating agents securely – Performance monitoring"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0103/"
+}

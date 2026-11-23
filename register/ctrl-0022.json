@@ -1,0 +1,61 @@
+{
+ "id": "CTRL-0022",
+ "type": "control",
+ "level": 1,
+ "statement": "Implement content filtering on writes to persistent memory to detect and block known unsafe content patterns",
+ "recommendations": "Malicious actors may attempt to inject adversarial content into agent memory that bypasses category-based restrictions, such as jailbreak prompts, command injection templates, or social engineering content designed to manipulate future agent behaviour. Deploy content filtering mechanisms that scan all memory write operations for known unsafe patterns (e.g., jailbreak strings, tool invocation templates, prompt override attempts, phishing content) before persisting data. Implement filtering using prompt injection detectors (to detect jailbreak strings) or custom classifiers finetuned on specific risks (e.g. attempts to invoke tools maliciously).",
+ "enforcement": [
+  "model",
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The memory-write filter configuration naming the injection detector or classifier and its threshold, with the log of blocked writes.",
+ "test": "Attempt to store a known jailbreak string and a tool-invocation template in memory and confirm the filter blocks both before they persist.",
+ "risks": [
+  {
+   "id": "RISK-010",
+   "statement": "Poisoned memory"
+  }
+ ],
+ "references": [
+  "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+  "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.1",
+    "title": "Validate inputs to models and agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI06",
+    "title": "Memory and Context Poisoning"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV3",
+    "title": "Developing secure agents – Input management"
+   },
+   {
+    "id": "DP5",
+    "title": "Deploying agents securely – Guardrails and constraints"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0022/"
+}

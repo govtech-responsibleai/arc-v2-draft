@@ -1,0 +1,56 @@
+{
+ "id": "CTRL-0057",
+ "type": "control",
+ "level": 2,
+ "statement": "Require out-of-band confirmation when transaction risk signals are elevated",
+ "recommendations": "Transactions exhibiting elevated risk indicators may represent unauthorised or fraudulent activity requiring additional verification beyond standard confirmation. Implement out-of-band confirmation (e.g., SMS codes, email verification, authentication app approvals) when transactions exhibit risk signals such as unusual payees, amounts exceeding typical patterns, rapid transaction sequences, or first-time recipients.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The transaction controller's step-up rules listing the risk signals that trigger out-of-band confirmation and the channel used for each.",
+ "test": "Propose a payment to a first-time payee at an unusual amount and confirm it stays pending until a code sent to the user's registered device is entered.",
+ "risks": [
+  {
+   "id": "RISK-032",
+   "statement": "Unauthorised execution of business transactions"
+  }
+ ],
+ "references": [
+  "https://cheatsheetseries.owasp.org/cheatsheets/Transaction_Authorization_Cheat_Sheet.html",
+  "https://www.mas.gov.sg/-/media/MAS/Regulations-and-Financial-Stability/Regulatory-and-Supervisory-Framework/Risk-Management/TRM-Guidelines-18-January-2021.pdf",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.4",
+    "title": "Ensure adequate human oversight"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.2.2",
+    "title": "Design for meaningful human oversight"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI09",
+    "title": "Human-Agent Trust Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP3",
+    "title": "Operating agents securely – Human in the loop"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0057/"
+}

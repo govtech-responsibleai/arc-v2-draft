@@ -1,0 +1,18 @@
+{
+ "id": "DSN-02",
+ "type": "element",
+ "kind": "design",
+ "name": "Roles and Access Controls",
+ "category": null,
+ "description": "Roles and access controls define and enforce differentiated roles, permissions, and scopes of authority across agents and system components, specifying what actions each agent is allowed to perform and which resources it may access. This includes assigning functional roles to agents, configuring tool- and data-level permissions, scoping credentials or identities, and enforcing access policies that govern interactions with files, systems, services, or other agents.",
+ "risks": [
+  "RISK-015",
+  "RISK-016",
+  "RISK-049",
+  "RISK-054",
+  "RISK-060",
+  "RISK-065"
+ ],
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/dsn-02/"
+}

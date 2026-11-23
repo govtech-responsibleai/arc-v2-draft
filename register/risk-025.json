@@ -1,0 +1,41 @@
+{
+ "id": "RISK-025",
+ "type": "risk",
+ "statement": "Generation of unqualified advice in specialised domains",
+ "description": "This risk arises when an agent generates advice or guidance in specialised domains such as medical, financial, or legal contexts without appropriate expertise, validation, or safeguards. As a result, users may act on incorrect or inappropriate information, leading to potential harm or adverse outcomes.",
+ "elements": [
+  {
+   "id": "CAP-04",
+   "name": "Multimodal Understanding and Generation"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Safety"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0045",
+   "level": 1,
+   "statement": "Implement input guardrails to detect and decline requests for specialised domain advice"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2401.01301",
+  "https://genai.owasp.org/llmrisk/llm092025-misinformation/"
+ ],
+ "crosswalks": {
+  "owasp_asi": [],
+  "owasp_agentic_threats": [],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-025/"
+}

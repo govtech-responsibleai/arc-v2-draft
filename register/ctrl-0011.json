@@ -1,0 +1,71 @@
+{
+ "id": "CTRL-0011",
+ "type": "control",
+ "level": 0,
+ "statement": "Limit token scopes to the minimum privileges required and avoid broad or wildcard scopes",
+ "recommendations": "Overly broad token scopes enable compromised or malicious actors to access resources beyond what is necessary for legitimate operations, amplifying the impact of security breaches. Define granular, task-specific scopes for each MCP server integration and request only the minimum permissions required for the intended functionality (e.g., \"read:inventory\" rather than \"admin:*\"). Review and document the justification for each requested scope during integration, and reject MCP servers that require unnecessarily broad permissions or fail to support fine-grained scope definitions. Periodically audit active token scopes to identify and revoke excessive permissions that may have accumulated over time.",
+ "enforcement": [
+  "infrastructure",
+  "organisation"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The OAuth client configuration listing each scope requested per tool integration with its justification, containing no wildcard or administrator scope.",
+ "test": "Decode a token issued to the agent in production, confirm its scopes match the configured list, then call an out-of-scope operation and confirm refusal.",
+ "risks": [
+  {
+   "id": "RISK-005",
+   "statement": "Lack of proper role-based access control for tools"
+  },
+  {
+   "id": "RISK-060",
+   "statement": "Agent credentials that are over-broad, long-lived, or outlive their use"
+  }
+ ],
+ "references": [
+  "https://modelcontextprotocol.io/specification/draft/basic/security_best_practices"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.6",
+    "title": "Implement authentication, authorisation and access controls"
+   },
+   {
+    "id": "2.8",
+    "title": "Apply least privilege; secure-by-default configurations"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS3",
+    "title": "Designing secure agents – Identity management"
+   },
+   {
+    "id": "OP5",
+    "title": "Operating agents securely – Privileges and authentication"
+   },
+   {
+    "id": "AA1",
+    "title": "Appendix A, prerequisites – Design"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0011/"
+}

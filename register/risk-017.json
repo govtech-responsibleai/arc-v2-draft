@@ -1,0 +1,61 @@
+{
+ "id": "RISK-017",
+ "type": "risk",
+ "statement": "Delayed failure detection due to limited monitoring",
+ "description": "This risk arises when monitoring systems provide insufficient visibility into agent behaviour, system events, or execution outcomes. As a result, failures, anomalies, or unintended actions may go undetected for extended periods, increasing the impact and difficulty of remediation.",
+ "elements": [
+  {
+   "id": "DSN-03",
+   "name": "Monitoring and Traceability"
+  }
+ ],
+ "failure_mode": "Safeguard Failure",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0032",
+   "level": 0,
+   "statement": "Centralise observability data collection in a unified backend system"
+  },
+  {
+   "id": "CTRL-0033",
+   "level": 1,
+   "statement": "Standardise trace attributes for agent operations using consistent semantic conventions"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2401.13138"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI08",
+    "title": "Cascading Failures"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T8",
+    "title": "Repudiation and untraceability"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-017/"
+}

@@ -1,0 +1,52 @@
+{
+ "id": "CTRL-0046",
+ "type": "control",
+ "level": 1,
+ "statement": "Implement input guardrails to detect and decline requests for controversial content that violates organisational policies",
+ "recommendations": "Agents generating controversial or sensitive content such as political commentary or statements about competitors may create reputational damage, legal liability, or compliance violations for the organisation. Deploy input guardrails that detect requests for content on topics deemed controversial or sensitive according to organisational policies, such as political positions, religious commentary, competitive disparagement, or other restricted subjects. Define clear content policies that specify which topics or viewpoints the agent should avoid, and configure detection mechanisms to identify requests that would violate these boundaries. When controversial requests are detected, decline with messaging that explains the agent's content limitations whilst maintaining a respectful tone towards the user.",
+ "enforcement": [
+  "model",
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The organisation's restricted-topics policy and the guardrail configuration mapping each topic to a detection rule and refusal message.",
+ "test": "Ask for a political endorsement and a disparaging comparison with a named competitor and confirm both are declined courteously while neutral factual questions pass.",
+ "risks": [
+  {
+   "id": "RISK-026",
+   "statement": "Generation of controversial or sensitive content"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.1",
+    "title": "Validate inputs to models and agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [],
+  "fiveeyes_agentic": [
+   {
+    "id": "DP5",
+    "title": "Deploying agents securely – Guardrails and constraints"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0046/"
+}

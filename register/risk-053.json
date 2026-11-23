@@ -1,0 +1,91 @@
+{
+ "id": "RISK-053",
+ "type": "risk",
+ "statement": "Dependence on third-party agents as counterparties or delegates",
+ "description": "This risk arises when tasks are delegated to, or transactions conducted with, agents provided or operated by external parties — SaaS agents, partner agents reached through protocols such as A2A — whose instructions, tools, data handling, and updates are outside the organisation's control. Delegated work may be performed unsafely, data shared with the agent may be retained or reused, and behaviour can change without notice. As a result, the organisation carries the consequences of failures it cannot observe or govern directly.",
+ "elements": [
+  {
+   "id": "CMP-05",
+   "name": "Protocols"
+  },
+  {
+   "id": "CAP-02",
+   "name": "Agent Delegation"
+  }
+ ],
+ "failure_mode": "Tool or Resource Malfunction",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0024",
+   "level": 0,
+   "statement": "Define formal schemas for inter-agent messages and validate all messages against these schemas before processing"
+  },
+  {
+   "id": "CTRL-0040",
+   "level": 0,
+   "statement": "Limit the scope of agent actions through predefined thresholds and baselines"
+  },
+  {
+   "id": "CTRL-0025",
+   "level": 1,
+   "statement": "Ensure all inter-agent communications are encrypted in transit and prohibit plaintext channels"
+  },
+  {
+   "id": "CTRL-0026",
+   "level": 1,
+   "statement": "Require all agents to authenticate with verifiable, cryptographically signed identities before processing requests"
+  },
+  {
+   "id": "CTRL-0039",
+   "level": 1,
+   "statement": "Ensure each agent publishes standardised, machine-readable capability descriptors accessible to other agents"
+  },
+  {
+   "id": "CTRL-0095",
+   "level": 1,
+   "statement": "Apply due diligence and technical bounds to third-party agents before delegating to them or transacting with them"
+  }
+ ],
+ "sources": [
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf",
+  "https://www.linuxfoundation.org/press/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year",
+  "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI04",
+    "title": "Agentic Supply Chain Vulnerabilities"
+   },
+   {
+    "id": "ASI07",
+    "title": "Insecure Inter-Agent Communication"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T13",
+    "title": "Rogue agents in multi-agent systems"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-053/"
+}

@@ -1,0 +1,70 @@
+{
+ "id": "CTRL-0025",
+ "type": "control",
+ "level": 1,
+ "statement": "Ensure all inter-agent communications are encrypted in transit and prohibit plaintext channels",
+ "recommendations": "Unencrypted inter-agent communications expose sensitive data, credentials, and operational context to network-based attackers through eavesdropping or man-in-the-middle attacks. Ensure all agent-to-agent network communications use transport-layer encryption (minimum TLS 1.2, preferably TLS 1.3), including internal traffic within trusted network boundaries, as internal networks are increasingly targeted by sophisticated attackers. For protocol-based frameworks (e.g., A2A Protocol), verify that TLS is enabled by default; for application frameworks (e.g., LangGraph, CrewAI), configure deployment infrastructure to enforce HTTPS endpoints for all remote agent APIs. Configure agents to reject plaintext connections and verify certificates to prevent downgrade attacks or rogue agent impersonation, and regularly audit network traffic to detect agents attempting unencrypted communication.",
+ "enforcement": [
+  "infrastructure"
+ ],
+ "owner": "platform",
+ "phase": [
+  "build",
+  "deploy"
+ ],
+ "evidence": "The service mesh or load balancer configuration requiring TLS 1.2 or higher on every agent endpoint, with plaintext listeners disabled.",
+ "test": "Attempt a plaintext HTTP connection and a TLS 1.0 handshake to each agent endpoint and confirm both are refused.",
+ "risks": [
+  {
+   "id": "RISK-012",
+   "statement": "Cascading errors in multi-agent architectures"
+  },
+  {
+   "id": "RISK-022",
+   "statement": "Malicious or manipulative use of delegated agents"
+  },
+  {
+   "id": "RISK-053",
+   "statement": "Dependence on third-party agents as counterparties or delegates"
+  }
+ ],
+ "references": [
+  "https://a2aprotocol.ai/blog/2025-full-guide-a2a-protocol"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "3.4",
+    "title": "Implement security controls between agents"
+   },
+   {
+    "id": "2.6",
+    "title": "Implement authentication, authorisation and access controls"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI07",
+    "title": "Insecure Inter-Agent Communication"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS3",
+    "title": "Designing secure agents – Identity management"
+   },
+   {
+    "id": "AA1",
+    "title": "Appendix A, prerequisites – Design"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0025/"
+}

@@ -1,0 +1,48 @@
+{
+ "id": "CTRL-0006",
+ "type": "control",
+ "level": 1,
+ "statement": "Require human approval before executing high-impact actions",
+ "recommendations": "Autonomous execution of high-impact actions without human oversight creates unacceptable risk of unintended consequences, including financial loss, data deletion, reputational damage, or safety incidents. Implement approval workflows that pause agent execution before critical actions (e.g., financial transactions, data deletion, external communications, system configuration changes) and present the proposed action with sufficient context for informed human decision-making. Design the approval interface to clearly display what will be executed, why the agent selected this action, and potential consequences. Ensure approval mechanisms cannot be bypassed by the agent and maintain audit logs of all approval decisions. Approval steps decay under volume: in one large deployment users approved about 93% of permission prompts. Pair this control with CTRL-0094 - measure approval and override rates, route routine actions to automated screening, and reserve human approval for genuinely uncertain or high-impact actions so that the approvals that remain are real decisions.",
+ "risks": [],
+ "references": [
+  "https://www.anthropic.com/engineering/how-we-contain-claude"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.4",
+    "title": "Ensure adequate human oversight"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.2.2",
+    "title": "Design for meaningful human oversight"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   },
+   {
+    "id": "ASI09",
+    "title": "Human-Agent Trust Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS2",
+    "title": "Designing secure agents – Oversight mechanisms"
+   },
+   {
+    "id": "OP3",
+    "title": "Operating agents securely – Human in the loop"
+   }
+  ]
+ },
+ "superseded_by": "CTRL-0042",
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0006/"
+}

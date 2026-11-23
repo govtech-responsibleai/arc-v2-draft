@@ -1,0 +1,99 @@
+{
+ "id": "RISK-051",
+ "type": "risk",
+ "statement": "Unsanctioned coordination between agents",
+ "description": "This risk arises when agents in a multi-agent system coordinate through channels or in ways that no operator sanctioned — sharing credentials, leaving each other messages in shared stores, using side channels, or dividing up a task so that each agent's actions look acceptable while the combined outcome is not. Coordination can emerge from shared objectives without any explicit instruction, and standard per-agent monitoring does not see it. As a result, the system as a whole pursues outcomes that would have been blocked had a single agent attempted them.",
+ "elements": [
+  {
+   "id": "DSN-01",
+   "name": "Agentic Architecture"
+  },
+  {
+   "id": "CAP-02",
+   "name": "Agent Delegation"
+  }
+ ],
+ "failure_mode": "Agent Misbehaviour",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-04",
+   "name": "Identity and access management",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0024",
+   "level": 0,
+   "statement": "Define formal schemas for inter-agent messages and validate all messages against these schemas before processing"
+  },
+  {
+   "id": "CTRL-0028",
+   "level": 0,
+   "statement": "Continuously monitor multi-agent systems for cascade failure indicators"
+  },
+  {
+   "id": "CTRL-0065",
+   "level": 0,
+   "statement": "Ensure every agent can be immediately paused or terminated by its operators"
+  },
+  {
+   "id": "CTRL-0026",
+   "level": 1,
+   "statement": "Require all agents to authenticate with verifiable, cryptographically signed identities before processing requests"
+  },
+  {
+   "id": "CTRL-0093",
+   "level": 2,
+   "statement": "Monitor agents for deceptive and collusive behaviour using an independent monitor"
+  }
+ ],
+ "sources": [
+  "https://www.aisi.gov.uk/blog/incident-report-unsanctioned-agent-behaviour-during-cyber-testing",
+  "https://arxiv.org/abs/2502.14143",
+  "https://arxiv.org/abs/2601.11369"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   },
+   {
+    "id": "ASI07",
+    "title": "Insecure Inter-Agent Communication"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T13",
+    "title": "Rogue agents in multi-agent systems"
+   },
+   {
+    "id": "T12",
+    "title": "Agent communication poisoning"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0118",
+    "title": "Autonomous AI Agent Communication"
+   },
+   {
+    "id": "AML.T0118.000",
+    "title": "Autonomous AI Agent Communication: Communication via Shared Artifacts"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-051/"
+}

@@ -1,0 +1,59 @@
+{
+ "id": "CTRL-0004",
+ "type": "control",
+ "level": 2,
+ "statement": "Review the LLM's system card to inform risk assessment and model selection",
+ "recommendations": "System cards provide essential information about model capabilities, limitations, known failure modes, and safety evaluations that directly inform deployment decisions. Obtain and review the model's system card (or model card) before deployment, paying particular attention to documented risks, benchmark performance on safety evaluations, and limitations relevant to your use case. Use this information to identify potential misalignment between model behaviour and your application requirements, and to inform additional safeguards or testing strategies. If a system card is unavailable or incomplete, consider this a red flag when assessing provider trustworthiness.",
+ "enforcement": [
+  "organisation"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design"
+ ],
+ "evidence": "The model selection record citing the system card version reviewed and mapping each documented limitation to an entry in the system's risk assessment.",
+ "test": "Pick three limitations from the current system card and confirm each has a matching safeguard or accepted-risk decision in the risk assessment.",
+ "risks": [
+  {
+   "id": "RISK-002",
+   "statement": "Insufficient alignment of LLM behaviour"
+  },
+  {
+   "id": "RISK-003",
+   "statement": "Insufficient LLM capability and reliability"
+  }
+ ],
+ "references": [
+  "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://arxiv.org/abs/1810.03993"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.1",
+    "title": "Supply chain security – ensure components are from trusted sources"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.1",
+    "title": "Determine suitable use cases"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "AA2",
+    "title": "Appendix A, prerequisites – Development"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0004/"
+}

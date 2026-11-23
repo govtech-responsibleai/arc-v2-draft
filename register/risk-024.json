@@ -1,0 +1,45 @@
+{
+ "id": "RISK-024",
+ "type": "risk",
+ "statement": "Generation of undesirable content",
+ "description": "This risk arises when an agent generates text, images, audio, or other media that contain toxic, hateful, sexual, or otherwise inappropriate content. As a result, the system may cause harm to users, violate organisational standards or regulations, or undermine trust in the system’s outputs.",
+ "elements": [
+  {
+   "id": "CAP-04",
+   "name": "Multimodal Understanding and Generation"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Safety"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-06",
+   "name": "Discriminatory or hateful content",
+   "type": "Safety"
+  },
+  {
+   "id": "HZ-07",
+   "name": "Inappropriate content",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0044",
+   "level": 1,
+   "statement": "Implement output safety guardrails to detect and prevent generation of undesirable content"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2402.04249v2"
+ ],
+ "crosswalks": {
+  "owasp_asi": [],
+  "owasp_agentic_threats": [],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-024/"
+}

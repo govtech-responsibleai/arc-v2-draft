@@ -1,0 +1,70 @@
+{
+ "id": "CTRL-0076",
+ "type": "control",
+ "level": 0,
+ "statement": "Require human approval for destructive changes to databases, tables, or files that cannot be readily undone",
+ "recommendations": "Destructive operations such as deleting files, dropping database tables, or overwriting critical data can cause irreversible damage if executed without proper authorisation. Require human approval for every destructive operation that cannot be readily undone, including DROP and TRUNCATE statements, DELETE or UPDATE queries that are not narrowly filtered, bulk file deletions, and any deletion or overwrite in a store without versioning, soft-delete, or point-in-time recovery (see CTRL-0077). Changes that can be reverted from version control or soft-delete, such as edits to files in a version-controlled working copy, may proceed without approval. Enforce the approval in the tool or database permission layer rather than by instructing the agent to ask first, because an instruction in the agent's context can be ignored or lost.",
+ "enforcement": [
+  "harness",
+  "organisation"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build",
+  "operate"
+ ],
+ "evidence": "The tool or database permission rules marking DROP, TRUNCATE, unfiltered DELETE or UPDATE and bulk file deletion as approval-required, with approval records.",
+ "test": "Have the agent issue a DROP TABLE and an unfiltered DELETE in staging and confirm neither runs until a human approves it.",
+ "risks": [
+  {
+   "id": "RISK-041",
+   "statement": "Unintended overwriting or deletion of files or data"
+  },
+  {
+   "id": "RISK-056",
+   "statement": "Actions beyond the agent's tools through code execution and reachable credentials"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf",
+  "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.4",
+    "title": "Ensure adequate human oversight"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.2.2",
+    "title": "Design for meaningful human oversight"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   },
+   {
+    "id": "ASI09",
+    "title": "Human-Agent Trust Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP3",
+    "title": "Operating agents securely – Human in the loop"
+   },
+   {
+    "id": "DS2",
+    "title": "Designing secure agents – Oversight mechanisms"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0076/"
+}

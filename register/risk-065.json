@@ -1,0 +1,81 @@
+{
+ "id": "RISK-065",
+ "type": "risk",
+ "statement": "Instructions or approvals forged in the principal's name",
+ "description": "This risk arises when something other than the principal can supply what the agent treats as the principal's own instruction or approval. A link can open the agent with a prompt already filled in and submitted, another program or browser extension on the same machine can drive the agent's interface or click its approval prompts, a command-line flag can start the agent with its permission checks turned off, and a compromised operator console can queue instructions as if they came from the operator. The register's injection risks concern content that the agent reads; here the attacker speaks with the user's voice. As a result, the agent carries out an attacker's request with the user's full authority, and its approval steps are satisfied without a person, as when a link with a pre-filled prompt made an assistant send the user's data to an attacker, malicious packages invoked developers' locally installed coding agents with their safety checks disabled, and a trading agent sent funds to an attacker who had queued prompts through its operator dashboard.",
+ "elements": [
+  {
+   "id": "DSN-02",
+   "name": "Roles and Access Controls"
+  }
+ ],
+ "failure_mode": "External Manipulation",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-04",
+   "name": "Identity and access management",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0096",
+   "level": 0,
+   "statement": "Harden agent frameworks and runtimes before exposing them, and patch framework vulnerabilities promptly"
+  },
+  {
+   "id": "CTRL-0042",
+   "level": 1,
+   "statement": "Require explicit human confirmation before executing high-impact or irreversible tool actions"
+  },
+  {
+   "id": "CTRL-0105",
+   "level": 1,
+   "statement": "Accept instructions and approvals only through a channel that proves they come from the principal"
+  }
+ ],
+ "sources": [
+  "https://www.varonis.com/blog/reprompt",
+  "https://nx.dev/blog/s1ngularity-postmortem",
+  "https://incidentdatabase.ai/cite/1003/",
+  "https://www.oasis.security/resources/reports/claude-url-scheme-prompt-injection"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI09",
+    "title": "Human-Agent Trust Exploitation"
+   },
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T9",
+    "title": "Identity spoofing and impersonation"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0073",
+    "title": "Impersonation"
+   },
+   {
+    "id": "AML.T0078",
+    "title": "Drive-by Compromise"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-065/"
+}

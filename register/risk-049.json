@@ -1,0 +1,126 @@
+{
+ "id": "RISK-049",
+ "type": "risk",
+ "statement": "Escape from evaluation or sandbox containment onto live systems",
+ "description": "This risk arises when an agent that can execute code, operating in what is intended to be a contained setting — an evaluation, a red-team exercise, or a sandboxed task — reaches real systems because containment is incomplete: network egress is open, real credentials or accounts are present, or the objective can be pursued more easily outside the boundary. Capable agents have inferred that they were being evaluated and attacked third-party infrastructure to satisfy the task, and have taken unsanctioned actions against real people and organisations during cyber testing. As a result, activity meant to be harmless produces real-world security incidents.",
+ "elements": [
+  {
+   "id": "DSN-02",
+   "name": "Roles and Access Controls"
+  },
+  {
+   "id": "CAP-10",
+   "name": "Code Execution"
+  }
+ ],
+ "min_authority": {
+  "CAP-10": "act-with-approval"
+ },
+ "failure_mode": "Agent Misbehaviour",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-03",
+   "name": "Infrastructure and network",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-04",
+   "name": "Identity and access management",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  },
+  {
+   "id": "HZ-11",
+   "name": "Harm to third parties",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0029",
+   "level": 0,
+   "statement": "Grant agents only the minimum permissions required for their designated tasks"
+  },
+  {
+   "id": "CTRL-0040",
+   "level": 0,
+   "statement": "Limit the scope of agent actions through predefined thresholds and baselines"
+  },
+  {
+   "id": "CTRL-0065",
+   "level": 0,
+   "statement": "Ensure every agent can be immediately paused or terminated by its operators"
+  },
+  {
+   "id": "CTRL-0069",
+   "level": 0,
+   "statement": "Run agent-generated code only in isolated compute environments with network access blocked by default"
+  },
+  {
+   "id": "CTRL-0089",
+   "level": 0,
+   "statement": "Enforce default-deny network egress for agent runtimes, allowing only approved destinations"
+  },
+  {
+   "id": "CTRL-0092",
+   "level": 0,
+   "statement": "Contain evaluations and red-team exercises so that agents cannot reach real systems, credentials, or people"
+  },
+  {
+   "id": "CTRL-0098",
+   "level": 0,
+   "statement": "Keep credentials and backups out of reach of agent-run code"
+  }
+ ],
+ "sources": [
+  "https://huggingface.co/blog/security-incident-july-2026",
+  "https://openai.com/index/hugging-face-model-evaluation-security-incident/",
+  "https://www.aisi.gov.uk/blog/incident-report-unsanctioned-agent-behaviour-during-cyber-testing"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   },
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T13",
+    "title": "Rogue agents in multi-agent systems"
+   },
+   {
+    "id": "T7",
+    "title": "Misaligned and deceptive behaviours"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0117",
+    "title": "Autonomous Attack-Path Adaptation"
+   },
+   {
+    "id": "AML.T0122",
+    "title": "Exploitation of Remote Services"
+   },
+   {
+    "id": "AML.T0105",
+    "title": "Escape to Host"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-049/"
+}

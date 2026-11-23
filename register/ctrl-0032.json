@@ -1,0 +1,76 @@
+{
+ "id": "CTRL-0032",
+ "type": "control",
+ "level": 0,
+ "statement": "Centralise observability data collection in a unified backend system",
+ "recommendations": "Distributed observability data across disconnected systems prevents effective analysis of multi-agent workflows, obscuring failure patterns, performance bottlenecks, and security incidents that span multiple agents. Centralise collection of logs, metrics, and traces from all agents into a unified observability backend using standards-compliant protocols (e.g., OpenTelemetry) to enable correlation analysis across the entire agentic system. Configure agents to emit structured telemetry with consistent identifiers (agent IDs, session IDs, request IDs) that enable tracing requests across agent boundaries and reconstructing complete workflow execution paths.",
+ "enforcement": [
+  "infrastructure"
+ ],
+ "owner": "platform",
+ "phase": [
+  "build",
+  "deploy"
+ ],
+ "evidence": "The telemetry collector configuration showing every agent exporting logs, metrics and traces to one backend with shared agent, session and request identifiers.",
+ "test": "Run a task that crosses two agents and confirm a single query on the request identifier returns the full trace from both.",
+ "risks": [
+  {
+   "id": "RISK-004",
+   "statement": "Weak tool authentication and authorisation controls"
+  },
+  {
+   "id": "RISK-016",
+   "statement": "Unauthorised privilege escalation"
+  },
+  {
+   "id": "RISK-017",
+   "statement": "Delayed failure detection due to limited monitoring"
+  },
+  {
+   "id": "RISK-018",
+   "statement": "Inability to audit failures due to missing decision traces"
+  },
+  {
+   "id": "RISK-062",
+   "statement": "Agent alters or disables the oversight placed on it"
+  }
+ ],
+ "references": [
+  "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.3",
+    "title": "Continuous monitoring and logging"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.3",
+    "title": "Continuously monitor and test when deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI08",
+    "title": "Cascading Failures"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV6",
+    "title": "Developing secure agents – Accountability"
+   },
+   {
+    "id": "OP1",
+    "title": "Operating agents securely – Monitoring and auditing"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0032/"
+}

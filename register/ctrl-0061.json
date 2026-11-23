@@ -1,0 +1,50 @@
+{
+ "id": "CTRL-0061",
+ "type": "control",
+ "level": 1,
+ "statement": "Use structured retrieval APIs for web searches rather than web scraping",
+ "recommendations": "Web scraping exposes agents to arbitrary web content including malicious HTML, scripts, and embedded instructions that may be crafted to inject prompts or manipulate agent behaviour. Use structured retrieval APIs such as search engine APIs, knowledge bases, or curated data sources that provide pre-processed, sanitised content rather than raw web pages. Structured APIs typically return controlled formats (JSON, XML) containing extracted information without rendering full web content, reducing exposure to injection vectors embedded in HTML, CSS, or JavaScript.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build"
+ ],
+ "evidence": "The tool manifest showing web search bound to a named search API returning structured results, with no raw page-fetch tool registered.",
+ "test": "Run a web search task and confirm the logged tool result holds structured fields from the search API and no raw HTML or scripts.",
+ "risks": [
+  {
+   "id": "RISK-034",
+   "statement": "Prompt injection via malicious websites"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.1",
+    "title": "Supply chain security – ensure components are from trusted sources"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   }
+  ],
+  "fiveeyes_agentic": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0061/"
+}

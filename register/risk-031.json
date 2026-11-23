@@ -1,0 +1,71 @@
+{
+ "id": "RISK-031",
+ "type": "risk",
+ "statement": "Inaccurate promises or statements in official communications",
+ "description": "This risk arises when an agent makes commitments, assurances, or public statements that are incorrect, unsupported, or exceed the organisation’s actual intentions or capabilities. As a result, the organisation may face reputational damage, legal exposure, or loss of public trust due to unmet expectations or misinformation.",
+ "elements": [
+  {
+   "id": "CAP-05",
+   "name": "Official Communication"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Safety"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-09",
+   "name": "Misrepresentation",
+   "type": "Safety"
+  },
+  {
+   "id": "HZ-10",
+   "name": "Financial or contractual loss",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0053",
+   "level": 0,
+   "statement": "Require human approval for communications on sensitive matters"
+  },
+  {
+   "id": "CTRL-0094",
+   "level": 0,
+   "statement": "Measure the quality of human oversight and redesign approval steps that have become rubber stamps"
+  },
+  {
+   "id": "CTRL-0054",
+   "level": 1,
+   "statement": "Limit agent communications to standard processes with predefined templates"
+  },
+  {
+   "id": "CTRL-0055",
+   "level": 1,
+   "statement": "Provide alternative channels for users to clarify communications or provide feedback"
+  }
+ ],
+ "sources": [
+  "https://decisions.civilresolutionbc.ca/crt/crtd/en/525448/1/document.do",
+  "https://incidentdatabase.ai/cite/622/"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI09",
+    "title": "Human-Agent Trust Exploitation"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T15",
+    "title": "Human manipulation"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-031/"
+}

@@ -1,0 +1,69 @@
+{
+ "id": "RISK-043",
+ "type": "risk",
+ "statement": "Exposure of sensitive data through file or database access",
+ "description": "This risk arises when an agent accesses, processes, or outputs personally identifiable or sensitive information stored in files or databases without appropriate safeguards. As a result, confidential data may be disclosed to unauthorised parties, leading to privacy breaches, regulatory non-compliance, or loss of trust.",
+ "elements": [
+  {
+   "id": "CAP-11",
+   "name": "File and Data Management"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0047",
+   "level": 0,
+   "statement": "Implement output guardrails to detect and redact personally identifiable information"
+  },
+  {
+   "id": "CTRL-0081",
+   "level": 1,
+   "statement": "Implement input guardrails to detect personally identifiable information in data accessed by agents"
+  },
+  {
+   "id": "CTRL-0082",
+   "level": 2,
+   "statement": "Do not grant agents access to personally identifiable or sensitive data unless strictly required"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2509.10540",
+  "https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   },
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T2",
+    "title": "Tool misuse"
+   },
+   {
+    "id": "T3",
+    "title": "Privilege compromise"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-043/"
+}

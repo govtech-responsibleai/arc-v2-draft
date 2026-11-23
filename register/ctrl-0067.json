@@ -1,0 +1,55 @@
+{
+ "id": "CTRL-0067",
+ "type": "control",
+ "level": 0,
+ "statement": "Ensure proper documentation of programmatic interfaces for agent use",
+ "recommendations": "Agents interacting with poorly documented or unfamiliar programmatic interfaces may misinterpret interface semantics, invoke operations incorrectly, or produce unintended effects. Provide comprehensive, LLM-readable documentation for all programmatic interfaces agents may interact with, including clear descriptions of available operations, required parameters with data types and constraints, expected responses, and common error conditions.",
+ "enforcement": [
+  "prompt"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build"
+ ],
+ "evidence": "The interface specification supplied to the agent for each API, listing operations, typed parameters, expected responses and error conditions.",
+ "test": "Set the agent tasks that exercise each documented operation and one error condition and confirm its calls are well formed and errors handled as documented.",
+ "risks": [
+  {
+   "id": "RISK-038",
+   "statement": "Incorrect use of unfamiliar programmatic interfaces"
+  }
+ ],
+ "references": [
+  "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+  "https://www.anthropic.com/engineering/writing-tools-for-agents",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.4",
+    "title": "Identify, track and protect AI system assets"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV7",
+    "title": "Developing secure agents – Manage third-party components"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0067/"
+}

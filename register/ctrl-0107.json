@@ -1,0 +1,64 @@
+{
+ "id": "CTRL-0107",
+ "type": "control",
+ "level": 1,
+ "statement": "Set limits on what users may direct the agent to do to others, enforce them across a whole task, and have the agent identify itself",
+ "recommendations": "State in an acceptable-use policy what the agent may not be used for, such as compiling profiles of individuals, producing material for fraud, or accessing services in ways their operators forbid. Enforce it with guardrails that look at the aim of a task and not only at each step, since a harmful aim can be split into steps that each look routine. Where the agent acts on other parties' services, respect their terms and technical signals, identify the agent as an agent in its requests, and do not disguise it as a human user. Monitor for patterns of misuse across sessions, and give outside parties a way to report an agent that is acting against them and to have it stopped.",
+ "enforcement": [
+  "organisation",
+  "harness"
+ ],
+ "owner": "governance",
+ "phase": [
+  "design",
+  "operate"
+ ],
+ "evidence": "The acceptable-use policy, the guardrail configuration that evaluates the aim of a task, and the record of misuse reports received and acted on.",
+ "test": "Ask the agent, across several ordinary-looking steps, to assemble a profile of a named private individual, and confirm that the task is refused or flagged.",
+ "risks": [
+  {
+   "id": "RISK-067",
+   "statement": "Use of the agent by its own principal against others"
+  }
+ ],
+ "references": [
+  "https://labs.guard.io/vibescamming-from-prompt-to-phish-benchmarking-popular-ai-agents-resistance-to-the-dark-side-1ec2fbdf0a35",
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.7",
+    "title": "Implement controls to limit what models or agents can access and generate"
+   },
+   {
+    "id": "4.4",
+    "title": "Ensure adequate human oversight"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.4.2",
+    "title": "Users who interact with agents (transparency, disclosure, escalation)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DP2",
+    "title": "Deploying agents securely – Governance"
+   },
+   {
+    "id": "DP5",
+    "title": "Deploying agents securely – Guardrails and constraints"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0107/"
+}

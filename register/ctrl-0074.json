@@ -1,0 +1,64 @@
+{
+ "id": "CTRL-0074",
+ "type": "control",
+ "level": 0,
+ "statement": "Conduct CVE scanning and block execution of code with High or Critical vulnerabilities",
+ "recommendations": "Agent-generated code may inadvertently include dependencies or libraries containing known security vulnerabilities that could be exploited to compromise systems. Implement automated CVE scanning that analyses all dependencies, libraries, and packages used by agent-generated code before execution, checking against vulnerability databases such as the National Vulnerability Database. Configure scanning to block execution when High or Critical severity CVEs are detected, requiring remediation such as dependency updates or vulnerability patches before proceeding.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "security",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The dependency scanner configuration with its High and Critical blocking threshold, and scan results recorded for each execution request.",
+ "test": "Have the agent write code that imports a package version with a known Critical CVE and confirm execution is blocked with the CVE cited.",
+ "risks": [
+  {
+   "id": "RISK-040",
+   "statement": "Production or execution of vulnerable or malicious code"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf",
+  "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.2",
+    "title": "Validate outputs from models and agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI04",
+    "title": "Agentic Supply Chain Vulnerabilities"
+   },
+   {
+    "id": "ASI05",
+    "title": "Unexpected Code Execution (RCE)"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV7",
+    "title": "Developing secure agents – Manage third-party components"
+   },
+   {
+    "id": "AA2",
+    "title": "Appendix A, prerequisites – Development"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0074/"
+}

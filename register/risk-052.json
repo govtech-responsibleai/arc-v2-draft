@@ -1,0 +1,77 @@
+{
+ "id": "RISK-052",
+ "type": "risk",
+ "statement": "Automation bias and erosion of human oversight",
+ "description": "This risk arises when human approval steps stop providing meaningful review: overseers approve by default under volume (one large deployment measured users approving around 93% of permission prompts), lack the context or expertise to evaluate what the agent proposes, or use interfaces designed for speed rather than scrutiny. Controls that assume a considered human decision then give false assurance, and adversaries can exploit the trust users place in fluent, confident agents. As a result, high-impact actions proceed with nominal rather than actual oversight.",
+ "elements": [
+  {
+   "id": "DSN-03",
+   "name": "Monitoring and Traceability"
+  }
+ ],
+ "failure_mode": "Safeguard Failure",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0049",
+   "level": 0,
+   "statement": "Implement UI/UX cues to communicate the risk of hallucination to users"
+  },
+  {
+   "id": "CTRL-0094",
+   "level": 0,
+   "statement": "Measure the quality of human oversight and redesign approval steps that have become rubber stamps"
+  },
+  {
+   "id": "CTRL-0042",
+   "level": 1,
+   "statement": "Require explicit human confirmation before executing high-impact or irreversible tool actions"
+  }
+ ],
+ "sources": [
+  "https://www.anthropic.com/engineering/how-we-contain-claude",
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf",
+  "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI09",
+    "title": "Human-Agent Trust Exploitation"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T10",
+    "title": "Overwhelming human in the loop"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0067",
+    "title": "LLM Trusted Output Components Manipulation"
+   },
+   {
+    "id": "AML.T0046",
+    "title": "Spamming AI System with Chaff Data"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-052/"
+}

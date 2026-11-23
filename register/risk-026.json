@@ -1,0 +1,45 @@
+{
+ "id": "RISK-026",
+ "type": "risk",
+ "statement": "Generation of controversial or sensitive content",
+ "description": "This risk arises when an agent generates content related to sensitive or controversial topics, such as political commentary or denigrating comments about competitors. As a result, the system may create reputational, legal, or compliance issues, or be perceived as biased, inappropriate, or misrepresentative of organisational views.",
+ "elements": [
+  {
+   "id": "CAP-04",
+   "name": "Multimodal Understanding and Generation"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Safety"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-07",
+   "name": "Inappropriate content",
+   "type": "Safety"
+  },
+  {
+   "id": "HZ-09",
+   "name": "Misrepresentation",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0046",
+   "level": 1,
+   "statement": "Implement input guardrails to detect and decline requests for controversial content that violates organisational policies"
+  }
+ ],
+ "sources": [
+  "https://news.stanford.edu/stories/2025/05/ai-models-llms-chatgpt-claude-gemini-partisan-bias-research-study"
+ ],
+ "crosswalks": {
+  "owasp_asi": [],
+  "owasp_agentic_threats": [],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-026/"
+}

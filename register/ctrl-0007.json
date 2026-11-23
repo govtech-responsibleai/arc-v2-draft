@@ -1,0 +1,73 @@
+{
+ "id": "CTRL-0007",
+ "type": "control",
+ "level": 0,
+ "statement": "Log all LLM inputs and outputs for regular review",
+ "recommendations": "Comprehensive logging enables post-incident analysis, safety monitoring, detection of adversarial inputs, and continuous improvement of LLM behaviour over time. Implement structured logging that captures all LLM inputs, outputs, timestamps, model versions, and relevant metadata (user ID, session ID, tool calls). Use a centralised logging system (e.g., ELK stack, Datadog, CloudWatch) with appropriate retention policies and access controls to protect sensitive data. Establish regular review processes—manual spot-checks or automated anomaly detection—to identify drift, unsafe outputs, or emerging failure patterns.",
+ "enforcement": [
+  "harness",
+  "infrastructure"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "A log query for one production session returning every model request and response with timestamp, model version, user identifier and session identifier.",
+ "test": "Send a prompt containing a unique marker string and confirm the central log returns both that prompt and the model's reply within minutes.",
+ "risks": [
+  {
+   "id": "RISK-001",
+   "statement": "Use of untrusted or compromised LLMs"
+  },
+  {
+   "id": "RISK-002",
+   "statement": "Insufficient alignment of LLM behaviour"
+  },
+  {
+   "id": "RISK-003",
+   "statement": "Insufficient LLM capability and reliability"
+  },
+  {
+   "id": "RISK-050",
+   "statement": "Deceptive behaviour toward overseers"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://www.ncsc.gov.uk/blog-post/prompt-injection-is-not-sql-injection",
+  "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.3",
+    "title": "Continuous monitoring and logging"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.3",
+    "title": "Continuously monitor and test when deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI08",
+    "title": "Cascading Failures"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV6",
+    "title": "Developing secure agents – Accountability"
+   },
+   {
+    "id": "OP1",
+    "title": "Operating agents securely – Monitoring and auditing"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0007/"
+}

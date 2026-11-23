@@ -1,0 +1,77 @@
+{
+ "id": "CTRL-0082",
+ "type": "control",
+ "level": 2,
+ "statement": "Do not grant agents access to personally identifiable or sensitive data unless strictly required",
+ "recommendations": "Agents with unnecessary access to PII or sensitive data create elevated risk of exposure, leakage, or misuse, particularly if agents are compromised or misuse their permissions. Apply the principle of least privilege by restricting agent access to databases, files, or systems containing PII or sensitive information unless explicitly required for the agent's designated functionality. Implement access controls that enforce these restrictions at the data layer, preventing agents from querying or reading sensitive datasets they should not access.",
+ "enforcement": [
+  "infrastructure"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build",
+  "operate"
+ ],
+ "evidence": "The agent identity's data-access grants set against the data classification register, showing no grant on personal or sensitive datasets without a recorded justification.",
+ "test": "Using the agent's credentials, query a dataset classified as personal data that its task does not need and confirm the data layer denies it.",
+ "risks": [
+  {
+   "id": "RISK-043",
+   "statement": "Exposure of sensitive data through file or database access"
+  },
+  {
+   "id": "RISK-047",
+   "statement": "Data exfiltration through combined access to untrusted content, sensitive data, and an outbound channel"
+  },
+  {
+   "id": "RISK-066",
+   "statement": "Personal data collected, kept, or passed on beyond what the task needs"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://www.frontiermodelforum.org/uploads/2026/06/FMF-Issue-Brief-on-Emerging-Security-Practices-for-AI-Agents.pdf",
+  "https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.8",
+    "title": "Apply least privilege; secure-by-default configurations"
+   },
+   {
+    "id": "2.7",
+    "title": "Implement controls to limit what models or agents can access and generate"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS3",
+    "title": "Designing secure agents – Identity management"
+   },
+   {
+    "id": "OP5",
+    "title": "Operating agents securely – Privileges and authentication"
+   },
+   {
+    "id": "AA1",
+    "title": "Appendix A, prerequisites – Design"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0082/"
+}

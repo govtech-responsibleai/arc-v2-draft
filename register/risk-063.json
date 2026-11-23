@@ -1,0 +1,90 @@
+{
+ "id": "RISK-063",
+ "type": "risk",
+ "statement": "Authority passing between agents without a check",
+ "description": "This risk arises when one agent treats a request or a message from another agent as authorisation to act, without checking that the person on whose behalf the first agent is working is entitled to that action. A low-privilege agent can then ask a higher-privilege agent to do what it cannot do itself, and an attacker who can influence any agent in the chain, or who can write somewhere that an agent reads, borrows the privileges of the most powerful one. As a result, the access controls set for each agent are bypassed by the path between them, as when an injected low-privilege agent recruited a higher-privilege agent through agent discovery to copy records it could not read itself, a prompt posted by one company's agent was executed as a transfer instruction by another company's agent, and a public triage agent was led to invoke a workflow reserved for maintainers.",
+ "elements": [
+  {
+   "id": "CAP-02",
+   "name": "Agent Delegation"
+  }
+ ],
+ "failure_mode": "Safeguard Failure",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-04",
+   "name": "Identity and access management",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-10",
+   "name": "Financial or contractual loss",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0024",
+   "level": 0,
+   "statement": "Define formal schemas for inter-agent messages and validate all messages against these schemas before processing"
+  },
+  {
+   "id": "CTRL-0029",
+   "level": 0,
+   "statement": "Grant agents only the minimum permissions required for their designated tasks"
+  },
+  {
+   "id": "CTRL-0026",
+   "level": 1,
+   "statement": "Require all agents to authenticate with verifiable, cryptographically signed identities before processing requests"
+  },
+  {
+   "id": "CTRL-0104",
+   "level": 1,
+   "statement": "Authorise each action against the principal it is done for, at the agent that carries it out"
+  }
+ ],
+ "sources": [
+  "https://appomni.com/ao-labs/ai-agent-to-agent-discovery-prompt-injection/",
+  "https://slowmist.medium.com/behind-the-grok-exploitation-an-analysis-of-ai-agent-permission-chain-abuse-4d832d1bfc73",
+  "https://www.pillar.security/blog/ill-just-call-you-agent-to-agent-privilege-boundary-failures-in-ci-cd-on-googles-adk-repository"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   },
+   {
+    "id": "ASI07",
+    "title": "Insecure Inter-Agent Communication"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T3",
+    "title": "Privilege compromise"
+   },
+   {
+    "id": "T12",
+    "title": "Agent communication poisoning"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0053",
+    "title": "AI Agent Tool Invocation"
+   },
+   {
+    "id": "AML.T0118.001",
+    "title": "Autonomous AI Agent Communication: Direct Agent Communication"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-063/"
+}

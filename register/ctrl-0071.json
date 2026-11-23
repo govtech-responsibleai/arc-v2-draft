@@ -1,0 +1,60 @@
+{
+ "id": "CTRL-0071",
+ "type": "control",
+ "level": 0,
+ "statement": "Use static code analysers to detect security vulnerabilities and code quality issues",
+ "recommendations": "Agent-generated code may contain security vulnerabilities, code smells, or quality issues that manual review might miss. Deploy static code analysis tools (e.g., Bandit for Python, SonarQube, Semgrep) that automatically scan agent-generated code for security vulnerabilities, coding standard violations, and quality issues before execution. Configure analysers to detect common vulnerability patterns such as SQL injection, command injection, path traversal, insecure cryptography, and hard-coded credentials. Block or flag code that fails security scans, requiring remediation before proceeding with execution or deployment.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The static analysis rule set and blocking severity in the execution pipeline, with a scan report attached to each generated code artefact.",
+ "test": "Run CyberSecEval insecure-code prompts through the agent and confirm the analyser flags the vulnerable outputs and blocks their execution.",
+ "risks": [
+  {
+   "id": "RISK-039",
+   "statement": "Production or execution of poor or ineffective code"
+  },
+  {
+   "id": "RISK-040",
+   "statement": "Production or execution of vulnerable or malicious code"
+  }
+ ],
+ "references": [
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+  "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.2",
+    "title": "Validate outputs from models and agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI05",
+    "title": "Unexpected Code Execution (RCE)"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP2",
+    "title": "Operating agents securely – Validate outputs"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0071/"
+}

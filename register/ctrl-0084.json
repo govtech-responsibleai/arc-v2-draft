@@ -1,0 +1,56 @@
+{
+ "id": "CTRL-0084",
+ "type": "control",
+ "level": 0,
+ "statement": "Set minimum and maximum limits on what agents can modify within system resources",
+ "recommendations": "Agents with unrestricted ability to modify system configurations may make inappropriate changes that degrade performance, compromise security, or cause service disruptions. Define and enforce quantitative boundaries on agent-initiated configuration changes, such as minimum and maximum values for resource allocations (CPU, memory, storage), rate limits, timeout values, or scaling parameters.",
+ "enforcement": [
+  "harness",
+  "infrastructure"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build"
+ ],
+ "evidence": "The policy file bounding agent-initiated changes, with minimum and maximum values for CPU, memory, storage, scaling, timeouts and rate limits.",
+ "test": "Have the agent request a scale-up above the maximum and a timeout below the minimum and confirm both changes are rejected and logged.",
+ "risks": [
+  {
+   "id": "RISK-045",
+   "statement": "Misconfiguration of system resources"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://kubernetes.io/docs/concepts/policy/limit-range/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.7",
+    "title": "Implement controls to limit what models or agents can access and generate"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DP5",
+    "title": "Deploying agents securely – Guardrails and constraints"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0084/"
+}

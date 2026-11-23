@@ -1,0 +1,80 @@
+{
+ "id": "CTRL-0024",
+ "type": "control",
+ "level": 0,
+ "statement": "Define formal schemas for inter-agent messages and validate all messages against these schemas before processing",
+ "recommendations": "Unstructured or inadequately validated inter-agent messages create vulnerability to injection attacks, misinterpretation, and parsing errors that could compromise agent behaviour or cascade through multi-agent systems. Define explicit message schemas using formal specification languages (e.g., JSON Schema, Protobuf, OpenAPI) that specify required fields, data types, validation rules, and permitted value ranges for all agent-to-agent communications. Implement strict input validation that verifies all incoming messages conform to expected schemas, checking field presence, data types, value ranges, and structural integrity before processing message content. Reject messages that are incomplete, contain unexpected fields, violate type constraints, or include suspicious patterns, returning explicit error responses to the sending agent and logging validation failures to enable detection of compromised or malfunctioning agents.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build"
+ ],
+ "evidence": "The inter-agent message schemas in version control and the validator invoked at each agent's message entry point.",
+ "test": "Send an agent a message with a missing required field and an undeclared extra field and confirm it returns an error and logs a validation failure.",
+ "risks": [
+  {
+   "id": "RISK-012",
+   "statement": "Cascading errors in multi-agent architectures"
+  },
+  {
+   "id": "RISK-022",
+   "statement": "Malicious or manipulative use of delegated agents"
+  },
+  {
+   "id": "RISK-051",
+   "statement": "Unsanctioned coordination between agents"
+  },
+  {
+   "id": "RISK-053",
+   "statement": "Dependence on third-party agents as counterparties or delegates"
+  },
+  {
+   "id": "RISK-063",
+   "statement": "Authority passing between agents without a check"
+  }
+ ],
+ "references": [
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+  "https://a2a-protocol.org/latest/specification/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.7",
+    "title": "Implement controls to limit what models or agents can access and generate"
+   },
+   {
+    "id": "3.4",
+    "title": "Implement security controls between agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI07",
+    "title": "Insecure Inter-Agent Communication"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "AA1",
+    "title": "Appendix A, prerequisites – Design"
+   },
+   {
+    "id": "DS4",
+    "title": "Designing secure agents – Defence in depth"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0024/"
+}

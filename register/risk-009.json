@@ -1,0 +1,72 @@
+{
+ "id": "RISK-009",
+ "type": "risk",
+ "statement": "Unsanitised inputs in system instructions",
+ "description": "This risk arises when untrusted or user-controlled inputs are incorporated into system instructions without proper sanitisation or validation. As a result, malicious or malformed content may manipulate the model's behaviour, override intended constraints, or trigger unintended actions.",
+ "elements": [
+  {
+   "id": "CMP-02",
+   "name": "Instructions"
+  }
+ ],
+ "failure_mode": "External Manipulation",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0019",
+   "level": 0,
+   "statement": "Keep untrusted inputs out of system instructions, and enclose any untrusted content given to the model in delimiters marked as data"
+  },
+  {
+   "id": "CTRL-0090",
+   "level": 1,
+   "statement": "Enforce data-flow and capability policies at runtime with a deterministic policy layer that separates untrusted content from privileged actions"
+  },
+  {
+   "id": "CTRL-0020",
+   "level": 2,
+   "statement": "Use a dedicated LLM to extract required fields from inputs and filter out extraneous text or embedded instructions"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2502.15851v1",
+  "https://aclanthology.org/2025.naacl-long.425.pdf"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T6",
+    "title": "Intent breaking and goal manipulation"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0051",
+    "title": "LLM Prompt Injection"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-009/"
+}

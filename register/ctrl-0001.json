@@ -1,0 +1,60 @@
+{
+ "id": "CTRL-0001",
+ "type": "control",
+ "level": 0,
+ "statement": "Use only LLMs from verified and trusted model developers",
+ "recommendations": "Untrusted or unknown model developers may introduce backdoors, data exfiltration risks, or inconsistent safety guarantees that compromise your agentic system. Establish evaluation criteria to assess model provider trustworthiness before adoption, including verification of published model cards, transparent responsible disclosure policies, evidence of security audits, and documented data handling practices. Evaluate whether the provider has an established track record, active security team, and clear incident response procedures. Regularly reassess providers against these criteria as new information emerges or the threat landscape evolves.",
+ "enforcement": [
+  "organisation"
+ ],
+ "owner": "governance",
+ "phase": [
+  "design",
+  "operate"
+ ],
+ "evidence": "The approved model provider register, with each provider's dated assessment against the trust criteria and the name of the assessor.",
+ "test": "List every model endpoint the system calls in production and confirm each provider has a register entry assessed within the review period.",
+ "risks": [
+  {
+   "id": "RISK-001",
+   "statement": "Use of untrusted or compromised LLMs"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://www.ncsc.gov.uk/files/Guidelines-for-secure-AI-system-development.pdf",
+  "https://genai.owasp.org/llmrisk/llm032025-supply-chain/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.1",
+    "title": "Supply chain security – ensure components are from trusted sources"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI04",
+    "title": "Agentic Supply Chain Vulnerabilities"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV7",
+    "title": "Developing secure agents – Manage third-party components"
+   },
+   {
+    "id": "AA2",
+    "title": "Appendix A, prerequisites – Development"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0001/"
+}

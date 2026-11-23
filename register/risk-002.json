@@ -1,0 +1,86 @@
+{
+ "id": "RISK-002",
+ "type": "risk",
+ "statement": "Insufficient alignment of LLM behaviour",
+ "description": "This risk arises when an LLM's learned objectives and behaviors do not reliably align with intended user goals, system instructions, or organizational policies, leading to inappropriate, unsafe, or undesired outputs. Misalignment may surface as failure to follow constraints, inconsistent reasoning, or behavior that diverges from expected norms in edge cases or complex scenarios.",
+ "elements": [
+  {
+   "id": "CMP-01",
+   "name": "LLM"
+  }
+ ],
+ "failure_mode": "Agent Misbehaviour",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-07",
+   "name": "Inappropriate content",
+   "type": "Safety"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0007",
+   "level": 0,
+   "statement": "Log all LLM inputs and outputs for regular review"
+  },
+  {
+   "id": "CTRL-0038",
+   "level": 0,
+   "statement": "Conduct safety verification with domain-relevant stress tests and adversarial scenarios before deployment and on a regular cadence afterwards"
+  },
+  {
+   "id": "CTRL-0005",
+   "level": 1,
+   "statement": "Conduct structured evaluation of multiple LLMs for instruction-following, performance, and safety before deployment"
+  },
+  {
+   "id": "CTRL-0008",
+   "level": 1,
+   "statement": "Implement automated alerts when agent behaviour drifts from predefined thresholds"
+  },
+  {
+   "id": "CTRL-0042",
+   "level": 1,
+   "statement": "Require explicit human confirmation before executing high-impact or irreversible tool actions"
+  },
+  {
+   "id": "CTRL-0004",
+   "level": 2,
+   "statement": "Review the LLM's system card to inform risk assessment and model selection"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2406.10162"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T7",
+    "title": "Misaligned and deceptive behaviours"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-002/"
+}

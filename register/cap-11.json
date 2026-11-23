@@ -1,0 +1,25 @@
+{
+ "id": "CAP-11",
+ "type": "element",
+ "kind": "capability",
+ "name": "File and Data Management",
+ "category": "Operational",
+ "description": "The capability to manage the full lifecycle of files and data by creating, reading, modifying, organizing, converting, querying, and updating information across both unstructured artifacts (e.g. documents, spreadsheets, media files) and structured data stores (e.g. SQL/NoSQL databases, data warehouses, vector or embedding stores) in support of operational tasks. This includes ingesting and transforming datasets, generating or updating files, maintaining directory or schema structures, executing database queries or updates, and storing or retrieving embeddings or derived data products.",
+ "authority": [
+  "read",
+  "propose",
+  "act-with-approval",
+  "act-alone"
+ ],
+ "irreversible": "ask",
+ "external": "ask",
+ "risks": [
+  "RISK-041",
+  "RISK-042",
+  "RISK-043",
+  "RISK-044",
+  "RISK-066"
+ ],
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/cap-11/"
+}

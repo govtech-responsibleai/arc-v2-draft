@@ -1,0 +1,50 @@
+{
+ "id": "CTRL-0066",
+ "type": "control",
+ "level": 0,
+ "statement": "Ensure \"take over\" mode is activated when entering sensitive data",
+ "recommendations": "Agents operating computer interfaces may inadvertently view, process, or expose sensitive data such as passwords, API keys, or personally identifiable information displayed on screens or in applications. Implement \"take over\" mode that pauses agent operation and requires direct human control when sensitive data entry is required, preventing agents from observing or handling credentials and other confidential information.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build"
+ ],
+ "evidence": "The computer-use harness rule that detects password, payment and identity fields and hands control to the human, with take-over events logged.",
+ "test": "Steer the agent to a login page and confirm it pauses for the human to type the password and captures no screenshot or keystrokes meanwhile.",
+ "risks": [
+  {
+   "id": "RISK-037",
+   "statement": "Exposure of sensitive data"
+  }
+ ],
+ "references": [
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf",
+  "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool"
+ ],
+ "crosswalks": {
+  "csa_addendum": [],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS2",
+    "title": "Designing secure agents – Oversight mechanisms"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0066/"
+}

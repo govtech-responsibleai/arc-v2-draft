@@ -1,0 +1,100 @@
+{
+ "id": "CTRL-0042",
+ "type": "control",
+ "level": 1,
+ "level_when": [
+  {
+   "level": 0,
+   "authority": "act-alone",
+   "irreversible": true,
+   "external": true
+  }
+ ],
+ "statement": "Require explicit human confirmation before executing high-impact or irreversible tool actions",
+ "recommendations": "Agents may incorrectly select or misuse high-impact tools, leading to irreversible damage such as data deletion, unauthorised financial transactions, or unintended system modifications. Implement mandatory human-in-the-loop approval workflows for tools that perform high-impact or irreversible actions, including sending external communications, executing financial transactions, deleting or modifying critical data, and making privileged configuration changes. Configure approval interfaces to clearly display the tool being invoked, the parameters being passed, and the expected outcome, enabling informed human decision-making. Ensure approval mechanisms cannot be bypassed by agents and maintain audit logs of all approval decisions, including who approved what action and when. Approval steps decay under volume: in one large deployment users approved about 93% of permission prompts. Pair this control with CTRL-0094 - measure approval and override rates, route routine actions to automated screening, and reserve human approval for genuinely uncertain or high-impact actions so that the approvals that remain are real decisions.",
+ "enforcement": [
+  "harness",
+  "organisation"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build",
+  "operate"
+ ],
+ "evidence": "The tool registry marking each irreversible tool as confirmation-required, and the audit log recording who confirmed which tool call, with parameters and time.",
+ "test": "Invoke a tool marked irreversible through the tool layer without a confirmation record and confirm the call is refused and logged.",
+ "risks": [
+  {
+   "id": "RISK-001",
+   "statement": "Use of untrusted or compromised LLMs"
+  },
+  {
+   "id": "RISK-002",
+   "statement": "Insufficient alignment of LLM behaviour"
+  },
+  {
+   "id": "RISK-003",
+   "statement": "Insufficient LLM capability and reliability"
+  },
+  {
+   "id": "RISK-019",
+   "statement": "Generating plans that fail to meet the user's requirements"
+  },
+  {
+   "id": "RISK-020",
+   "statement": "Generating plans that overlook safety implications"
+  },
+  {
+   "id": "RISK-023",
+   "statement": "Incorrect tool selection or misuse"
+  },
+  {
+   "id": "RISK-052",
+   "statement": "Automation bias and erosion of human oversight"
+  },
+  {
+   "id": "RISK-065",
+   "statement": "Instructions or approvals forged in the principal's name"
+  }
+ ],
+ "references": [
+  "https://www.anthropic.com/engineering/how-we-contain-claude"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.4",
+    "title": "Ensure adequate human oversight"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.2.2",
+    "title": "Design for meaningful human oversight"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   },
+   {
+    "id": "ASI09",
+    "title": "Human-Agent Trust Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS2",
+    "title": "Designing secure agents – Oversight mechanisms"
+   },
+   {
+    "id": "OP3",
+    "title": "Operating agents securely – Human in the loop"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0042/"
+}

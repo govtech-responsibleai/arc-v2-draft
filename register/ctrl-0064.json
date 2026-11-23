@@ -1,0 +1,62 @@
+{
+ "id": "CTRL-0064",
+ "type": "control",
+ "level": 1,
+ "statement": "Limit computer use to accessing only safe and trusted resources",
+ "recommendations": "Agents with unrestricted computer access may encounter malicious content on untrusted websites, documents, or applications that embed hidden instructions designed to manipulate agent behaviour. Restrict computer use capabilities to accessing only pre-approved, safe resources such as internal applications, trusted websites on allowlists, or sandboxed environments isolated from sensitive systems. Define clear boundaries for what resources agents may access and enforce these restrictions through technical controls such as network filtering, application allowlisting, or containerisation.",
+ "enforcement": [
+  "infrastructure",
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build",
+  "deploy"
+ ],
+ "evidence": "The computer-use environment's site and application allowlist, the proxy or container policy enforcing it, and the blocked-request log.",
+ "test": "Direct the computer-use agent to a site outside the allowlist and to open an unlisted application and confirm both are blocked and logged.",
+ "risks": [
+  {
+   "id": "RISK-036",
+   "statement": "Prompt injection risks through computer use"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.7",
+    "title": "Implement controls to limit what models or agents can access and generate"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DP6",
+    "title": "Deploying agents securely – Isolation"
+   },
+   {
+    "id": "DP5",
+    "title": "Deploying agents securely – Guardrails and constraints"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0064/"
+}

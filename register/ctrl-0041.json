@@ -1,0 +1,68 @@
+{
+ "id": "CTRL-0041",
+ "type": "control",
+ "level": 0,
+ "statement": "Provide comprehensive descriptions for each tool including intended use, required inputs, and potential outputs",
+ "recommendations": "Incomplete or ambiguous tool descriptions lead agents to misunderstand tool capabilities, misuse tools for unintended purposes, or select inappropriate tools for tasks, resulting in failures or unsafe behaviour. Document each tool with clear, comprehensive descriptions that specify the tool's intended purpose, required input parameters with data types and constraints, expected outputs and formats, and any preconditions or side effects. Include usage examples and common failure scenarios to guide agent decision-making and prevent misuse. Ensure tool descriptions are accurate, up-to-date, and written in language that LLMs can reliably interpret, avoiding ambiguity that might lead to incorrect tool selection or invocation.",
+ "enforcement": [
+  "prompt"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The tool definitions in version control, each stating purpose, typed parameters with constraints, output format, side effects and a usage example.",
+ "test": "Run a tool-selection evaluation over tasks with a known correct tool and confirm the agent picks it with valid arguments at the documented rate.",
+ "risks": [
+  {
+   "id": "RISK-022",
+   "statement": "Malicious or manipulative use of delegated agents"
+  },
+  {
+   "id": "RISK-023",
+   "statement": "Incorrect tool selection or misuse"
+  },
+  {
+   "id": "RISK-038",
+   "statement": "Incorrect use of unfamiliar programmatic interfaces"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+  "https://www.anthropic.com/engineering/writing-tools-for-agents"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.4",
+    "title": "Identify, track and protect AI system assets"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV7",
+    "title": "Developing secure agents – Manage third-party components"
+   },
+   {
+    "id": "OP2",
+    "title": "Operating agents securely – Validate outputs"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0041/"
+}

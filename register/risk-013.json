@@ -1,0 +1,73 @@
+{
+ "id": "RISK-013",
+ "type": "risk",
+ "statement": "Man-in-the-middle attacks between agents",
+ "description": "This risk arises when communication channels between agents are insufficiently secured, allowing an attacker to intercept, modify, or replay messages exchanged within the agentic system. As a result, agents may act on tampered information, leading to incorrect coordination, unauthorised actions, or compromised system behaviour.",
+ "elements": [
+  {
+   "id": "DSN-01",
+   "name": "Agentic Architecture"
+  },
+  {
+   "id": "CAP-02",
+   "name": "Agent Delegation"
+  }
+ ],
+ "failure_mode": "External Manipulation",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-03",
+   "name": "Infrastructure and network",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0026",
+   "level": 1,
+   "statement": "Require all agents to authenticate with verifiable, cryptographically signed identities before processing requests"
+  },
+  {
+   "id": "CTRL-0027",
+   "level": 1,
+   "statement": "Implement circuit breakers to prevent cascading failures in multi-agent systems"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/pdf/2502.14847"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI07",
+    "title": "Insecure Inter-Agent Communication"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T12",
+    "title": "Agent communication poisoning"
+   },
+   {
+    "id": "T9",
+    "title": "Identity spoofing and impersonation"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0073",
+    "title": "Impersonation"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-013/"
+}

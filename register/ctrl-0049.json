@@ -1,0 +1,55 @@
+{
+ "id": "CTRL-0049",
+ "type": "control",
+ "level": 0,
+ "statement": "Implement UI/UX cues to communicate the risk of hallucination to users",
+ "recommendations": "Users may treat agent-generated content as completely reliable without recognising that LLMs can produce inaccurate or fabricated information presented as fact. Implement clear UI/UX indicators that remind users of hallucination risks, such as disclaimers on agent responses, visual cues distinguishing generated content from verified information, or warnings when agents make factual claims without citations. Consider contextual warnings that appear when agents discuss topics particularly prone to hallucination, such as recent events beyond the model's training data or highly specialised technical subjects.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build"
+ ],
+ "evidence": "The front-end code or screenshots of the response view showing the accuracy disclaimer and the visual marking of uncited generated content.",
+ "test": "Open the production interface, ask a factual question and confirm the disclaimer is visible beside the answer without scrolling or clicking.",
+ "risks": [
+  {
+   "id": "RISK-028",
+   "statement": "Generation of non-factual or hallucinated content"
+  },
+  {
+   "id": "RISK-052",
+   "statement": "Automation bias and erosion of human oversight"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://genai.owasp.org/llmrisk/llm092025-misinformation/",
+  "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.11",
+    "title": "Implement controls to reduce the likelihood of hallucination"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.4.2",
+    "title": "Users who interact with agents (transparency, disclosure, escalation)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI09",
+    "title": "Human-Agent Trust Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0049/"
+}

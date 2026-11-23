@@ -1,0 +1,73 @@
+{
+ "id": "CTRL-0101",
+ "type": "control",
+ "level": 0,
+ "statement": "Give agents no write access to their own instructions, configuration, permissions, logs, or monitors",
+ "recommendations": "An agent that can edit what governs it holds both sides of the check. Keep the agent's instruction files, settings, tool and permission configuration, approval rules, logs, and monitoring out of every location and API that the agent's own identities can write to. Send logs to a store that the agent cannot modify or delete, and run monitors under a different identity, outside the agent's environment. Make changes to permissions and configuration go through a path that needs a human, and alert on any attempt by an agent to change them. Check this for every route the agent has, including code it can run and applications it can operate, and not only for its named tools.",
+ "enforcement": [
+  "infrastructure",
+  "harness"
+ ],
+ "owner": "platform",
+ "phase": [
+  "design",
+  "build",
+  "operate"
+ ],
+ "evidence": "Access policies showing that the agent's identities have no write permission on its configuration, permission, and instruction stores, and that its logs go to append-only storage owned by another identity.",
+ "test": "Using the agent's credentials and tools, try to edit its permission configuration and to delete a log entry, and confirm that both fail and raise an alert.",
+ "risks": [
+  {
+   "id": "RISK-058",
+   "statement": "Instruction and configuration files as a way in"
+  },
+  {
+   "id": "RISK-062",
+   "statement": "Agent alters or disables the oversight placed on it"
+  }
+ ],
+ "references": [
+  "https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/",
+  "https://metr.org/blog/2026-10-22-red-teaming-openai-agent-monitoring/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.6",
+    "title": "Implement authentication, authorisation and access controls"
+   },
+   {
+    "id": "4.3",
+    "title": "Continuous monitoring and logging"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.2.2",
+    "title": "Design for meaningful human oversight"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   },
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS2",
+    "title": "Designing secure agents – Oversight mechanisms"
+   },
+   {
+    "id": "OP1",
+    "title": "Operating agents securely – Monitoring and auditing"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0101/"
+}

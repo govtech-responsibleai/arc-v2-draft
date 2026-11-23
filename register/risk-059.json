@@ -1,0 +1,88 @@
+{
+ "id": "RISK-059",
+ "type": "risk",
+ "statement": "Prompt injection through inbound messages",
+ "description": "This risk arises when an agent reads messages or records that outside parties can write, such as email, chat, calendar invitations, support tickets, issue and pull-request comments, form submissions, or log entries, and treats instructions hidden in them as its own. Unlike a web page that the agent chooses to visit, a message arrives unasked and can wait until the agent processes it, so the attacker needs nothing more than the ability to send it. As a result, the agent may act on the attacker's behalf with the authority it holds, for example by changing configuration, transferring ownership of resources, publishing software, or operating connected devices, as when an injected issue title led a triage bot to compromise a software release, and hidden text in a calendar invitation led an assistant to operate smart-home devices. RISK-047 covers the case where the injected instruction causes data to leave the organisation.",
+ "elements": [
+  {
+   "id": "CAP-09",
+   "name": "Other Programmatic Interfaces"
+  }
+ ],
+ "failure_mode": "External Manipulation",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0019",
+   "level": 0,
+   "statement": "Keep untrusted inputs out of system instructions, and enclose any untrusted content given to the model in delimiters marked as data"
+  },
+  {
+   "id": "CTRL-0062",
+   "level": 0,
+   "statement": "Implement input guardrails to detect prompt injection and adversarial attacks"
+  },
+  {
+   "id": "CTRL-0090",
+   "level": 1,
+   "statement": "Enforce data-flow and capability policies at runtime with a deterministic policy layer that separates untrusted content from privileged actions"
+  },
+  {
+   "id": "CTRL-0020",
+   "level": 2,
+   "statement": "Use a dedicated LLM to extract required fields from inputs and filter out extraneous text or embedded instructions"
+  }
+ ],
+ "sources": [
+  "https://cline.bot/blog/post-mortem-unauthorized-cline-cli-npm",
+  "https://www.codeintegrity.ai/blog/heroku",
+  "https://www.theregister.com/2025/08/08/infosec_hounds_spot_prompt_injection/",
+  "https://openai.com/index/hardening-atlas-against-prompt-injection/"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T6",
+    "title": "Intent breaking and goal manipulation"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0051.001",
+    "title": "LLM Prompt Injection: Indirect"
+   },
+   {
+    "id": "AML.T0093",
+    "title": "Prompt Infiltration via Public-Facing Application"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-059/"
+}

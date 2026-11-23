@@ -1,0 +1,61 @@
+{
+ "id": "CTRL-0078",
+ "type": "control",
+ "level": 0,
+ "statement": "Enforce throttling or rate limits on agent-initiated database operations",
+ "recommendations": "Agents executing database operations without constraints may issue excessive queries that overwhelm database resources, degrade performance for other users, or cause service outages. Implement throttling mechanisms that limit the frequency and volume of agent-initiated database operations, such as maximum queries per second, maximum concurrent connections, or query timeout limits. Monitor database load patterns to detect agents approaching or exceeding rate limits, using this data to refine throttling policies or investigate agents with excessive query behaviour.",
+ "enforcement": [
+  "harness",
+  "infrastructure"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The settings on the agent's database role or query tool giving maximum queries per second, concurrent connections and statement timeout.",
+ "test": "Drive the agent's query tool above the configured rate and submit a long-running query, and confirm excess calls are throttled and the query times out.",
+ "risks": [
+  {
+   "id": "RISK-042",
+   "statement": "Database overload due to inefficient data operations"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+  "https://api-security.owasp.org/editions/2023/en/0xa4-unrestricted-resource-consumption"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "3.1",
+    "title": "Ensure availability controls against disruption or failure"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP4",
+    "title": "Operating agents securely – Performance monitoring"
+   },
+   {
+    "id": "AA1",
+    "title": "Appendix A, prerequisites – Design"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0078/"
+}

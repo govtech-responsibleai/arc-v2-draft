@@ -1,0 +1,94 @@
+{
+ "id": "CTRL-0029",
+ "type": "control",
+ "level": 0,
+ "statement": "Grant agents only the minimum permissions required for their designated tasks",
+ "recommendations": "Excessive permissions enable compromised or malfunctioning agents to access sensitive resources, modify critical data, or perform actions beyond their intended scope, amplifying the impact of security breaches. Apply the principle of least privilege by defining granular permission sets for each agent based on its specific role and required operations, avoiding blanket administrative access or broad permission grants. Review agent permissions regularly to ensure they remain aligned with current responsibilities, revoking unnecessary access as agent roles evolve.",
+ "enforcement": [
+  "infrastructure",
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build",
+  "operate"
+ ],
+ "evidence": "Each agent's IAM policy and tool permission manifest, with every permission tied to a named task, and the latest access review record.",
+ "test": "Using the agent's credentials, attempt an operation outside its role, such as reading another system's data store, and confirm it is denied.",
+ "risks": [
+  {
+   "id": "RISK-014",
+   "statement": "Feedback loops and runaway agent behaviour"
+  },
+  {
+   "id": "RISK-015",
+   "statement": "Overly permissive roles and permissions"
+  },
+  {
+   "id": "RISK-016",
+   "statement": "Unauthorised privilege escalation"
+  },
+  {
+   "id": "RISK-049",
+   "statement": "Escape from evaluation or sandbox containment onto live systems"
+  },
+  {
+   "id": "RISK-056",
+   "statement": "Actions beyond the agent's tools through code execution and reachable credentials"
+  },
+  {
+   "id": "RISK-057",
+   "statement": "Pursuit of a goal by means the principal did not sanction"
+  },
+  {
+   "id": "RISK-060",
+   "statement": "Agent credentials that are over-broad, long-lived, or outlive their use"
+  },
+  {
+   "id": "RISK-063",
+   "statement": "Authority passing between agents without a check"
+  }
+ ],
+ "references": [
+  "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services",
+  "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.8",
+    "title": "Apply least privilege; secure-by-default configurations"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS3",
+    "title": "Designing secure agents – Identity management"
+   },
+   {
+    "id": "OP5",
+    "title": "Operating agents securely – Privileges and authentication"
+   },
+   {
+    "id": "AA1",
+    "title": "Appendix A, prerequisites – Design"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0029/"
+}

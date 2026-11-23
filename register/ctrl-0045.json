@@ -1,0 +1,52 @@
+{
+ "id": "CTRL-0045",
+ "type": "control",
+ "level": 1,
+ "statement": "Implement input guardrails to detect and decline requests for specialised domain advice",
+ "recommendations": "Agents generating unqualified advice in specialised domains such as medical, financial, or legal matters may cause users to act on incorrect or inappropriate information, leading to serious harm or adverse outcomes. Deploy input guardrails that detect when user requests fall within specialised domains requiring professional expertise, such as medical diagnosis, financial investment advice, or legal counsel. Configure the system to decline these requests with appropriate messaging that explains why the agent cannot provide such advice and suggests consulting qualified professionals.",
+ "enforcement": [
+  "model",
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The input guardrail configuration listing the medical, legal and financial advice categories, the detector used and the referral message returned.",
+ "test": "Send labelled requests for a diagnosis, an investment recommendation and legal counsel among benign controls and confirm only the advice requests are declined.",
+ "risks": [
+  {
+   "id": "RISK-025",
+   "statement": "Generation of unqualified advice in specialised domains"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.1",
+    "title": "Validate inputs to models and agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [],
+  "fiveeyes_agentic": [
+   {
+    "id": "DP5",
+    "title": "Deploying agents securely – Guardrails and constraints"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0045/"
+}

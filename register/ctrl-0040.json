@@ -1,0 +1,85 @@
+{
+ "id": "CTRL-0040",
+ "type": "control",
+ "level": 0,
+ "statement": "Limit the scope of agent actions through predefined thresholds and baselines",
+ "recommendations": "Without action limits, agents may bypass controls by delegating excessive tasks, consuming unlimited resources, or spreading malicious activities across multiple operations to evade detection. Define quantitative thresholds that constrain agent behaviour, such as maximum number of tool calls per session, maximum number of agents that can be delegated to, maximum cost or resource consumption, or maximum data volume accessed. Implement runtime monitoring that tracks agent activity against these thresholds and halts execution when limits are exceeded. Examples include limiting an agent to 50 API calls per task or restricting delegation to no more than 3 sub-agents.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build",
+  "operate"
+ ],
+ "evidence": "The runtime limits file giving maximum tool calls, delegated agents, spend and data volume per task, with log entries for halted runs.",
+ "test": "Start a task that needs more tool calls than the configured maximum and confirm the run halts at the limit and records the reason.",
+ "risks": [
+  {
+   "id": "RISK-014",
+   "statement": "Feedback loops and runaway agent behaviour"
+  },
+  {
+   "id": "RISK-021",
+   "statement": "Incorrect task delegation between agents"
+  },
+  {
+   "id": "RISK-049",
+   "statement": "Escape from evaluation or sandbox containment onto live systems"
+  },
+  {
+   "id": "RISK-053",
+   "statement": "Dependence on third-party agents as counterparties or delegates"
+  },
+  {
+   "id": "RISK-057",
+   "statement": "Pursuit of a goal by means the principal did not sanction"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/",
+  "https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.7",
+    "title": "Implement controls to limit what models or agents can access and generate"
+   },
+   {
+    "id": "3.1",
+    "title": "Ensure availability controls against disruption or failure"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   },
+   {
+    "id": "ASI08",
+    "title": "Cascading Failures"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP4",
+    "title": "Operating agents securely – Performance monitoring"
+   },
+   {
+    "id": "DP5",
+    "title": "Deploying agents securely – Guardrails and constraints"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0040/"
+}

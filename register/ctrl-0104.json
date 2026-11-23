@@ -1,0 +1,68 @@
+{
+ "id": "CTRL-0104",
+ "type": "control",
+ "level": 1,
+ "statement": "Authorise each action against the principal it is done for, at the agent that carries it out",
+ "recommendations": "When agents call each other, the permission that matters is that of the person or system at the start of the chain, not that of the agent making the request. Pass the originating principal's identity and scope with every inter-agent request, in a form the receiving agent can verify, and have the agent that acts check the action against that scope. An agent's effective permissions for a request should be no wider than those of the least-privileged party that contributed to it. Do not let agents discover and call each other freely: list which agents may call which, and for which actions. Treat a message from another organisation's agent as untrusted input, and require a human or an out-of-band confirmation before acting on it where the action is consequential.",
+ "enforcement": [
+  "harness",
+  "infrastructure"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build"
+ ],
+ "evidence": "The inter-agent call path showing the originating principal's identity carried in each request and checked by the acting agent, and the list of permitted agent-to-agent calls.",
+ "test": "From a low-privilege session, have one agent ask a higher-privilege agent for an action that the user is not entitled to, and confirm that it is refused.",
+ "risks": [
+  {
+   "id": "RISK-063",
+   "statement": "Authority passing between agents without a check"
+  }
+ ],
+ "references": [
+  "https://appomni.com/ao-labs/ai-agent-to-agent-discovery-prompt-injection/",
+  "https://www.pillar.security/blog/ill-just-call-you-agent-to-agent-privilege-boundary-failures-in-ci-cd-on-googles-adk-repository"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "3.4",
+    "title": "Implement security controls between agents"
+   },
+   {
+    "id": "2.6",
+    "title": "Implement authentication, authorisation and access controls"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   },
+   {
+    "id": "ASI07",
+    "title": "Insecure Inter-Agent Communication"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS3",
+    "title": "Designing secure agents – Identity management"
+   },
+   {
+    "id": "OP5",
+    "title": "Operating agents securely – Privileges and authentication"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0104/"
+}

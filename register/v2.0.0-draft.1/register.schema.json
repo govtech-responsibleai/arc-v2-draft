@@ -1,0 +1,314 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://govtech-responsibleai.github.io/arc-v2-draft/register/register.schema.json",
+ "title": "ARC risk register",
+ "type": "object",
+ "required": [
+  "version",
+  "released",
+  "elements",
+  "hazards",
+  "risks",
+  "controls"
+ ],
+ "properties": {
+  "version": {
+   "type": "string",
+   "description": "Register version (MAJOR.MINOR.PATCH, with a pre-release label for a draft)"
+  },
+  "released": {
+   "type": "string",
+   "format": "date"
+  },
+  "elements": {
+   "type": "object",
+   "description": "Components (CMP-), design elements (DSN-) and capabilities (CAP-), by ID",
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "name",
+     "kind"
+    ],
+    "properties": {
+     "name": {
+      "type": "string"
+     },
+     "kind": {
+      "enum": [
+       "component",
+       "design",
+       "capability"
+      ]
+     },
+     "category": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "description": {
+      "type": "string"
+     },
+     "present_when": {
+      "type": "string",
+      "description": "For a conditional element: when a system has it"
+     },
+     "authority": {
+      "type": "array",
+      "items": {
+       "enum": [
+        "read",
+        "propose",
+        "act-with-approval",
+        "act-alone"
+       ]
+      },
+      "description": "For a capability: the authorities it can be used at, least to most"
+     },
+     "irreversible": {
+      "enum": [
+       "ask",
+       "always",
+       "never"
+      ]
+     },
+     "external": {
+      "enum": [
+       "ask",
+       "always",
+       "never"
+      ]
+     }
+    }
+   }
+  },
+  "hazards": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "name",
+     "type"
+    ],
+    "properties": {
+     "name": {
+      "type": "string"
+     },
+     "type": {
+      "enum": [
+       "Safety",
+       "Security"
+      ]
+     },
+     "description": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "combinations": {
+   "type": "object",
+   "description": "Combination rules: shared roles, the rules that name them, and implied capabilities",
+   "properties": {
+    "roles": {
+     "type": "object"
+    },
+    "rules": {
+     "type": "object"
+    },
+    "implies": {
+     "type": "object"
+    }
+   }
+  },
+  "risks": {
+   "type": "object",
+   "description": "Risks by ID (RISK-nnn)",
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "statement",
+     "failure_mode",
+     "controls"
+    ],
+    "properties": {
+     "statement": {
+      "type": "string"
+     },
+     "description": {
+      "type": "string"
+     },
+     "element_ids": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "The risk applies when the system has all of these"
+     },
+     "combination": {
+      "type": "string",
+      "description": "In place of element_ids: the combination rule the risk arises from"
+     },
+     "min_authority": {
+      "type": "object",
+      "additionalProperties": {
+       "enum": [
+        "read",
+        "propose",
+        "act-with-approval",
+        "act-alone"
+       ]
+      },
+      "description": "The risk applies only where these capabilities are used at this authority or above"
+     },
+     "failure_mode": {
+      "type": "string"
+     },
+     "type": {
+      "type": "array",
+      "items": {
+       "enum": [
+        "Safety",
+        "Security"
+       ]
+      }
+     },
+     "hazards": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "controls": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "sources": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "crosswalks": {
+      "type": "object"
+     },
+     "superseded_by": {
+      "type": "string",
+      "description": "A retired risk: the risk that replaces it"
+     }
+    }
+   }
+  },
+  "controls": {
+   "type": "object",
+   "description": "Controls by ID (CTRL-nnnn)",
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "level",
+     "statement",
+     "risks"
+    ],
+    "properties": {
+     "level": {
+      "enum": [
+       0,
+       1,
+       2
+      ]
+     },
+     "statement": {
+      "type": "string"
+     },
+     "recommendations": {
+      "type": "string"
+     },
+     "level_when": {
+      "type": "array",
+      "description": "A stricter level where a capability is used in this context",
+      "items": {
+       "type": "object",
+       "properties": {
+        "level": {
+         "enum": [
+          0,
+          1,
+          2
+         ]
+        },
+        "authority": {
+         "enum": [
+          "read",
+          "propose",
+          "act-with-approval",
+          "act-alone"
+         ]
+        },
+        "irreversible": {
+         "type": "boolean"
+        },
+        "external": {
+         "type": "boolean"
+        },
+        "capabilities": {
+         "type": "array",
+         "items": {
+          "type": "string"
+         }
+        }
+       }
+      }
+     },
+     "enforcement": {
+      "type": "array",
+      "items": {
+       "enum": [
+        "prompt",
+        "model",
+        "harness",
+        "infrastructure",
+        "organisation"
+       ]
+      }
+     },
+     "owner": {
+      "type": "string"
+     },
+     "phase": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "evidence": {
+      "type": "string"
+     },
+     "test": {
+      "type": "string"
+     },
+     "risks": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "references": {
+      "type": [
+       "array",
+       "null"
+      ]
+     },
+     "crosswalks": {
+      "type": "object"
+     },
+     "superseded_by": {
+      "type": "string",
+      "description": "A retired control: the control that replaces it"
+     }
+    }
+   }
+  }
+ }
+}

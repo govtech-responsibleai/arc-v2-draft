@@ -1,0 +1,56 @@
+{
+ "id": "RISK-035",
+ "type": "risk",
+ "statement": "Unreliable information or websites",
+ "description": "This risk arises when an agent retrieves and presents information from websites that are inaccurate, outdated, biased, or otherwise unreliable. As a result, users may be misinformed or make incorrect decisions based on content that has not been adequately validated or corroborated.",
+ "elements": [
+  {
+   "id": "CAP-07",
+   "name": "Internet and Search Access"
+  }
+ ],
+ "failure_mode": "Tool or Resource Malfunction",
+ "risk_type": [
+  "Safety"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  },
+  {
+   "id": "HZ-09",
+   "name": "Misrepresentation",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0063",
+   "level": 1,
+   "statement": "Prioritise search results from verified, high-quality domains"
+  }
+ ],
+ "sources": [
+  "https://www.cjr.org/tow_center/we-compared-eight-ai-search-engines-theyre-all-bad-at-citing-news.php",
+  "https://genai.owasp.org/llmrisk/llm092025-misinformation/"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI06",
+    "title": "Memory and Context Poisoning"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T5",
+    "title": "Cascading hallucination attacks"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-035/"
+}

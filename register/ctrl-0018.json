@@ -1,0 +1,57 @@
+{
+ "id": "CTRL-0018",
+ "type": "control",
+ "level": 2,
+ "statement": "Define default behaviour when the agent encounters ambiguous situations",
+ "recommendations": "Agents encountering ambiguous instructions without clear fallback behaviour may make incorrect assumptions, proceed with risky actions, or halt unexpectedly, reducing reliability and increasing safety risks. Establish a default policy for handling ambiguity that aligns with your risk tolerance, such as requesting human clarification, selecting the most conservative option, or declining to act until uncertainty is resolved. Document this policy in the system prompt and provide examples of ambiguous scenarios to guide agent decision-making. Monitor how often the agent invokes ambiguity handling mechanisms to identify areas where task definitions or instructions require clarification.",
+ "enforcement": [
+  "prompt"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build",
+  "operate"
+ ],
+ "evidence": "The system prompt section stating the default action under ambiguity with worked examples, and a dashboard counting how often the agent invokes it.",
+ "test": "Give the agent an instruction with two conflicting readings and confirm it takes the stated default, such as asking for clarification, before any tool call.",
+ "risks": [
+  {
+   "id": "RISK-008",
+   "statement": "Vague or underspecified instructions"
+  }
+ ],
+ "references": [
+  "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.10",
+    "title": "Implement model self-reflection before decisions"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DP4",
+    "title": "Deploying agents securely – Secure by default"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0018/"
+}

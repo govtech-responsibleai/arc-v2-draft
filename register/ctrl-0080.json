@@ -1,0 +1,45 @@
+{
+ "id": "CTRL-0080",
+ "type": "control",
+ "level": 2,
+ "statement": "Implement caching mechanisms to reduce repetitive database queries by agents",
+ "recommendations": "Agents repeatedly querying the same or similar data create unnecessary database load, consuming resources that could be avoided through intelligent caching. Implement caching layers (e.g., Redis, Memcached, in-memory caches) that store frequently accessed data, allowing agents to retrieve cached results rather than repeatedly querying databases for identical information.",
+ "enforcement": [
+  "harness",
+  "infrastructure"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build"
+ ],
+ "evidence": "The cache configuration for the agent's data tools showing key design and expiry times, and the dashboard of cache hit rate.",
+ "test": "Issue the same query twice through the agent and confirm the second is served from the cache with no new database query logged.",
+ "risks": [
+  {
+   "id": "RISK-042",
+   "statement": "Database overload due to inefficient data operations"
+  }
+ ],
+ "references": [
+  "https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "3.1",
+    "title": "Ensure availability controls against disruption or failure"
+   }
+  ],
+  "imda_mgf": [],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0080/"
+}

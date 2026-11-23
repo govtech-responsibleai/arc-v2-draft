@@ -1,0 +1,80 @@
+{
+ "id": "RISK-014",
+ "type": "risk",
+ "statement": "Feedback loops and runaway agent behaviour",
+ "description": "This risk arises when an agent repeatedly acts on its own outputs, or agents reinforce each other’s decisions, outputs, or errors, with no bound on how many steps it takes, how much it spends, or how far its actions reach. As a result, feedback loops may form that escalate actions, consume excessive resources, or cause the system to persist in harmful or unintended behaviour without effective human intervention.",
+ "elements": [
+  {
+   "id": "DSN-01",
+   "name": "Agentic Architecture"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-03",
+   "name": "Infrastructure and network",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0029",
+   "level": 0,
+   "statement": "Grant agents only the minimum permissions required for their designated tasks"
+  },
+  {
+   "id": "CTRL-0040",
+   "level": 0,
+   "statement": "Limit the scope of agent actions through predefined thresholds and baselines"
+  },
+  {
+   "id": "CTRL-0065",
+   "level": 0,
+   "statement": "Ensure every agent can be immediately paused or terminated by its operators"
+  },
+  {
+   "id": "CTRL-0027",
+   "level": 1,
+   "statement": "Implement circuit breakers to prevent cascading failures in multi-agent systems"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2402.06627",
+  "https://arxiv.org/abs/2502.14143"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI08",
+    "title": "Cascading Failures"
+   },
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T5",
+    "title": "Cascading hallucination attacks"
+   },
+   {
+    "id": "T4",
+    "title": "Resource overload"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-014/"
+}

@@ -1,0 +1,21 @@
+{
+ "id": "CAP-05",
+ "type": "element",
+ "kind": "capability",
+ "name": "Official Communication",
+ "category": "Interaction",
+ "description": "The capability to compose, finalise, and dispatch authoritative communications that formally and legally represent an organization to external parties (e.g. customers, partners, regulators, courts, or media) via approved channels and formats, thereby creating potential legal, regulatory, or reputational obligations. This includes sending legally binding correspondence, publishing official statements or press releases, and responding to external inquiries using the organisation's identity. A system has this capability whether a person sends what the agent drafts, approves each message before it goes, or lets the agent send by itself; that difference is recorded as the capability's authority.",
+ "authority": [
+  "propose",
+  "act-with-approval",
+  "act-alone"
+ ],
+ "irreversible": "always",
+ "external": "always",
+ "risks": [
+  "RISK-030",
+  "RISK-031"
+ ],
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/cap-05/"
+}

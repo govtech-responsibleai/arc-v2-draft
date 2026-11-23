@@ -1,0 +1,54 @@
+{
+ "id": "CTRL-0079",
+ "type": "control",
+ "level": 2,
+ "statement": "Validate agent-generated database queries for efficiency before execution against production databases",
+ "recommendations": "Agents may generate inefficient database queries such as full table scans, missing indexes, or SELECT * operations that consume excessive resources and degrade database performance. Implement automated query validation that analyses agent-generated queries before execution, checking for common efficiency issues including lack of appropriate indexes, overly broad selections, missing WHERE clauses on large tables, or N+1 query patterns.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build"
+ ],
+ "evidence": "The query validator in the database tool, its rules for missing WHERE clauses, SELECT * and unindexed scans, and its log of rejected queries.",
+ "test": "Submit an unfiltered SELECT * on a large table through the agent's query tool and confirm it is rejected before reaching the production database.",
+ "risks": [
+  {
+   "id": "RISK-042",
+   "statement": "Database overload due to inefficient data operations"
+  }
+ ],
+ "references": [
+  "https://www.postgresql.org/docs/current/using-explain.html",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "3.1",
+    "title": "Ensure availability controls against disruption or failure"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.3",
+    "title": "Continuously monitor and test when deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP4",
+    "title": "Operating agents securely – Performance monitoring"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0079/"
+}

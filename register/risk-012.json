@@ -1,0 +1,76 @@
+{
+ "id": "RISK-012",
+ "type": "risk",
+ "statement": "Cascading errors in multi-agent architectures",
+ "description": "This risk arises when errors or misjudgements produced by one agent propagate through interconnected agents within a multi-agent system. As a result, small failures may compound across agent interactions, leading to amplified errors, degraded system performance, or unintended outcomes at the system level.",
+ "elements": [
+  {
+   "id": "DSN-01",
+   "name": "Agentic Architecture"
+  },
+  {
+   "id": "CAP-02",
+   "name": "Agent Delegation"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0024",
+   "level": 0,
+   "statement": "Define formal schemas for inter-agent messages and validate all messages against these schemas before processing"
+  },
+  {
+   "id": "CTRL-0028",
+   "level": 0,
+   "statement": "Continuously monitor multi-agent systems for cascade failure indicators"
+  },
+  {
+   "id": "CTRL-0025",
+   "level": 1,
+   "statement": "Ensure all inter-agent communications are encrypted in transit and prohibit plaintext channels"
+  },
+  {
+   "id": "CTRL-0027",
+   "level": 1,
+   "statement": "Implement circuit breakers to prevent cascading failures in multi-agent systems"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2408.00989v3",
+  "https://arxiv.org/pdf/2502.19145"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI08",
+    "title": "Cascading Failures"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T5",
+    "title": "Cascading hallucination attacks"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-012/"
+}

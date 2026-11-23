@@ -1,0 +1,73 @@
+{
+ "id": "CTRL-0100",
+ "type": "control",
+ "level": 0,
+ "statement": "Load instruction, settings, and tool-configuration files only from locations the operator controls, and ask before using any that arrive with a workspace",
+ "recommendations": "Files that an agent loads automatically are instructions and code, whoever wrote them. Decide which locations may supply instruction, rules, settings, hook, skill, and tool-configuration files, and keep them under the operator's control and under version review. When the agent is started in a workspace that brings such files with it, such as a cloned repository or a downloaded folder, do not apply them until a person has seen what they contain and agreed, and make sure the trust prompt comes before anything in the workspace runs. Show hidden and invisible characters in these files when they are reviewed, and re-check them when they change (see CTRL-0091). Do not let the agent itself create or edit them (see CTRL-0101).",
+ "enforcement": [
+  "harness",
+  "organisation"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build",
+  "operate"
+ ],
+ "evidence": "The agent's configuration listing the locations it loads instruction and settings files from, and its trust-prompt behaviour for workspace-supplied files, with a review record for the files currently in use.",
+ "test": "Start the agent in a folder containing a planted instruction file and a settings file with a command hook, and confirm that neither takes effect before the user approves the workspace.",
+ "risks": [
+  {
+   "id": "RISK-058",
+   "statement": "Instruction and configuration files as a way in"
+  }
+ ],
+ "references": [
+  "https://research.checkpoint.com/2026/rce-and-api-token-exfiltration-through-claude-code-project-files-cve-2025-59536/",
+  "https://www.pillar.security/blog/new-vulnerability-in-github-copilot-and-cursor-how-hackers-can-weaponize-code-agents"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.1",
+    "title": "Supply chain security – ensure components are from trusted sources"
+   },
+   {
+    "id": "4.1",
+    "title": "Validate inputs to models and agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   },
+   {
+    "id": "ASI04",
+    "title": "Agentic Supply Chain Vulnerabilities"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS1",
+    "title": "Designing secure agents – Controlled context"
+   },
+   {
+    "id": "DV7",
+    "title": "Developing secure agents – Manage third-party components"
+   },
+   {
+    "id": "DP4",
+    "title": "Deploying agents securely – Secure by default"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0100/"
+}

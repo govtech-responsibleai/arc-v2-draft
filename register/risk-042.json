@@ -1,0 +1,62 @@
+{
+ "id": "RISK-042",
+ "type": "risk",
+ "statement": "Database overload due to inefficient data operations",
+ "description": "This risk arises when an agent issues poorly optimised, excessively frequent, or redundant queries against databases or data stores. As a result, system performance may degrade, resources may be exhausted, or critical services may become unavailable due to unnecessary load.",
+ "elements": [
+  {
+   "id": "CAP-11",
+   "name": "File and Data Management"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-03",
+   "name": "Infrastructure and network",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0078",
+   "level": 0,
+   "statement": "Enforce throttling or rate limits on agent-initiated database operations"
+  },
+  {
+   "id": "CTRL-0079",
+   "level": 2,
+   "statement": "Validate agent-generated database queries for efficiency before execution against production databases"
+  },
+  {
+   "id": "CTRL-0080",
+   "level": 2,
+   "statement": "Implement caching mechanisms to reduce repetitive database queries by agents"
+  }
+ ],
+ "sources": [
+  "https://www.tinybird.co/blog-posts/which-llm-writes-the-best-sql",
+  "https://arxiv.org/abs/2305.03111",
+  "https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T4",
+    "title": "Resource overload"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-042/"
+}

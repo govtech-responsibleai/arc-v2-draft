@@ -1,0 +1,56 @@
+{
+ "id": "CTRL-0044",
+ "type": "control",
+ "level": 1,
+ "statement": "Implement output safety guardrails to detect and prevent generation of undesirable content",
+ "recommendations": "Agents may generate toxic, hateful, sexual, or otherwise inappropriate content that causes harm to users, violates organisational standards, or creates regulatory compliance issues. Deploy output safety guardrails that scan all agent-generated content before delivery to users, detecting categories of undesirable content such as hate speech, sexually explicit material, violent content, or self-harm promotion. Use content moderation APIs, classifiers, or LLM-based safety filters to evaluate outputs against defined safety policies, blocking or flagging content that violates established boundaries. Configure appropriate responses when unsafe content is detected, such as refusing to generate the output, requesting reformulation, or escalating to human review for edge cases.",
+ "enforcement": [
+  "model",
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The output guardrail configuration naming the moderation classifier, the blocked content categories and thresholds, with a log of blocked responses.",
+ "test": "Run garak or promptfoo harmful-content probes and confirm hateful, sexual, violent and self-harm outputs are blocked before delivery at the documented rate.",
+ "risks": [
+  {
+   "id": "RISK-024",
+   "statement": "Generation of undesirable content"
+  },
+  {
+   "id": "RISK-067",
+   "statement": "Use of the agent by its own principal against others"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.2",
+    "title": "Validate outputs from models and agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [],
+  "fiveeyes_agentic": [
+   {
+    "id": "DP5",
+    "title": "Deploying agents securely – Guardrails and constraints"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0044/"
+}

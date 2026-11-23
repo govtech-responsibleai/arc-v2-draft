@@ -1,0 +1,56 @@
+{
+ "id": "CTRL-0050",
+ "type": "control",
+ "level": 1,
+ "statement": "Implement features enabling users to verify generated answers against source content",
+ "recommendations": "Without verification mechanisms, users cannot easily check whether agent-generated information is accurate or fabricated, increasing reliance on potentially hallucinated content. Provide built-in features that enable users to verify agent responses against original source materials, such as inline citations linking to specific documents or passages, source attribution showing which materials informed the response, or side-by-side views displaying retrieved content alongside generated summaries. Design verification features to minimise friction whilst maintaining effectiveness — users should be able to check sources with minimal effort rather than requiring extensive navigation or manual searching. For example, automatically highlight passages in source documents that support specific claims made by the agent, enabling rapid verification of factual statements.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build"
+ ],
+ "evidence": "The response payload schema carrying source identifiers and passage offsets, and the interface code that renders them as inline citations.",
+ "test": "Ask a question answered by a known document and confirm each citation opens that document at the passage supporting the claim.",
+ "risks": [
+  {
+   "id": "RISK-028",
+   "statement": "Generation of non-factual or hallucinated content"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services",
+  "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.11",
+    "title": "Implement controls to reduce the likelihood of hallucination"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.4.2",
+    "title": "Users who interact with agents (transparency, disclosure, escalation)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI09",
+    "title": "Human-Agent Trust Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV6",
+    "title": "Developing secure agents – Accountability"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0050/"
+}

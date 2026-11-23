@@ -1,0 +1,79 @@
+{
+ "id": "RISK-007",
+ "type": "risk",
+ "statement": "Lack of input sanitisation",
+ "description": "This risk arises when inputs passed from the agent to tools are not properly validated or sanitised, allowing malformed or malicious data to be processed. As a result, tools may be exploited through injection attacks, unintended command execution, or data corruption.",
+ "elements": [
+  {
+   "id": "CMP-03",
+   "name": "Tools"
+  }
+ ],
+ "failure_mode": "Tool or Resource Malfunction",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0015",
+   "level": 1,
+   "statement": "Treat all tool metadata and outputs as untrusted input requiring validation"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2503.12188v1",
+  "https://www.cve.org/CVERecord?id=CVE-2024-7042"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   },
+   {
+    "id": "ASI05",
+    "title": "Unexpected Code Execution (RCE)"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T2",
+    "title": "Tool misuse"
+   },
+   {
+    "id": "T11",
+    "title": "Unexpected RCE and code attacks"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0053",
+    "title": "AI Agent Tool Invocation"
+   },
+   {
+    "id": "AML.T0050",
+    "title": "Command and Scripting Interpreter"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-007/"
+}

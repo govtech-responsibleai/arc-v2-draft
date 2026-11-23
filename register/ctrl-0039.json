@@ -1,0 +1,66 @@
+{
+ "id": "CTRL-0039",
+ "type": "control",
+ "level": 1,
+ "statement": "Ensure each agent publishes standardised, machine-readable capability descriptors accessible to other agents",
+ "recommendations": "Without standardised capability descriptors, agents cannot reliably discover what other agents can do, leading to misrouted requests, capability mismatches, or failed inter-agent collaborations. Implement machine-readable capability descriptions for each agent using standardised formats such as A2A Agent Cards that declare available skills, required inputs, output formats, and operational constraints. Publish capability descriptors through discoverable endpoints (e.g., well-known URIs at `https://{domain}/.well-known/agent-card.json`) or centralised agent registries that other agents can query to determine if a target agent can fulfil specific requests. Maintain capability descriptors in sync with actual agent implementations, updating descriptors whenever agent capabilities change to prevent stale metadata from causing integration failures.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "deploy"
+ ],
+ "evidence": "Each agent's card at its well-known address or registry entry, and the pipeline check comparing declared skills with the deployed code.",
+ "test": "Fetch each agent card and call every declared skill with the stated inputs, confirming each responds in the declared output format.",
+ "risks": [
+  {
+   "id": "RISK-020",
+   "statement": "Generating plans that overlook safety implications"
+  },
+  {
+   "id": "RISK-053",
+   "statement": "Dependence on third-party agents as counterparties or delegates"
+  }
+ ],
+ "references": [
+  "https://a2a-protocol.org/latest/topics/agent-discovery/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.4",
+    "title": "Identify, track and protect AI system assets"
+   },
+   {
+    "id": "3.4",
+    "title": "Implement security controls between agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI07",
+    "title": "Insecure Inter-Agent Communication"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS3",
+    "title": "Designing secure agents – Identity management"
+   },
+   {
+    "id": "DV7",
+    "title": "Developing secure agents – Manage third-party components"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0039/"
+}

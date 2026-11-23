@@ -1,0 +1,86 @@
+{
+ "id": "RISK-036",
+ "type": "risk",
+ "statement": "Prompt injection risks through computer use",
+ "description": "This risk arises when an agent interacts with graphical user interfaces that display untrusted or adversarial content - such as web pages, documents, pop-ups, or form fields - crafted to embed hidden instructions or manipulative cues. As a result, the agent may misinterpret on-screen text as authoritative guidance, follow injected instructions, or perform unintended actions while operating the interface.",
+ "elements": [
+  {
+   "id": "CAP-08",
+   "name": "Computer Use"
+  }
+ ],
+ "failure_mode": "External Manipulation",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0062",
+   "level": 0,
+   "statement": "Implement input guardrails to detect prompt injection and adversarial attacks"
+  },
+  {
+   "id": "CTRL-0065",
+   "level": 0,
+   "statement": "Ensure every agent can be immediately paused or terminated by its operators"
+  },
+  {
+   "id": "CTRL-0064",
+   "level": 1,
+   "statement": "Limit computer use to accessing only safe and trusted resources"
+  },
+  {
+   "id": "CTRL-0090",
+   "level": 1,
+   "statement": "Enforce data-flow and capability policies at runtime with a deterministic policy layer that separates untrusted content from privileged actions"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/html/2505.13076v1",
+  "https://hiddenlayer.com/innovation-hub/indirect-prompt-injection-of-claude-computer-use/"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T6",
+    "title": "Intent breaking and goal manipulation"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0100",
+    "title": "AI Agent Clickbait"
+   },
+   {
+    "id": "AML.T0051.001",
+    "title": "LLM Prompt Injection: Indirect"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-036/"
+}

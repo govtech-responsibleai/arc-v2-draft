@@ -1,0 +1,66 @@
+{
+ "id": "CTRL-0056",
+ "type": "control",
+ "level": 0,
+ "statement": "Require explicit human confirmation before committing any business transaction outside limits that an accountable human has pre-authorised",
+ "recommendations": "Agents executing business transactions without proper authorisation may create unintended financial obligations, contractual commitments, or operational liabilities. Have an accountable human set the limits within which the agent may transact without confirmation — for example amounts, counterparties, transaction types, and frequency — and enforce those limits outside the agent, such as in the transaction controller (CTRL-0058) or payment gateway. Pause any transaction outside the limits, and every transaction where no limits have been set, immediately before it is initiated, presenting the transaction type, amount, counterparty, and consequences for review by the user on whose behalf the agent acts or by a designated approver. Require active consent, using an explicit \"confirm\" action rather than a dismissible notification or opt-out. Ensure confirmation cannot be bypassed by agents, and keep audit logs of all approvals, including timestamp, approver identity, and transaction details. Pair this control with CTRL-0094 so that confirmations remain real decisions.",
+ "enforcement": [
+  "harness",
+  "organisation"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build",
+  "operate"
+ ],
+ "evidence": "The transaction limits signed by the accountable owner, their configuration in the transaction controller, and the confirmation log with approver identity and transaction details.",
+ "test": "Propose a transaction above the pre-authorised amount and confirm the controller holds it until the user actively confirms the amount and counterparty.",
+ "risks": [
+  {
+   "id": "RISK-032",
+   "statement": "Unauthorised execution of business transactions"
+  }
+ ],
+ "references": [
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf",
+  "https://ap2-protocol.org/ap2/specification/",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.4",
+    "title": "Ensure adequate human oversight"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.2.2",
+    "title": "Design for meaningful human oversight"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI09",
+    "title": "Human-Agent Trust Exploitation"
+   },
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP3",
+    "title": "Operating agents securely – Human in the loop"
+   },
+   {
+    "id": "DS2",
+    "title": "Designing secure agents – Oversight mechanisms"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0056/"
+}

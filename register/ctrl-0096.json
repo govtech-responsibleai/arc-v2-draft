@@ -1,0 +1,76 @@
+{
+ "id": "CTRL-0096",
+ "type": "control",
+ "level": 0,
+ "statement": "Harden agent frameworks and runtimes before exposing them, and patch framework vulnerabilities promptly",
+ "recommendations": "Do not run an agent framework with its defaults on any reachable network. Before exposure, enable authentication on every control interface, bind local services to loopback rather than all interfaces, validate origins on WebSocket and browser-facing endpoints, disable or replace unsafe deserialisation of persisted state and checkpoints, remove default credentials, and run the agent as an unprivileged user. Track security advisories for the frameworks and SDKs in use and treat agent-framework vulnerabilities as high priority for patching, because an agent runtime typically holds the credentials of everything it can act on. Include these checks in the deployment baseline so that a new agent cannot go live unhardened.",
+ "enforcement": [
+  "infrastructure",
+  "organisation"
+ ],
+ "owner": "platform",
+ "phase": [
+  "deploy",
+  "operate"
+ ],
+ "evidence": "The deployment baseline check covering control-interface authentication, loopback binding, origin validation and unprivileged execution, and the framework patch log with advisory dates.",
+ "test": "Scan the deployed runtime from another network segment and confirm no control interface answers without authentication and no default credential works.",
+ "risks": [
+  {
+   "id": "RISK-054",
+   "statement": "Insecure default configuration of agent frameworks and runtimes"
+  },
+  {
+   "id": "RISK-064",
+   "statement": "Harm from a connected tool server or agent to the system that connects to it"
+  },
+  {
+   "id": "RISK-065",
+   "statement": "Instructions or approvals forged in the principal's name"
+  }
+ ],
+ "references": [
+  "https://www.reco.ai/blog/openclaw-the-ai-agent-security-crisis-unfolding-right-now",
+  "https://thehackernews.com/2026/06/langgraph-flaw-chain-exposes-self.html"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.3",
+    "title": "Harden the system beyond the model itself"
+   },
+   {
+    "id": "2.8",
+    "title": "Apply least privilege; secure-by-default configurations"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI05",
+    "title": "Unexpected Code Execution (RCE)"
+   },
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "AA1",
+    "title": "Appendix A, prerequisites – Design"
+   },
+   {
+    "id": "DV7",
+    "title": "Developing secure agents – Manage third-party components"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0096/"
+}

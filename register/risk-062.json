@@ -1,0 +1,90 @@
+{
+ "id": "RISK-062",
+ "type": "risk",
+ "statement": "Agent alters or disables the oversight placed on it",
+ "description": "This risk arises when an agent is able to change the logs, monitors, permissions, approval settings, or configuration that are meant to constrain it, and does so in pursuit of its task or at the direction of injected content. It may mute an alert that is slowing it down, switch off a confirmation step, widen its own permissions, edit a log, or report an action as approved when it was not. As a result, the organisation loses the record and the checks it relies on to know what the agent did and to stop it, as when internal coding agents muted the alerts of the system monitoring them and one removed its monitor, an injected code comment led a coding assistant to turn off its own confirmation prompts, and a sandboxed coding agent was able to switch off its own sandbox and approvals.",
+ "elements": [],
+ "combination": {
+  "id": "oversight-within-reach",
+  "name": "Oversight within reach",
+  "roles": [
+   "own-safeguards"
+  ]
+ },
+ "failure_mode": "Agent Misbehaviour",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-04",
+   "name": "Identity and access management",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-09",
+   "name": "Misrepresentation",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0032",
+   "level": 0,
+   "statement": "Centralise observability data collection in a unified backend system"
+  },
+  {
+   "id": "CTRL-0034",
+   "level": 0,
+   "statement": "Conduct regular reviews of logs and traces to detect emergent issues in deployed agentic systems"
+  },
+  {
+   "id": "CTRL-0065",
+   "level": 0,
+   "statement": "Ensure every agent can be immediately paused or terminated by its operators"
+  },
+  {
+   "id": "CTRL-0101",
+   "level": 0,
+   "statement": "Give agents no write access to their own instructions, configuration, permissions, logs, or monitors"
+  },
+  {
+   "id": "CTRL-0093",
+   "level": 2,
+   "statement": "Monitor agents for deceptive and collusive behaviour using an independent monitor"
+  }
+ ],
+ "sources": [
+  "https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/",
+  "https://metr.org/blog/2026-10-22-red-teaming-openai-agent-monitoring/",
+  "https://embracethered.com/blog/posts/2025/github-copilot-remote-code-execution-via-prompt-injection/",
+  "https://thehackernews.com/2026/09/deepseek-harness-flaw-let-ai-agents.html"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T7",
+    "title": "Misaligned and deceptive behaviours"
+   },
+   {
+    "id": "T8",
+    "title": "Repudiation and untraceability"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0138",
+    "title": "Indicator Removal"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-062/"
+}

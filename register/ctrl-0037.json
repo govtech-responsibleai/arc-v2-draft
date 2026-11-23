@@ -1,0 +1,69 @@
+{
+ "id": "CTRL-0037",
+ "type": "control",
+ "level": 1,
+ "statement": "Require planning agents to include explicit safety constraints in all generated plans before execution",
+ "recommendations": "Plans generated without explicit safety constraints may inadvertently violate security policies, regulatory requirements, or operational boundaries, leading to dangerous or non-compliant agent behaviour. Configure planning agents to incorporate safety constraints and domain-specific restrictions directly into plan representations, making safety requirements explicit and verifiable rather than implicit assumptions. Examples of planning-level safety constraints include limiting plan complexity (maximum number of steps or tools), requiring verification steps before irreversible actions, prohibiting plans that access certain data categories or environments, mandating human review checkpoints for high-risk operations, and including rollback or recovery procedures for plans involving state changes.",
+ "enforcement": [
+  "harness",
+  "prompt"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build"
+ ],
+ "evidence": "The plan schema with mandatory fields for step limit, verification before irreversible steps and rollback, and the validator that rejects plans without them.",
+ "test": "Submit a plan that exceeds the step limit and has no verification before an irreversible step and confirm the executor refuses to run it.",
+ "risks": [
+  {
+   "id": "RISK-020",
+   "statement": "Generating plans that overlook safety implications"
+  }
+ ],
+ "references": [
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+  "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.7",
+    "title": "Implement controls to limit what models or agents can access and generate"
+   },
+   {
+    "id": "2.10",
+    "title": "Implement model self-reflection before decisions"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   },
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DP5",
+    "title": "Deploying agents securely – Guardrails and constraints"
+   },
+   {
+    "id": "DS2",
+    "title": "Designing secure agents – Oversight mechanisms"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0037/"
+}

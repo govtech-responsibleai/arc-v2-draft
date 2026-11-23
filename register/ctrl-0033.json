@@ -1,0 +1,57 @@
+{
+ "id": "CTRL-0033",
+ "type": "control",
+ "level": 1,
+ "statement": "Standardise trace attributes for agent operations using consistent semantic conventions",
+ "recommendations": "Inconsistent or ad-hoc telemetry labelling prevents effective correlation of agent activities across multi-agent systems, making it difficult to debug failures, analyse performance, or investigate security incidents. Define and enforce standard semantic conventions for trace attributes across all agents, including mandatory fields such as agent identity, tool name, operation type, session identifiers, and correlation IDs. Adopt existing observability standards where available (e.g., OpenTelemetry semantic conventions) to ensure compatibility with industry-standard analysis tools and reduce implementation effort. Document attribute naming conventions, permitted values, and usage guidelines, and implement validation to ensure agents emit telemetry conforming to the standardised schema.",
+ "enforcement": [
+  "harness",
+  "infrastructure"
+ ],
+ "owner": "platform",
+ "phase": [
+  "design",
+  "build"
+ ],
+ "evidence": "The published trace attribute schema listing mandatory fields and permitted values, and the pipeline check that validates emitted spans against it.",
+ "test": "Emit a span lacking the agent identity and tool name attributes and confirm the validation check reports it as non-conforming.",
+ "risks": [
+  {
+   "id": "RISK-017",
+   "statement": "Delayed failure detection due to limited monitoring"
+  }
+ ],
+ "references": [
+  "https://github.com/open-telemetry/semantic-conventions-genai",
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf",
+  "https://coalitionforsecureai.org/securing-the-ai-agent-revolution-a-practical-guide-to-mcp-security"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.3",
+    "title": "Continuous monitoring and logging"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.3",
+    "title": "Continuously monitor and test when deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI08",
+    "title": "Cascading Failures"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV6",
+    "title": "Developing secure agents – Accountability"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0033/"
+}

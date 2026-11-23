@@ -1,0 +1,65 @@
+{
+ "id": "CTRL-0058",
+ "type": "control",
+ "level": 0,
+ "statement": "Restrict agents to proposing transactions whilst using a separate transaction controller for execution",
+ "recommendations": "Allowing agents direct access to transaction credentials creates risk of credential leakage through prompt injection, logging, or model outputs. Implement architectural separation where agents propose transactions but a dedicated non-LLM transaction controller handles authentication, authorisation, and execution. Ensure agents never receive or handle credentials directly, passing only transaction proposals through secure interfaces.",
+ "enforcement": [
+  "harness",
+  "infrastructure"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build"
+ ],
+ "evidence": "The architecture diagram and secrets manager access policy showing payment credentials readable only by the non-LLM transaction controller, never by the agent runtime.",
+ "test": "From the agent runtime, try to read the payment credential and to call the payment API directly and confirm both attempts fail.",
+ "risks": [
+  {
+   "id": "RISK-032",
+   "statement": "Unauthorised execution of business transactions"
+  },
+  {
+   "id": "RISK-033",
+   "statement": "Leakage of transaction credentials"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://www.ncsc.gov.uk/blogs/managing-the-cyber-risk-of-agentic-ai",
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.9",
+    "title": "Segregate environments and segment networks"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV7",
+    "title": "Developing secure agents – Manage third-party components"
+   },
+   {
+    "id": "DS4",
+    "title": "Designing secure agents – Defence in depth"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0058/"
+}

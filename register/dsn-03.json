@@ -1,0 +1,15 @@
+{
+ "id": "DSN-03",
+ "type": "element",
+ "kind": "design",
+ "name": "Monitoring and Traceability",
+ "category": null,
+ "description": "Monitoring and traceability provide systematic visibility into agent behaviour, interactions, and decision pathways by recording, observing, and correlating agent actions and system events over time. This includes logging agent inputs and outputs, tracking tool invocations and state changes, capturing decision traces or execution paths, and surfacing telemetry or audit records that support analysis and review of system behaviour.",
+ "risks": [
+  "RISK-017",
+  "RISK-018",
+  "RISK-052"
+ ],
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/dsn-03/"
+}

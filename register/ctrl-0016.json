@@ -1,0 +1,60 @@
+{
+ "id": "CTRL-0016",
+ "type": "control",
+ "level": 0,
+ "statement": "Define clearly the agent's role, scope, and non-goals in the system prompt",
+ "recommendations": "Ambiguous or missing role definitions allow agents to interpret requests too broadly, potentially executing actions outside intended boundaries or misunderstanding their authority and constraints. Explicitly define the agent's purpose, permitted actions, and operational boundaries in the system prompt, including clear statements about what the agent should not do or attempt. Document specific examples of in-scope and out-of-scope behaviours to reduce ambiguity and guide the agent's decision-making in edge cases. Regularly review and refine these definitions based on observed agent behaviour, ensuring role boundaries remain aligned with evolving use cases and risk tolerances.",
+ "enforcement": [
+  "prompt"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build"
+ ],
+ "evidence": "The system prompt in version control, with sections stating the agent's role, permitted actions and non-goals, and examples of in-scope and out-of-scope requests.",
+ "test": "Send ten requests that fall under the listed non-goals and confirm the agent declines each without calling a tool.",
+ "risks": [
+  {
+   "id": "RISK-008",
+   "statement": "Vague or underspecified instructions"
+  }
+ ],
+ "references": [
+  "https://www.ncsc.gov.uk/blogs/managing-the-cyber-risk-of-agentic-ai",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+  "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.3",
+    "title": "Harden the system beyond the model itself"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DP5",
+    "title": "Deploying agents securely – Guardrails and constraints"
+   },
+   {
+    "id": "DS1",
+    "title": "Designing secure agents – Controlled context"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0016/"
+}

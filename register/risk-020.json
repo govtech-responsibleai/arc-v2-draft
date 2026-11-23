@@ -1,0 +1,75 @@
+{
+ "id": "RISK-020",
+ "type": "risk",
+ "statement": "Generating plans that overlook safety implications",
+ "description": "This risk arises when an agent generates plans or goals without adequately considering basic safety, security, or practical constraints that would be apparent to a human. As a result, the system may propose or pursue actions that are unsafe, insecure, or inappropriate despite being technically feasible.",
+ "elements": [
+  {
+   "id": "CAP-01",
+   "name": "Planning and Goal Management"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Safety"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0038",
+   "level": 0,
+   "statement": "Conduct safety verification with domain-relevant stress tests and adversarial scenarios before deployment and on a regular cadence afterwards"
+  },
+  {
+   "id": "CTRL-0037",
+   "level": 1,
+   "statement": "Require planning agents to include explicit safety constraints in all generated plans before execution"
+  },
+  {
+   "id": "CTRL-0039",
+   "level": 1,
+   "statement": "Ensure each agent publishes standardised, machine-readable capability descriptors accessible to other agents"
+  },
+  {
+   "id": "CTRL-0042",
+   "level": 1,
+   "statement": "Require explicit human confirmation before executing high-impact or irreversible tool actions"
+  },
+  {
+   "id": "CTRL-0035",
+   "level": 2,
+   "statement": "Require agents to decompose user goals into explicit sub-goals and validate necessity before proceeding"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2412.13178",
+  "https://arxiv.org/abs/2412.14470"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   },
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T7",
+    "title": "Misaligned and deceptive behaviours"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-020/"
+}

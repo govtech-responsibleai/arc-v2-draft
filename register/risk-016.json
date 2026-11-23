@@ -1,0 +1,70 @@
+{
+ "id": "RISK-016",
+ "type": "risk",
+ "statement": "Unauthorised privilege escalation",
+ "description": "This risk arises when agents are able to gain elevated roles or permissions beyond those initially granted, whether through misconfiguration, exploitation, or unintended system behaviour. As a result, agents may bypass intended controls, access restricted resources, or execute actions that undermine system security and governance.",
+ "elements": [
+  {
+   "id": "DSN-02",
+   "name": "Roles and Access Controls"
+  }
+ ],
+ "failure_mode": "Safeguard Failure",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-04",
+   "name": "Identity and access management",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0029",
+   "level": 0,
+   "statement": "Grant agents only the minimum permissions required for their designated tasks"
+  },
+  {
+   "id": "CTRL-0032",
+   "level": 0,
+   "statement": "Centralise observability data collection in a unified backend system"
+  },
+  {
+   "id": "CTRL-0030",
+   "level": 1,
+   "statement": "Assign each agent a unique, verifiable identity with no shared credentials"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2503.15547",
+  "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T3",
+    "title": "Privilege compromise"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0053",
+    "title": "AI Agent Tool Invocation"
+   },
+   {
+    "id": "AML.T0117",
+    "title": "Autonomous Attack-Path Adaptation"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-016/"
+}

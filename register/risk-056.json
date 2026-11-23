@@ -1,0 +1,103 @@
+{
+ "id": "RISK-056",
+ "type": "risk",
+ "statement": "Actions beyond the agent's tools through code execution and reachable credentials",
+ "description": "This risk arises when an agent that can run code can also read files, environment variables, or data stores that hold credentials, tokens, or keys, so the code it writes can act with whatever those credentials allow instead of only through the tools it was given. Approval steps, allowlists, and rate limits placed on the agent's tools then do not constrain it, because the code calls the database, cloud API, or deployment platform directly. As a result, a misjudgement or an injected instruction can cause destructive or unauthorised actions far outside the agent's intended scope, as when a coding agent used a broadly scoped infrastructure token to delete a company's production database and the backups stored with it, and when a coding agent deleted a live production database during a code freeze.",
+ "elements": [
+  {
+   "id": "CAP-10",
+   "name": "Code Execution"
+  }
+ ],
+ "min_authority": {
+  "CAP-10": "act-with-approval"
+ },
+ "failure_mode": "Safeguard Failure",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-03",
+   "name": "Infrastructure and network",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-04",
+   "name": "Identity and access management",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0029",
+   "level": 0,
+   "statement": "Grant agents only the minimum permissions required for their designated tasks"
+  },
+  {
+   "id": "CTRL-0069",
+   "level": 0,
+   "statement": "Run agent-generated code only in isolated compute environments with network access blocked by default"
+  },
+  {
+   "id": "CTRL-0076",
+   "level": 0,
+   "statement": "Require human approval for destructive changes to databases, tables, or files that cannot be readily undone"
+  },
+  {
+   "id": "CTRL-0077",
+   "level": 0,
+   "statement": "Enable versioning or soft-delete for managed object stores to allow recovery from accidental modifications"
+  },
+  {
+   "id": "CTRL-0098",
+   "level": 0,
+   "statement": "Keep credentials and backups out of reach of agent-run code"
+  },
+  {
+   "id": "CTRL-0070",
+   "level": 1,
+   "statement": "Review all agent-generated code before execution"
+  }
+ ],
+ "sources": [
+  "https://incidentdatabase.ai/cite/1469/",
+  "https://hackread.com/cursor-ai-agent-wipes-pocketos-database-backups/",
+  "https://fortune.com/2025/07/23/ai-coding-tool-replit-wiped-database-called-it-a-catastrophic-failure/"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   },
+   {
+    "id": "ASI05",
+    "title": "Unexpected Code Execution (RCE)"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T3",
+    "title": "Privilege compromise"
+   },
+   {
+    "id": "T11",
+    "title": "Unexpected RCE and code attacks"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0055",
+    "title": "Unsecured Credentials"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-056/"
+}

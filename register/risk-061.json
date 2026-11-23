@@ -1,0 +1,57 @@
+{
+ "id": "RISK-061",
+ "type": "risk",
+ "statement": "Dependence on a model provider",
+ "description": "This risk arises when an agentic system depends on a model that another party hosts, and that party withdraws it, changes it, limits access to it, or suffers an outage. A model can be retired at short notice, updated in ways that change how it calls tools or follows instructions, degraded by a fault on the provider's side that goes unannounced for weeks, or made unavailable by a commercial or regulatory decision. As a result, an agent may stop working, or may keep working while behaving differently from the system that was evaluated and approved, as when infrastructure faults at a provider silently degraded model output for weeks, a provider disabled two models for all customers following an export-control directive, and a regional degradation at a provider caused cascading failures in a customer-service agent product.",
+ "elements": [
+  {
+   "id": "CMP-01",
+   "name": "LLM"
+  }
+ ],
+ "failure_mode": "Tool or Resource Malfunction",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0038",
+   "level": 0,
+   "statement": "Conduct safety verification with domain-relevant stress tests and adversarial scenarios before deployment and on a regular cadence afterwards"
+  },
+  {
+   "id": "CTRL-0005",
+   "level": 1,
+   "statement": "Conduct structured evaluation of multiple LLMs for instruction-following, performance, and safety before deployment"
+  },
+  {
+   "id": "CTRL-0103",
+   "level": 1,
+   "statement": "Pin the model version, re-run evaluations before any model change, and keep a tested fallback"
+  }
+ ],
+ "sources": [
+  "https://www.anthropic.com/engineering/a-postmortem-of-three-recent-issues",
+  "https://www.anthropic.com/news/fable-mythos-access",
+  "https://support.zendesk.com/hc/en-us/articles/10932821917082-Service-Incident-June-19-2026-AI-Agents-OpenAI-service-delays-and-error-issues"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI08",
+    "title": "Cascading Failures"
+   }
+  ],
+  "owasp_agentic_threats": [],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-061/"
+}

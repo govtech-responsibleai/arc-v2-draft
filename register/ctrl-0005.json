@@ -1,0 +1,69 @@
+{
+ "id": "CTRL-0005",
+ "type": "control",
+ "level": 1,
+ "statement": "Conduct structured evaluation of multiple LLMs for instruction-following, performance, and safety before deployment",
+ "recommendations": "Deploying an LLM without comparative evaluation risks selecting a model poorly suited to your use case, potentially resulting in safety issues, poor performance, or misaligned behaviour. Define evaluation criteria aligned with your application requirements (e.g., accuracy on domain-specific tasks, refusal of unsafe requests, consistency of outputs) and benchmark multiple candidate models against these criteria using representative test scenarios. Use both automated metrics and human evaluation to assess instruction-following quality, safety boundaries, and failure modes. Document evaluation results to support model selection decisions and establish baseline performance expectations for ongoing monitoring.",
+ "enforcement": [
+  "organisation",
+  "model"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build"
+ ],
+ "evidence": "The evaluation report scoring at least two candidate models on one test set for instruction-following, task performance and safety, with the selection decision.",
+ "test": "Re-run the stored evaluation set against the deployed model version and confirm its scores fall within the tolerance recorded in the report.",
+ "risks": [
+  {
+   "id": "RISK-002",
+   "statement": "Insufficient alignment of LLM behaviour"
+  },
+  {
+   "id": "RISK-003",
+   "statement": "Insufficient LLM capability and reliability"
+  },
+  {
+   "id": "RISK-061",
+   "statement": "Dependence on a model provider"
+  }
+ ],
+ "references": [
+  "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.2",
+    "title": "Consider model hardening"
+   },
+   {
+    "id": "3.2",
+    "title": "Conduct security testing"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.2",
+    "title": "Test agents before deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV2",
+    "title": "Developing secure agents – Appropriate evaluation"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0005/"
+}

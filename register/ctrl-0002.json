@@ -1,0 +1,52 @@
+{
+ "id": "CTRL-0002",
+ "type": "control",
+ "level": 0,
+ "statement": "Obtain legally binding no-training and no-logging agreements from LLM API service providers",
+ "recommendations": "Without contractual protections, API providers may train models on your proprietary data or retain logs containing sensitive information, creating data leakage and compliance risks. Configure API settings to opt out of data logging and model training where available, and have your legal team review provider terms of service and data processing agreements to verify these protections are legally enforceable. Ensure alignment with your organisation's data governance and privacy requirements (e.g., GDPR, PDPA). Maintain records of these agreements and configurations for audit and compliance purposes.",
+ "enforcement": [
+  "organisation",
+  "infrastructure"
+ ],
+ "owner": "governance",
+ "phase": [
+  "design",
+  "deploy"
+ ],
+ "evidence": "The signed data processing agreement clause barring training on and retention of submitted data, and the provider account setting showing both switched off.",
+ "test": "Open the provider console for the production API key and confirm training use and log retention are switched off, matching the contract clause.",
+ "risks": [
+  {
+   "id": "RISK-001",
+   "statement": "Use of untrusted or compromised LLMs"
+  }
+ ],
+ "references": [
+  "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf",
+  "https://genai.owasp.org/llmrisk/llm032025-supply-chain/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.1",
+    "title": "Supply chain security – ensure components are from trusted sources"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.2.1",
+    "title": "Clear allocation of responsibilities"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI04",
+    "title": "Agentic Supply Chain Vulnerabilities"
+   }
+  ],
+  "fiveeyes_agentic": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0002/"
+}

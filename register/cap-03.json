@@ -1,0 +1,13 @@
+{
+ "id": "CAP-03",
+ "type": "element",
+ "kind": "capability",
+ "name": "Tool Use",
+ "category": "Cognitive",
+ "description": "The capability to evaluate available options and choose the best tool for specific subtasks, based on the capabilities and limitations of different tools and matching them appropriately to the tasks. This includes selecting between search, computation, code execution, or domain-specific APIs, determining when tool invocation is necessary, and sequencing or combining multiple tools to complete complex tasks effectively.",
+ "risks": [
+  "RISK-023"
+ ],
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/cap-03/"
+}

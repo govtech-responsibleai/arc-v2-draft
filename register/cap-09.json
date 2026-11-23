@@ -1,0 +1,22 @@
+{
+ "id": "CAP-09",
+ "type": "element",
+ "kind": "capability",
+ "name": "Other Programmatic Interfaces",
+ "category": "Interaction",
+ "description": "The capability to interact with external systems through non-graphical, programmatic interfaces, such as APIs, SDKs, and backend services, to exchange data or trigger actions as part of task execution. This includes calling REST or GraphQL APIs, invoking cloud services, publishing or consuming messages from queues or event streams, and performing operations such as code pushes, data updates, or system integrations across enterprise platforms. This includes sending and receiving email, chat, or other messages through an API or mail protocol, including when those messages are also Official Communication (CAP-05).",
+ "authority": [
+  "read",
+  "propose",
+  "act-with-approval",
+  "act-alone"
+ ],
+ "irreversible": "ask",
+ "external": "ask",
+ "risks": [
+  "RISK-038",
+  "RISK-059"
+ ],
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/cap-09/"
+}

@@ -1,0 +1,22 @@
+{
+ "id": "CAP-12",
+ "type": "element",
+ "kind": "capability",
+ "name": "System Management",
+ "category": "Operational",
+ "description": "The capability to directly manage and configure technical systems and infrastructure by adjusting system settings, controlling computing resources, and administering operational environments across on-premise or cloud platforms. This includes monitoring system health and performance, managing authentication credentials and access controls, provisioning or scaling compute and storage resources, configuring operating system or runtime parameters, and applying system-level optimisations to support reliable operation.",
+ "authority": [
+  "read",
+  "propose",
+  "act-with-approval",
+  "act-alone"
+ ],
+ "irreversible": "ask",
+ "external": "ask",
+ "risks": [
+  "RISK-045",
+  "RISK-046"
+ ],
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/cap-12/"
+}

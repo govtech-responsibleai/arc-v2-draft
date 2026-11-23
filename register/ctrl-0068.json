@@ -1,0 +1,55 @@
+{
+ "id": "CTRL-0068",
+ "type": "control",
+ "level": 1,
+ "statement": "Use code linters to screen generated code for bad practices and poor syntax",
+ "recommendations": "Agents may generate code containing bad practices, anti-patterns, unused variables, or syntax errors that reduce code quality, introduce bugs, or create maintainability issues. Implement automated code linting that analyses all agent-generated code before execution or deployment, using tools such as Pylint, ESLint, or language-specific linters configured with appropriate rule sets. Configure linters to detect common issues including syntax errors, unused variables, deprecated functions, security anti-patterns, and violations of coding standards. Reject code that fails linting checks or present warnings to users for review before proceeding.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build"
+ ],
+ "evidence": "The linter rule set in version control, its hook in the code-execution path, and lint results stored with each generated snippet.",
+ "test": "Have the agent produce code with a syntax error and an unused variable and confirm the linter rejects it or shows the warnings before execution.",
+ "risks": [
+  {
+   "id": "RISK-039",
+   "statement": "Production or execution of poor or ineffective code"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf",
+  "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.2",
+    "title": "Validate outputs from models and agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI05",
+    "title": "Unexpected Code Execution (RCE)"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP2",
+    "title": "Operating agents securely – Validate outputs"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0068/"
+}

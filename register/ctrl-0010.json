@@ -1,0 +1,56 @@
+{
+ "id": "CTRL-0010",
+ "type": "control",
+ "level": 1,
+ "statement": "Use only MCP servers that validate credentials on every inbound request",
+ "recommendations": "Relying on session state or connection-based authentication without per-request validation creates vulnerability to session hijacking, token replay attacks, and unauthorised access after initial authentication. Verify that MCP servers implement stateless authentication by validating credentials (e.g., OAuth tokens, API keys) on every single request rather than caching authorisation decisions based on connection or session state. Test this behaviour by monitoring whether the server accepts requests with expired, revoked, or missing credentials after an initial successful authentication. Ensure the server responds with appropriate HTTP 401 errors when credentials are invalid, expired, or absent, forcing re-authentication rather than relying on stale authorisation state. The 2026-07-28 specification removes long-lived stateful sessions from the protocol core, making per-request validation the expected behaviour; treat a server whose authorization depends on session state as non-compliant.",
+ "enforcement": [
+  "infrastructure",
+  "organisation"
+ ],
+ "owner": "security",
+ "phase": [
+  "build",
+  "deploy"
+ ],
+ "evidence": "The MCP server assessment record containing captured responses to requests sent with expired, revoked and missing tokens after an initial successful login.",
+ "test": "Authenticate to the MCP server, revoke the token, send another request on the same connection and confirm it returns HTTP 401.",
+ "risks": [
+  {
+   "id": "RISK-064",
+   "statement": "Harm from a connected tool server or agent to the system that connects to it"
+  }
+ ],
+ "references": [
+  "https://modelcontextprotocol.io/specification/draft/basic/security_best_practices",
+  "https://blog.modelcontextprotocol.io/posts/2026-07-28/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.6",
+    "title": "Implement authentication, authorisation and access controls"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP5",
+    "title": "Operating agents securely – Privileges and authentication"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0010/"
+}

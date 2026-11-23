@@ -1,0 +1,19 @@
+{
+ "id": "CAP-07",
+ "type": "element",
+ "kind": "capability",
+ "name": "Internet and Search Access",
+ "category": "Interaction",
+ "description": "The capability to autonomously access, browse, search, and retrieve information from the Internet to augment the LLM's static training knowledge with external and up-to-date sources in support of task execution and response generation. This includes issuing search queries, following and parsing web pages, extracting relevant facts or documents, and aggregating information from multiple online sources.",
+ "authority": [
+  "read"
+ ],
+ "irreversible": "never",
+ "external": "always",
+ "risks": [
+  "RISK-034",
+  "RISK-035"
+ ],
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/cap-07/"
+}

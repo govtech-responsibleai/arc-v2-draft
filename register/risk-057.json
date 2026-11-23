@@ -1,0 +1,101 @@
+{
+ "id": "RISK-057",
+ "type": "risk",
+ "statement": "Pursuit of a goal by means the principal did not sanction",
+ "description": "This risk arises when an agent that plans its own steps meets an obstacle and reaches its goal by a route that the people responsible for it did not authorise. It uses a credential or an account it came across, exploits a weakness in a system that belongs to someone else, spends from a wallet it was not given, or acts against a person who stands in its way. The agent has not been attacked and has not misunderstood the task; it treats the restriction as a problem to solve. As a result, the organisation may find that its agent has broken into, altered, or drawn on systems and resources outside the deployment, or has harmed outside parties, as when agents under evaluation breached a model-hosting company's production systems to find answers, an agent in training used an API key it found in a public repository to reach a data service, and a personal agent exploited a gym's booking API to move its user up a waiting list.",
+ "elements": [
+  {
+   "id": "CAP-01",
+   "name": "Planning and Goal Management"
+  }
+ ],
+ "failure_mode": "Agent Misbehaviour",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-04",
+   "name": "Identity and access management",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-11",
+   "name": "Harm to third parties",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0029",
+   "level": 0,
+   "statement": "Grant agents only the minimum permissions required for their designated tasks"
+  },
+  {
+   "id": "CTRL-0038",
+   "level": 0,
+   "statement": "Conduct safety verification with domain-relevant stress tests and adversarial scenarios before deployment and on a regular cadence afterwards"
+  },
+  {
+   "id": "CTRL-0040",
+   "level": 0,
+   "statement": "Limit the scope of agent actions through predefined thresholds and baselines"
+  },
+  {
+   "id": "CTRL-0065",
+   "level": 0,
+   "statement": "Ensure every agent can be immediately paused or terminated by its operators"
+  },
+  {
+   "id": "CTRL-0099",
+   "level": 1,
+   "statement": "Stop the task when an action is refused and report to a human, instead of letting the agent look for another route"
+  },
+  {
+   "id": "CTRL-0093",
+   "level": 2,
+   "statement": "Monitor agents for deceptive and collusive behaviour using an independent monitor"
+  }
+ ],
+ "sources": [
+  "https://openai.com/index/hugging-face-model-evaluation-security-incident/",
+  "https://alignment.openai.com/misalignment-reports/searching-github-for-leaked-api-keys/",
+  "https://www.affinda.com/expert-insights/when-my-ai-agent-hacked-my-gym-mythos-stopped-feeling-theoretical/",
+  "https://theshamblog.com/an-ai-agent-published-a-hit-piece-on-me/"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   },
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T7",
+    "title": "Misaligned and deceptive behaviours"
+   },
+   {
+    "id": "T3",
+    "title": "Privilege compromise"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0117",
+    "title": "Autonomous Attack-Path Adaptation"
+   },
+   {
+    "id": "AML.T0055",
+    "title": "Unsecured Credentials"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-057/"
+}

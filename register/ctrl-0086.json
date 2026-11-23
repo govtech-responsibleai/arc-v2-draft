@@ -1,0 +1,60 @@
+{
+ "id": "CTRL-0086",
+ "type": "control",
+ "level": 0,
+ "statement": "Limit the number of concurrent queries to external systems by agents",
+ "recommendations": "Agents making unlimited concurrent queries to external systems may overwhelm those systems, trigger rate limiting or blocking, or exhaust connection pools and network resources. Implement concurrency limits that restrict the maximum number of simultaneous queries an agent can issue to external systems, such as APIs, web services, or remote databases. Configure limits appropriate to external system capacity and rate limit policies, ensuring agents operate within acceptable thresholds whilst maintaining functionality.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The tool layer's concurrency settings giving the maximum simultaneous requests per external system and the queueing or back-off behaviour.",
+ "test": "Prompt the agent to issue fifty parallel calls to one external API and confirm in-flight requests never exceed the configured maximum.",
+ "risks": [
+  {
+   "id": "RISK-046",
+   "statement": "System overload due to inefficient or excessive operations"
+  }
+ ],
+ "references": [
+  "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/",
+  "https://api-security.owasp.org/editions/2023/en/0xa4-unrestricted-resource-consumption",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "3.1",
+    "title": "Ensure availability controls against disruption or failure"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP4",
+    "title": "Operating agents securely – Performance monitoring"
+   },
+   {
+    "id": "AA1",
+    "title": "Appendix A, prerequisites – Design"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0086/"
+}

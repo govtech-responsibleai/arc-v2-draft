@@ -1,0 +1,63 @@
+{
+ "id": "CTRL-0034",
+ "type": "control",
+ "level": 0,
+ "statement": "Conduct regular reviews of logs and traces to detect emergent issues in deployed agentic systems",
+ "recommendations": "Automated monitoring may miss subtle patterns, novel failure modes, or emergent behaviours that only become apparent through human analysis of observability data. Establish a regular cadence for manual review of logs, traces, and metrics from production agentic systems, focusing on identifying unusual patterns, unexpected agent interactions, or degrading performance trends that automated alerts might not detect. Assign responsibility for these reviews to teams with deep understanding of expected agent behaviour, empowering them to investigate anomalies and propose system improvements. Document findings from reviews and track identified issues to closure, using insights to refine monitoring rules, update agent implementations, or strengthen security controls based on observed real-world behaviour.",
+ "enforcement": [
+  "organisation"
+ ],
+ "owner": "developer",
+ "phase": [
+  "operate"
+ ],
+ "evidence": "The review records for the last three cycles, each listing the traces sampled, the anomalies found and the tracked issue raised for each.",
+ "test": "Plant a known anomalous session in the logs before a scheduled review and confirm the review record reports it and raises an issue.",
+ "risks": [
+  {
+   "id": "RISK-018",
+   "statement": "Inability to audit failures due to missing decision traces"
+  },
+  {
+   "id": "RISK-050",
+   "statement": "Deceptive behaviour toward overseers"
+  },
+  {
+   "id": "RISK-062",
+   "statement": "Agent alters or disables the oversight placed on it"
+  }
+ ],
+ "references": [
+  "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf",
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf",
+  "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.3",
+    "title": "Continuous monitoring and logging"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.3",
+    "title": "Continuously monitor and test when deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI08",
+    "title": "Cascading Failures"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP1",
+    "title": "Operating agents securely – Monitoring and auditing"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0034/"
+}

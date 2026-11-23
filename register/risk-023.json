@@ -1,0 +1,66 @@
+{
+ "id": "RISK-023",
+ "type": "risk",
+ "statement": "Incorrect tool selection or misuse",
+ "description": "This risk arises when an agent selects an inappropriate tool or applies a tool incorrectly for a given task or action. As a result, the agent may produce erroneous outcomes, fail to complete the task effectively, or trigger unintended side effects due to misuse of tool capabilities.",
+ "elements": [
+  {
+   "id": "CAP-03",
+   "name": "Tool Use"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0041",
+   "level": 0,
+   "statement": "Provide comprehensive descriptions for each tool including intended use, required inputs, and potential outputs"
+  },
+  {
+   "id": "CTRL-0042",
+   "level": 1,
+   "statement": "Require explicit human confirmation before executing high-impact or irreversible tool actions"
+  },
+  {
+   "id": "CTRL-0043",
+   "level": 1,
+   "statement": "Log all tool selection decisions and invocations with comprehensive metadata"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2411.13547"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T2",
+    "title": "Tool misuse"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-023/"
+}

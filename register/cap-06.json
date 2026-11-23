@@ -1,0 +1,21 @@
+{
+ "id": "CAP-06",
+ "type": "element",
+ "kind": "capability",
+ "name": "Business Transactions",
+ "category": "Interaction",
+ "description": "The capability to initiate, authorise, and execute binding business transactions with external parties - such as payments, purchases, reservations, or service commitments - resulting in real financial, contractual, or operational obligations for the organization. This includes processing payments or refunds, placing orders or subscriptions, booking services or reservations, and accepting or triggering contractual commitments on behalf of the organization. A system has this capability whether a person completes the transactions the agent prepares, approves each one, or lets the agent transact by itself within limits set in advance; that difference is recorded as the capability's authority.",
+ "authority": [
+  "propose",
+  "act-with-approval",
+  "act-alone"
+ ],
+ "irreversible": "ask",
+ "external": "always",
+ "risks": [
+  "RISK-032",
+  "RISK-033"
+ ],
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/cap-06/"
+}

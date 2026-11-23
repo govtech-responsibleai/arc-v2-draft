@@ -1,0 +1,68 @@
+{
+ "id": "CTRL-0019",
+ "type": "control",
+ "level": 0,
+ "statement": "Keep untrusted inputs out of system instructions, and enclose any untrusted content given to the model in delimiters marked as data",
+ "recommendations": "Prompt injection attacks exploit LLMs' inability to distinguish between instructions and data, allowing malicious users to embed commands within input that override intended behaviour. Do not interpolate user input, retrieved content, or tool outputs into the system prompt or other instruction templates; fix the system prompt at build time and pass untrusted content to the model in the user or tool turns, where it carries less authority. Where untrusted content must be quoted, enclose it within clearly marked boundaries (e.g., XML tags or special markers) that are unlikely to appear naturally in the input, and instruct the LLM to treat delimited content as data rather than instructions. Neither measure is a complete defence, because the model can still follow instructions in untrusted content, so combine them with controls that do not depend on the model's compliance, such as a deterministic policy layer (CTRL-0090) and least privilege (CTRL-0029).",
+ "enforcement": [
+  "harness",
+  "prompt"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build"
+ ],
+ "evidence": "The prompt-assembly code showing a fixed system prompt with no interpolated variables and a wrapper that places untrusted content inside tagged data blocks.",
+ "test": "Submit input containing the closing delimiter followed by an instruction and confirm the logged system prompt is unchanged and the input sits escaped inside its data block.",
+ "risks": [
+  {
+   "id": "RISK-009",
+   "statement": "Unsanitised inputs in system instructions"
+  },
+  {
+   "id": "RISK-058",
+   "statement": "Instruction and configuration files as a way in"
+  },
+  {
+   "id": "RISK-059",
+   "statement": "Prompt injection through inbound messages"
+  }
+ ],
+ "references": [
+  "https://www.ncsc.gov.uk/blog-post/prompt-injection-is-not-sql-injection",
+  "https://arxiv.org/abs/2403.14720",
+  "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.1",
+    "title": "Validate inputs to models and agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS1",
+    "title": "Designing secure agents – Controlled context"
+   },
+   {
+    "id": "DV3",
+    "title": "Developing secure agents – Input management"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0019/"
+}

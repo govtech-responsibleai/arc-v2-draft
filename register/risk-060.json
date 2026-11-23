@@ -1,0 +1,90 @@
+{
+ "id": "RISK-060",
+ "type": "risk",
+ "statement": "Agent credentials that are over-broad, long-lived, or outlive their use",
+ "description": "This risk arises when the identities and credentials that agents use are broader than the task needs, do not expire, are stored where other software can read them, or stay valid after the agent, the integration, or the vendor relationship has ended. Agents, and the platforms and vendors that act for them, accumulate tokens for many systems, and a single theft then opens all of them. As a result, a compromise of an agent, of a developer's machine, or of an agent vendor gives an attacker standing access to the organisation's systems, as when stolen tokens belonging to a sales chat agent were used to pull data from hundreds of its customers' environments, a breach at an agent-integration platform exposed more than ten thousand credentials held for customers' agents, and a software release was hijacked through an agent-platform key that had never been revoked.",
+ "elements": [
+  {
+   "id": "DSN-02",
+   "name": "Roles and Access Controls"
+  }
+ ],
+ "failure_mode": "Safeguard Failure",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-04",
+   "name": "Identity and access management",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0011",
+   "level": 0,
+   "statement": "Limit token scopes to the minimum privileges required and avoid broad or wildcard scopes"
+  },
+  {
+   "id": "CTRL-0029",
+   "level": 0,
+   "statement": "Grant agents only the minimum permissions required for their designated tasks"
+  },
+  {
+   "id": "CTRL-0030",
+   "level": 1,
+   "statement": "Assign each agent a unique, verifiable identity with no shared credentials"
+  },
+  {
+   "id": "CTRL-0102",
+   "level": 1,
+   "statement": "Issue agents short-lived, task-scoped credentials, keep an inventory of them, and revoke them when an agent or integration is retired"
+  }
+ ],
+ "sources": [
+  "https://cloud.google.com/blog/topics/threat-intelligence/data-theft-salesforce-instances-via-salesloft-drift",
+  "https://composio.dev/blog/composio-may-2026-security-incident",
+  "https://docs.litellm.ai/blog/security-incident-oct-21-2026-attack-chain",
+  "https://vercel.com/kb/bulletin/vercel-april-2026-security-incident"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T3",
+    "title": "Privilege compromise"
+   },
+   {
+    "id": "T9",
+    "title": "Identity spoofing and impersonation"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0055",
+    "title": "Unsecured Credentials"
+   },
+   {
+    "id": "AML.T0083",
+    "title": "Credentials from AI Agent Configuration"
+   },
+   {
+    "id": "AML.T0091.000",
+    "title": "Use Alternate Authentication Material: Application Access Token"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-060/"
+}

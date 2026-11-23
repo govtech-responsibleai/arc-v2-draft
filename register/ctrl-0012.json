@@ -1,0 +1,53 @@
+{
+ "id": "CTRL-0012",
+ "type": "control",
+ "level": 2,
+ "statement": "Use only MCP servers that integrate with authorisation servers implementing per-client consent mechanisms",
+ "recommendations": "Without explicit per-client consent, a malicious or compromised client could abuse delegated permissions to access resources the user never intended to authorise for that specific application. Verify that MCP servers integrate with OAuth 2.1 authorisation servers that implement per-client consent flows, where users explicitly approve each client-permission combination rather than granting blanket permissions across all clients. The authorisation server should clearly identify the requesting client and display what data or actions are being requested during the consent flow. Ensure the authorisation server persists consent decisions and provides mechanisms for users to review and revoke previously granted permissions. With Client ID Metadata Documents (2026-07-28 specification), the authorization server identifies the client from its published metadata; check that consent screens name the client accurately, and use the Enterprise-Managed Authorization extension where a central identity provider should govern access on behalf of all users.",
+ "enforcement": [
+  "infrastructure",
+  "organisation"
+ ],
+ "owner": "security",
+ "phase": [
+  "build",
+  "deploy"
+ ],
+ "evidence": "A capture of the authorisation server's consent screen naming the client and the permissions requested, and of the page where users review and revoke grants.",
+ "test": "Connect a second client under a user who has consented only to the first and confirm a fresh consent prompt appears before any access is granted.",
+ "risks": [
+  {
+   "id": "RISK-064",
+   "statement": "Harm from a connected tool server or agent to the system that connects to it"
+  }
+ ],
+ "references": [
+  "https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization",
+  "https://aaronparecki.com/2025/11/25/1/mcp-authorization-spec-update",
+  "https://stytch.com/blog/mcp-authentication-and-authorization-servers/",
+  "https://blog.modelcontextprotocol.io/posts/2026-07-28/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "3.3",
+    "title": "Secure the invocation of external tools (e.g. MCP servers)"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "fiveeyes_agentic": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0012/"
+}

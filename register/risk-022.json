@@ -1,0 +1,98 @@
+{
+ "id": "RISK-022",
+ "type": "risk",
+ "statement": "Malicious or manipulative use of delegated agents",
+ "description": "This risk arises when an agent deliberately assigns tasks to other agents in ways intended to bypass controls, obscure responsibility, or achieve malicious objectives. As a result, delegated agents may be coerced into performing unauthorised actions, amplifying harmful behaviour or evading detection within the system.",
+ "elements": [
+  {
+   "id": "CAP-02",
+   "name": "Agent Delegation"
+  }
+ ],
+ "failure_mode": "Agent Misbehaviour",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-04",
+   "name": "Identity and access management",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0024",
+   "level": 0,
+   "statement": "Define formal schemas for inter-agent messages and validate all messages against these schemas before processing"
+  },
+  {
+   "id": "CTRL-0041",
+   "level": 0,
+   "statement": "Provide comprehensive descriptions for each tool including intended use, required inputs, and potential outputs"
+  },
+  {
+   "id": "CTRL-0008",
+   "level": 1,
+   "statement": "Implement automated alerts when agent behaviour drifts from predefined thresholds"
+  },
+  {
+   "id": "CTRL-0025",
+   "level": 1,
+   "statement": "Ensure all inter-agent communications are encrypted in transit and prohibit plaintext channels"
+  },
+  {
+   "id": "CTRL-0093",
+   "level": 2,
+   "statement": "Monitor agents for deceptive and collusive behaviour using an independent monitor"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2507.06850"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   },
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T13",
+    "title": "Rogue agents in multi-agent systems"
+   },
+   {
+    "id": "T14",
+    "title": "Human attacks on multi-agent systems"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0118.001",
+    "title": "Autonomous AI Agent Communication: Direct Agent Communication"
+   },
+   {
+    "id": "AML.T0143",
+    "title": "LLM Prompt Propagation"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-022/"
+}

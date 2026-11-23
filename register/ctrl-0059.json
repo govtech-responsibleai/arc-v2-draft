@@ -1,0 +1,60 @@
+{
+ "id": "CTRL-0059",
+ "type": "control",
+ "level": 2,
+ "statement": "Apply fraud detection models or heuristics to agent-proposed transactions",
+ "recommendations": "Compromised or manipulated agents may propose fraudulent transactions that bypass standard user confirmation by appearing legitimate to users but serving malicious purposes. Implement fraud detection systems that analyse agent-proposed transactions for suspicious patterns such as unusual amounts, unfamiliar recipients, rapid transaction sequences, or deviations from historical behaviour. Configure fraud detection to operate independently of the agent, using rule-based heuristics or machine learning models trained on legitimate and fraudulent transaction patterns.",
+ "enforcement": [
+  "harness",
+  "model"
+ ],
+ "owner": "security",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The fraud rule set or model version applied to agent-proposed transactions, with a log of scored transactions and those held.",
+ "test": "Submit a rapid series of proposals to an unfamiliar recipient at unusual amounts and confirm they are scored as suspicious and held before execution.",
+ "risks": [
+  {
+   "id": "RISK-032",
+   "statement": "Unauthorised execution of business transactions"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://www.mas.gov.sg/-/media/MAS/Regulations-and-Financial-Stability/Regulatory-and-Supervisory-Framework/Risk-Management/TRM-Guidelines-18-January-2021.pdf"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.2",
+    "title": "Validate outputs from models and agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.3",
+    "title": "Continuously monitor and test when deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DP5",
+    "title": "Deploying agents securely – Guardrails and constraints"
+   },
+   {
+    "id": "OP1",
+    "title": "Operating agents securely – Monitoring and auditing"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0059/"
+}

@@ -1,0 +1,306 @@
+<!DOCTYPE html><html lang="en" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar data-astro-cid-g5ptsecz><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Example 2: Agentic Coding Assistant | ARC 2.0 draft</title><link rel="canonical" href="https://govtech-responsibleai.github.io/arc-v2-draft/implementation/examples/coding-assistant/"/><link rel="sitemap" href="/arc-v2-draft/sitemap-index.xml"/><link rel="alternate" type="text/plain" title="llms.txt" href="https://govtech-responsibleai.github.io/arc-v2-draft/llms.txt"/><link rel="shortcut icon" href="/arc-v2-draft/favicon.svg" type="image/svg+xml"/><meta name="generator" content="Astro v7.4.13"/><meta name="generator" content="Starlight v0.43.1"/><meta property="og:title" content="Example 2: Agentic Coding Assistant"/><meta property="og:type" content="article"/><meta property="og:url" content="https://govtech-responsibleai.github.io/arc-v2-draft/implementation/examples/coding-assistant/"/><meta property="og:locale" content="en"/><meta property="og:description" content="Worked example: an ARC assessment of an agentic coding assistant that reads code, runs commands and edits files."/><meta property="og:site_name" content="ARC 2.0 draft"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="Worked example: an ARC assessment of an agentic coding assistant that reads code, runs commands and edits files."/><meta name="twitter:site" content="@GovTechSG"/><meta name="robots" content="noindex, nofollow"/><meta property="og:image" content="https://govtech-responsibleai.github.io/arc-v2-draft/og/implementation/examples/coding-assistant.png"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta name="twitter:image" content="https://govtech-responsibleai.github.io/arc-v2-draft/og/implementation/examples/coding-assistant.png"/><link rel="alternate" type="text/markdown" href="/arc-v2-draft/implementation/examples/coding-assistant.md"/><script>
+	(() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+	})();
+</script><link rel="stylesheet" href="/arc-v2-draft/_astro/print.C9eyqPGL.css" media="print"><link rel="stylesheet" href="/arc-v2-draft/_astro/middleware.C8WEzMzf.css"><script type="module" src="/arc-v2-draft/_astro/page.cNngjUgL.js"></script></head><body data-astro-cid-g5ptsecz><a class="sl-skip-link" href="#_top" data-astro-cid-qb7clj6f>Skip to content</a><div class="page sl-flex" data-astro-cid-yntsjkba><header class="header" data-astro-cid-yntsjkba><div class="header" data-astro-cid-by6fddyj><div class="title-wrapper sl-flex" data-astro-cid-by6fddyj><a href="/arc-v2-draft/" class="site-title sl-flex" data-astro-cid-6rvad3va><img alt="ARC" src="/arc-v2-draft/_astro/arc-robot.C9D0VP4f.svg" width="16" height="16" data-astro-cid-6rvad3va><span translate="no" data-astro-cid-6rvad3va>ARC 2.0 draft</span></a></div><div class="sl-flex print:hidden" data-astro-cid-by6fddyj><site-search data-translations="{&quot;placeholder&quot;:&quot;Search&quot;}" data-astro-cid-b5kgnn7o="true"><button data-open-modal disabled aria-label="Search" aria-keyshortcuts="Control+K" data-astro-cid-b5kgnn7o><svg data-astro-cid-b5kgnn7o="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block" aria-hidden="true" data-astro-cid-b5kgnn7o>Search</span><kbd class="sl-hidden md:sl-flex" style="display: none" data-astro-cid-b5kgnn7o><kbd data-astro-cid-b5kgnn7o>Ctrl</kbd><kbd data-astro-cid-b5kgnn7o>K</kbd></kbd></button><dialog style="padding: 0" aria-label="Search" data-astro-cid-b5kgnn7o><div class="dialog-frame sl-flex" data-astro-cid-b5kgnn7o><button data-close-modal class="sl-flex md:sl-hidden" data-astro-cid-b5kgnn7o>Cancel</button><div class="search-container" data-astro-cid-b5kgnn7o><div id="starlight__search" data-astro-cid-b5kgnn7o></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/arc-v2-draft/_astro/Search.astro_astro_type_script_index_0_lang.X2HftCOz.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group" data-astro-cid-by6fddyj><div class="sl-flex social-icons" data-astro-cid-by6fddyj><a href="https://github.com/govtech-responsibleai/arc-v2-draft" rel="me" class="sl-flex" data-astro-cid-n2mnl6yq><span class="sr-only" data-astro-cid-n2mnl6yq>GitHub</span><svg data-astro-cid-n2mnl6yq="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg></a><a href="https://www.linkedin.com/company/govtech-singapore" rel="me" class="sl-flex" data-astro-cid-n2mnl6yq><span class="sr-only" data-astro-cid-n2mnl6yq>LinkedIn</span><svg data-astro-cid-n2mnl6yq="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M20.47 2H3.53a1.45 1.45 0 0 0-1.47 1.43v17.14A1.45 1.45 0 0 0 3.53 22h16.94a1.45 1.45 0 0 0 1.47-1.43V3.43A1.45 1.45 0 0 0 20.47 2ZM8.09 18.74h-3v-9h3v9ZM6.59 8.48a1.56 1.56 0 0 1 0-3.12 1.57 1.57 0 1 1 0 3.12Zm12.32 10.26h-3v-4.83c0-1.21-.43-2-1.52-2A1.65 1.65 0 0 0 12.85 13a2 2 0 0 0-.1.73v5h-3v-9h3V11a3 3 0 0 1 2.71-1.5c2 0 3.45 1.29 3.45 4.06v5.18Z"/></svg></a><a href="https://x.com/GovTechSG" rel="me" class="sl-flex" data-astro-cid-n2mnl6yq><span class="sr-only" data-astro-cid-n2mnl6yq>X</span><svg data-astro-cid-n2mnl6yq="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M 18.242188 2.25 L 21.554688 2.25 L 14.324219 10.507812 L 22.828125 21.75 L 16.171875 21.75 L 10.953125 14.933594 L 4.992188 21.75 L 1.679688 21.75 L 9.40625 12.914062 L 1.257812 2.25 L 8.082031 2.25 L 12.792969 8.480469 Z M 17.082031 19.773438 L 18.914062 19.773438 L 7.082031 4.125 L 5.113281 4.125 Z M 17.082031 19.773438 "/></svg></a></div><starlight-theme-select data-astro-cid-smhvfpqh="true"><label style="--sl-select-width: 6.25em" data-astro-cid-2z5xp7gb><span class="sr-only" data-astro-cid-2z5xp7gb>Select theme</span><span class="icon label-icon" data-astro-cid-2z5xp7gb><svg class="sl-theme-icon-dark" data-astro-cid-smhvfpqh="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg class="sl-theme-icon-light" data-astro-cid-smhvfpqh="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg class="sl-theme-icon-auto" data-astro-cid-smhvfpqh="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></span><select autocomplete="off" data-astro-cid-2z5xp7gb><option value="dark" data-astro-cid-2z5xp7gb>Dark</option><option value="light" data-astro-cid-2z5xp7gb>Light</option><option value="auto" selected data-astro-cid-2z5xp7gb>Auto</option></select><svg class="icon caret" data-astro-cid-2z5xp7gb="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>(() => {
+		const theme = (typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme'));
+		if (theme) document.querySelectorAll('starlight-theme-select select').forEach((s) => { s.value = theme; });
+	})();</script><script type="module">var e=`starlight-theme`,t=e=>e===`auto`||e===`dark`||e===`light`?e:`auto`,n=()=>t(typeof localStorage<`u`&&localStorage.getItem(e));function r(t){typeof localStorage<`u`&&localStorage.setItem(e,t===`light`||t===`dark`?t:``)}var i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(e){document.querySelectorAll(`starlight-theme-select select`).forEach(t=>{t.value=e}),document.documentElement.dataset.theme=e===`auto`?i():e,r(e)}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{n()===`auto`&&a(`auto`)});var o=class extends HTMLElement{constructor(){super(),a(n()),this.querySelector(`select`)?.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&a(t(e.currentTarget.value))})}};customElements.define(`starlight-theme-select`,o);</script><script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script></div></div></header><nav class="sidebar print:hidden" aria-label="Main" data-astro-cid-yntsjkba><button popovertarget="starlight__sidebar" class="sl-menu-button sl-flex md:sl-hidden print:hidden" data-astro-cid-r2osgdlg><svg class="open-menu" data-astro-cid-r2osgdlg="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg class="close-menu" data-astro-cid-r2osgdlg="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg><span class="sr-only" data-astro-cid-r2osgdlg>Menu</span></button><script type="module">var e=class extends HTMLElement{constructor(){super();let e=matchMedia(`(min-width: 50em)`),t=()=>{this.popover=e.matches?null:`auto`};t(),e.addEventListener(`change`,()=>t()),this.addEventListener(`toggle`,({newState:e})=>this.trapFocus(e===`open`))}trapFocus(e){document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}};customElements.define(`sl-sidebar-pane`,e);</script><sl-sidebar-pane popover id="starlight__sidebar" class="sidebar-pane" data-astro-cid-yntsjkba="true"><div class="sidebar-content sl-flex" data-astro-cid-yntsjkba><sl-sidebar-state-persist data-hash="1fe3280" data-astro-cid-ipdry5cl="true"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level" data-astro-cid-rmhv4bp6><li data-astro-cid-rmhv4bp6><details open data-astro-cid-rmhv4bp6><summary data-astro-cid-rmhv4bp6><span class="group-label" data-astro-cid-rmhv4bp6><span class="large" data-astro-cid-rmhv4bp6>Framework</span></span><svg class="caret" data-astro-cid-rmhv4bp6="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;" data-astro-cid-hkc32dio><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul data-astro-cid-rmhv4bp6><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/in-five-minutes/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>ARC in five minutes</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/introduction/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Introduction</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/elements/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Elements</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/risks/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Risks</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/capability-combinations/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Capability combinations</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/controls/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Controls</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/glossary/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Glossary</span></a></li></ul></details></li><li data-astro-cid-rmhv4bp6><details open data-astro-cid-rmhv4bp6><summary data-astro-cid-rmhv4bp6><span class="group-label" data-astro-cid-rmhv4bp6><span class="large" data-astro-cid-rmhv4bp6>Use ARC</span></span><svg class="caret" data-astro-cid-rmhv4bp6="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;" data-astro-cid-hkc32dio><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul data-astro-cid-rmhv4bp6><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/explorer/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>What applies to my system?</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/implementation/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Implementing ARC</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/implementation/for-governance-teams/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>For governance teams</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/implementation/for-ai-developers/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>For AI developers</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/implementation/examples/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Worked examples</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/implementation/assessment-template/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Assessment template</span></a></li></ul></details></li><li data-astro-cid-rmhv4bp6><details open data-astro-cid-rmhv4bp6><summary data-astro-cid-rmhv4bp6><span class="group-label" data-astro-cid-rmhv4bp6><span class="large" data-astro-cid-rmhv4bp6>Register</span></span><svg class="caret" data-astro-cid-rmhv4bp6="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;" data-astro-cid-hkc32dio><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul data-astro-cid-rmhv4bp6><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Overview</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/risk-register/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>All risks</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/controls/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>All controls</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/elements/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>All elements</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/register-full-text/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Full text</span></a></li><li data-astro-cid-rmhv4bp6><details data-astro-cid-rmhv4bp6><summary data-astro-cid-rmhv4bp6><span class="group-label" data-astro-cid-rmhv4bp6><span class="large" data-astro-cid-rmhv4bp6>Crosswalks</span></span><svg class="caret" data-astro-cid-rmhv4bp6="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;" data-astro-cid-hkc32dio><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul data-astro-cid-rmhv4bp6><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/crosswalks/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Overview</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/crosswalks/owasp-asi/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>OWASP Top 10 for Agentic Apps</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/crosswalks/owasp-threats/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>OWASP agentic threats</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/crosswalks/csa/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>CSA addendum</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/crosswalks/imda/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>IMDA framework</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/crosswalks/mitre-atlas/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>MITRE ATLAS</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/crosswalks/five-eyes/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Five Eyes guidance</span></a></li></ul></details></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/register/data/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Data</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/keeping-current/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Keeping it current</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/arc_framework/changelog/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Changelog</span></a></li></ul></details></li><li data-astro-cid-rmhv4bp6><details open data-astro-cid-rmhv4bp6><summary data-astro-cid-rmhv4bp6><span class="group-label" data-astro-cid-rmhv4bp6><span class="large" data-astro-cid-rmhv4bp6>About</span></span><svg class="caret" data-astro-cid-rmhv4bp6="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;" data-astro-cid-hkc32dio><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul data-astro-cid-rmhv4bp6><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/about/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>About ARC</span></a></li><li data-astro-cid-rmhv4bp6><a href="/arc-v2-draft/resources/" data-astro-cid-rmhv4bp6><span data-astro-cid-rmhv4bp6>Resources</span></a></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex" data-astro-cid-p4azlveh><div class="social-icons" data-astro-cid-p4azlveh><a href="https://github.com/govtech-responsibleai/arc-v2-draft" rel="me" class="sl-flex" data-astro-cid-n2mnl6yq><span class="sr-only" data-astro-cid-n2mnl6yq>GitHub</span><svg data-astro-cid-n2mnl6yq="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg></a><a href="https://www.linkedin.com/company/govtech-singapore" rel="me" class="sl-flex" data-astro-cid-n2mnl6yq><span class="sr-only" data-astro-cid-n2mnl6yq>LinkedIn</span><svg data-astro-cid-n2mnl6yq="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M20.47 2H3.53a1.45 1.45 0 0 0-1.47 1.43v17.14A1.45 1.45 0 0 0 3.53 22h16.94a1.45 1.45 0 0 0 1.47-1.43V3.43A1.45 1.45 0 0 0 20.47 2ZM8.09 18.74h-3v-9h3v9ZM6.59 8.48a1.56 1.56 0 0 1 0-3.12 1.57 1.57 0 1 1 0 3.12Zm12.32 10.26h-3v-4.83c0-1.21-.43-2-1.52-2A1.65 1.65 0 0 0 12.85 13a2 2 0 0 0-.1.73v5h-3v-9h3V11a3 3 0 0 1 2.71-1.5c2 0 3.45 1.29 3.45 4.06v5.18Z"/></svg></a><a href="https://x.com/GovTechSG" rel="me" class="sl-flex" data-astro-cid-n2mnl6yq><span class="sr-only" data-astro-cid-n2mnl6yq>X</span><svg data-astro-cid-n2mnl6yq="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M 18.242188 2.25 L 21.554688 2.25 L 14.324219 10.507812 L 22.828125 21.75 L 16.171875 21.75 L 10.953125 14.933594 L 4.992188 21.75 L 1.679688 21.75 L 9.40625 12.914062 L 1.257812 2.25 L 8.082031 2.25 L 12.792969 8.480469 Z M 17.082031 19.773438 L 18.914062 19.773438 L 7.082031 4.125 L 5.113281 4.125 Z M 17.082031 19.773438 "/></svg></a></div><starlight-theme-select data-astro-cid-smhvfpqh="true"><label style="--sl-select-width: 6.25em" data-astro-cid-2z5xp7gb><span class="sr-only" data-astro-cid-2z5xp7gb>Select theme</span><span class="icon label-icon" data-astro-cid-2z5xp7gb><svg class="sl-theme-icon-dark" data-astro-cid-smhvfpqh="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg class="sl-theme-icon-light" data-astro-cid-smhvfpqh="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg class="sl-theme-icon-auto" data-astro-cid-smhvfpqh="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></span><select autocomplete="off" data-astro-cid-2z5xp7gb><option value="dark" data-astro-cid-2z5xp7gb>Dark</option><option value="light" data-astro-cid-2z5xp7gb>Light</option><option value="auto" selected data-astro-cid-2z5xp7gb>Auto</option></select><svg class="icon caret" data-astro-cid-2z5xp7gb="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;" data-astro-cid-hkc32dio><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>(() => {
+		const theme = (typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme'));
+		if (theme) document.querySelectorAll('starlight-theme-select select').forEach((s) => { s.value = theme; });
+	})();</script></div></div></div></sl-sidebar-pane></nav><div class="main-frame" data-astro-cid-yntsjkba><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex" data-astro-cid-lrzkfocr><aside class="right-sidebar-container print:hidden" data-astro-cid-lrzkfocr><div class="right-sidebar" data-astro-cid-lrzkfocr><div class="lg:sl-hidden" data-astro-cid-qok35upx><mobile-starlight-toc data-min-h="2" data-max-h="3" data-astro-cid-66cqc7ze="true"><nav aria-labelledby="starlight__on-this-page--mobile" data-astro-cid-66cqc7ze><details id="starlight__mobile-toc" data-astro-cid-66cqc7ze><summary id="starlight__on-this-page--mobile" class="sl-flex" data-astro-cid-66cqc7ze><span class="toggle sl-flex" data-astro-cid-66cqc7ze>On this page<svg class="caret" data-astro-cid-66cqc7ze="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;" data-astro-cid-hkc32dio><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current" data-astro-cid-66cqc7ze></span></summary><div class="dropdown" data-astro-cid-66cqc7ze><ul class="isMobile" style="--depth: 0;" data-astro-cid-jugkfwgx><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#_top" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Overview</span></a></li><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#step-1-identify-capabilities" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Step 1: Identify Capabilities</span></a></li><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#step-2-evaluate-risks" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Step 2: Evaluate Risks</span></a></li><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#step-3-implement-controls" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Step 3: Implement Controls</span></a></li><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#step-4-assess-residual-risks" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Step 4: Assess Residual Risks</span></a></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/arc-v2-draft/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.C3fM4Kra.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block" data-astro-cid-qok35upx><div class="sl-container" data-astro-cid-qok35upx><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">On this page</h2><ul style="--depth: 0;" data-astro-cid-jugkfwgx><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#_top" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Overview</span></a></li><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#step-1-identify-capabilities" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Step 1: Identify Capabilities</span></a></li><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#step-2-evaluate-risks" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Step 2: Evaluate Risks</span></a></li><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#step-3-implement-controls" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Step 3: Implement Controls</span></a></li><li style="--depth: 0;" data-astro-cid-jugkfwgx><a href="#step-4-assess-residual-risks" style="--depth: 0;" data-astro-cid-jugkfwgx><span style="--depth: 0;" data-astro-cid-jugkfwgx>Step 4: Assess Residual Risks</span></a></li></ul></nav></starlight-toc><script type="module" src="/arc-v2-draft/_astro/TableOfContents.astro_astro_type_script_index_0_lang.BpJaGz7G.js"></script></div></div></div></aside><div class="main-pane" data-astro-cid-lrzkfocr><main data-pagefind-body lang="en" dir="ltr" data-astro-cid-g5ptsecz><div class="sl-banner" data-pagefind-ignore data-astro-cid-ofbg3qve><strong>Draft for review.</strong> ARC 2.0, draft 1 (23 November 2026). This is not the published framework, which is <a href="https://govtech-responsibleai.github.io/agentic-risk-capability-framework/">version 1.3.0</a>. <a href="https://github.com/govtech-responsibleai/arc-v2-draft#how-to-comment">How to comment</a></div><div class="content-panel" data-astro-cid-a7po4psb><div class="sl-container" data-astro-cid-a7po4psb><h1 id="_top" data-astro-cid-bebwqqxs>Example 2: Agentic Coding Assistant</h1></div></div><div class="content-panel" data-astro-cid-a7po4psb><div class="sl-container" data-astro-cid-a7po4psb><div class="sl-markdown-content"><p>This worked example applies the <a href="/arc-v2-draft/implementation/for-ai-developers/">four steps for AI developers</a> to one system.</p>
+<p>Agentic coding assistants like Cursor and Claude Code help developers write, debug, and refactor code by autonomously reading codebases, executing commands, and modifying files. These systems typically employ multi-agent architectures with specialized agents for different coding tasks, requiring careful risk management given their access to sensitive codebases and ability to execute arbitrary code.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="step-1-identify-capabilities">Step 1: Identify Capabilities</h2><a class="sl-anchor-link" href="#step-1-identify-capabilities"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Step 1: Identify Capabilities”</span></a></div>
+<p>The agentic coding assistant comprises five specialized agents:</p>
+<table>
+<thead>
+<tr>
+<th>Agent Type</th>
+<th>Agent Name</th>
+<th>Task</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Core Orchestration</td>
+<td>Task Planner</td>
+<td>Decomposes user coding requests into subtasks and coordinates agent workflow</td>
+</tr>
+<tr>
+<td>Code Understanding</td>
+<td>Codebase Analyzer</td>
+<td>Searches codebase, reads relevant files, and understands existing code structure</td>
+</tr>
+<tr>
+<td>Code Generation</td>
+<td>Code Writer</td>
+<td>Generates new code or modifies existing code based on requirements</td>
+</tr>
+<tr>
+<td>Execution &amp; Testing</td>
+<td>Command Executor</td>
+<td>Runs terminal commands, executes tests, and validates code functionality</td>
+</tr>
+<tr>
+<td>File Operations</td>
+<td>File Manager</td>
+<td>Reads, writes, and manages files and directories in the workspace</td>
+</tr>
+</tbody>
+</table>
+<p>Based on the capability taxonomy, this system demonstrates:</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Capability</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cognitive</td>
+<td>CAP-01: Planning and Goal Management</td>
+<td>The Task Planner breaks down complex coding requests into sequential steps (e.g., "add authentication" → analyze existing auth, design schema, implement endpoints, write tests).</td>
+</tr>
+<tr>
+<td>Cognitive</td>
+<td>CAP-02: Agent Delegation</td>
+<td>The Task Planner assigns subtasks to specialized agents (Codebase Analyzer, Code Writer, Command Executor, File Manager) and coordinates their activities.</td>
+</tr>
+<tr>
+<td>Cognitive</td>
+<td>CAP-03: Tool Use</td>
+<td>The Task Planner selects appropriate tools based on task requirements (search vs. read vs. execute).</td>
+</tr>
+<tr>
+<td>Interaction</td>
+<td>CAP-04: Multimodal Understanding and Generation</td>
+<td>All agents process code, markdown documentation, and configuration files; Code Writer generates syntactically correct code in multiple languages.</td>
+</tr>
+<tr>
+<td>Operational</td>
+<td>CAP-10: Code Execution</td>
+<td>The Command Executor runs shell commands, executes tests, installs dependencies, and validates code changes.</td>
+</tr>
+<tr>
+<td>Operational</td>
+<td>CAP-11: File and Data Management</td>
+<td>The File Manager reads source files, writes modifications, creates new files, and manages version control operations.</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="step-2-evaluate-risks">Step 2: Evaluate Risks</h2><a class="sl-anchor-link" href="#step-2-evaluate-risks"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Step 2: Evaluate Risks”</span></a></div>
+<p>We identify risks from baseline components and capabilities, assessing likelihood and impact given the coding assistant context. Assuming organisational relevance threshold requires both impact ≥3 AND likelihood ≥3, we identify the following priority risks:</p>
+<p><strong>Priority Risks (Impact ≥3, Likelihood ≥3):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Risk ID</th>
+<th>Element</th>
+<th>Risk Statement</th>
+<th>Assessment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RISK-002</td>
+<td>CMP-01 (LLM)</td>
+<td>Insufficient alignment of LLM behaviour</td>
+<td><strong>[Impact: 4, Likelihood: 3]</strong> Misaligned LLM may ignore security constraints or execute dangerous operations when instructed to "fix it quickly" without proper validation.</td>
+</tr>
+<tr>
+<td>RISK-007</td>
+<td>CMP-03 (Tools)</td>
+<td>Lack of input sanitisation</td>
+<td><strong>[Impact: 5, Likelihood: 4]</strong> Critical given file system and command execution tools. Malicious file contents or unsanitized tool outputs could inject prompts to manipulate assistant behaviour or execute unintended operations.</td>
+</tr>
+<tr>
+<td>RISK-028</td>
+<td>CAP-04 (Multimodal Understanding)</td>
+<td>Generation of non-factual or hallucinated content</td>
+<td><strong>[Impact: 4, Likelihood: 4]</strong> Hallucinating incorrect code patterns, API usage, or architectural decisions leads developers to implement buggy or insecure features.</td>
+</tr>
+<tr>
+<td>RISK-038</td>
+<td>CAP-09 (Other Programmatic Interfaces)</td>
+<td>Incorrect use of unfamiliar programmatic interfaces</td>
+<td><strong>[Impact: 3, Likelihood: 4]</strong> Assistant may misinterpret bespoke API semantics when interacting with internal tools or non-standard interfaces.</td>
+</tr>
+<tr>
+<td>RISK-039</td>
+<td>CAP-10 (Code Execution)</td>
+<td>Production or execution of poor or ineffective code</td>
+<td><strong>[Impact: 5, Likelihood: 3]</strong> Generated code may be incorrect, inefficient, or contain bugs that cause operational disruptions when deployed or run.</td>
+</tr>
+<tr>
+<td>RISK-040</td>
+<td>CAP-10 (Code Execution)</td>
+<td>Production or execution of vulnerable or malicious code</td>
+<td><strong>[Impact: 5, Likelihood: 4]</strong> Critical risk—generated code may contain SQL injection, XSS, insecure deserialization, or other OWASP Top 10 vulnerabilities that reach production.</td>
+</tr>
+<tr>
+<td>RISK-041</td>
+<td>CAP-11 (File &amp; Data Management)</td>
+<td>Unintended overwriting or deletion of files or data</td>
+<td><strong>[Impact: 5, Likelihood: 3]</strong> Assistant may accidentally delete critical files, overwrite production configs, or drop database tables when misinterpreting user intent.</td>
+</tr>
+<tr>
+<td>RISK-043</td>
+<td>CAP-11 (File &amp; Data Management)</td>
+<td>Exposure of sensitive data through file or database access</td>
+<td><strong>[Impact: 4, Likelihood: 3]</strong> Code suggestions may inadvertently reproduce API keys, credentials, or sensitive data found in configuration files or comments.</td>
+</tr>
+<tr>
+<td>RISK-044</td>
+<td>CAP-11 (File &amp; Data Management)</td>
+<td>Prompt injection via malicious files or data</td>
+<td><strong>[Impact: 4, Likelihood: 3]</strong> Malicious code repositories may contain hidden instructions in comments, README files, or docstrings designed to manipulate assistant behaviour.</td>
+</tr>
+</tbody>
+</table>
+<p><em>(Lower-priority risks documented but not shown here for brevity)</em></p>
+<p><strong>How the capabilities are used.</strong> Code Execution is used at <em>act with approval</em>: every shell command needs the user's approval, in a container with no network access by default. File and Data Management is used at <em>act alone</em>, on a workspace under version control, so its effects are reversible and internal. Neither conditional component is present. Its profile is in <a href="https://github.com/govtech-responsibleai/arc-v2-draft/blob/main/examples/systems/coding-assistant.yaml"><code dir="auto">examples/systems/coding-assistant.yaml</code></a>.</p>
+<p><strong>Capabilities the declared ones bring.</strong> Code Execution can give a system Other Programmatic Interfaces and System Management. Neither is added here: the container blocks network access, and no infrastructure or deployment credentials are within reach of the code it runs (CTRL-0098).</p>
+<p><strong>Combination check.</strong> The lethal trifecta is <em>possible</em>: File and Data Management supplies sensitive data, and the other two legs depend on the deployment. Both are confirmed here. The assistant opens repositories and installs packages that others can change, and code it runs could reach the network. RISK-047 applies, and CTRL-0097 is implemented by gating the outbound channel (see RISK-044 below). Oversight within reach is also <em>possible</em>: code the assistant runs, or files it writes, could reach its own settings and hooks. RISK-062 applies, and CTRL-0101 is implemented by keeping the assistant's configuration outside the workspace it can write to.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="step-3-implement-controls">Step 3: Implement Controls</h2><a class="sl-anchor-link" href="#step-3-implement-controls"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Step 3: Implement Controls”</span></a></div>
+<!-- arc:example coding-assistant risks=49 level0=37 lethal-trifecta=possible oversight-within-reach=possible -->
+<p>This system has 49 applicable risks: 22 baseline, 21 from single capabilities, and six from combinations (the three multi-agent risks that Agent Delegation brings in; RISK-049, sandbox escape, which Code Execution brings in; and RISK-047 and RISK-062 from the two combination rules). They carry 37 Level 0 controls, all of which are implemented as-is. The table shows the priority risks — every Level 0 control of each, plus the Level 1 and 2 controls we selected:</p>
+<table>
+<thead>
+<tr>
+<th>Risk ID</th>
+<th>Selected Controls</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RISK-002</td>
+<td><strong>CTRL-0007</strong> (Level 0): Log all LLM inputs and outputs<br><strong>CTRL-0038</strong> (Level 0): Conduct safety verification before deployment and on a regular cadence<br><strong>CTRL-0005</strong> (Level 1): Conduct structured evaluation of multiple LLMs</td>
+<td>• Log all prompts and generated code to CloudWatch with 90-day retention<br>• Run an agent-security benchmark (e.g., AgentDojo) and a set of repository-injection scenarios before each release<br>• Evaluated three candidate models on code-generation benchmarks (HumanEval, MBPP); selected the one with the strongest instruction-following and code safety</td>
+</tr>
+<tr>
+<td>RISK-007</td>
+<td><strong>CTRL-0015</strong> (Level 1): Treat all tool metadata and outputs as untrusted input</td>
+<td>• Validate all tool outputs (file contents, command results, search results) against expected schemas<br>• Sanitize tool outputs before incorporating into agent prompts or displaying to users<br>• Escape special characters in file paths and command arguments to prevent injection<br>• Filter tool descriptions and error messages for embedded instructions</td>
+</tr>
+<tr>
+<td>RISK-028</td>
+<td><strong>CTRL-0049</strong> (Level 0): Implement UI/UX cues to communicate the risk of hallucination<br><strong>CTRL-0050</strong> (Level 1): Enable users to verify answers against sources<br><strong>CTRL-0048</strong> (Level 2): Implement methods to reduce hallucination rates</td>
+<td>• Add "Verify this code before using" disclaimer on all generated code blocks<br>• Display inline citations showing which files informed code suggestions<br>• Implement RAG using codebase context to ground code suggestions in actual project patterns</td>
+</tr>
+<tr>
+<td>RISK-038</td>
+<td><strong>CTRL-0041</strong> (Level 0): Provide comprehensive descriptions for each tool<br><strong>CTRL-0067</strong> (Level 0): Ensure proper documentation of programmatic interfaces for agent use</td>
+<td>• Provide LLM-readable documentation for all internal APIs and bespoke tools the assistant integrates with<br>• Include parameter types, constraints, and error conditions in tool descriptions<br>• Validate assistant-generated API calls against interface schemas before execution</td>
+</tr>
+<tr>
+<td>RISK-039</td>
+<td><strong>CTRL-0069</strong> (Level 0): Run code only in isolated environments<br><strong>CTRL-0071</strong> (Level 0): Use static code analysers (see RISK-040)<br><strong>CTRL-0068</strong> (Level 1): Use code linters to screen generated code<br><strong>CTRL-0070</strong> (Level 1): Review all agent-generated code before execution</td>
+<td>• Integrate ESLint for JavaScript/TypeScript and Pylint for Python, blocking code application if critical errors detected<br>• Execute all code in Docker containers with no network access by default<br>• Require explicit user approval before running any shell commands</td>
+</tr>
+<tr>
+<td>RISK-040</td>
+<td><strong>CTRL-0069</strong> (Level 0): Run code only in isolated environments (see RISK-039)<br><strong>CTRL-0071</strong> (Level 0): Use static code analysers to detect vulnerabilities<br><strong>CTRL-0073</strong> (Level 0): Create denylist of dangerous commands<br><strong>CTRL-0074</strong> (Level 0): CVE-scan dependencies and block High/Critical<br><strong>CTRL-0070</strong> (Level 1): Review all agent-generated code before execution</td>
+<td>• Integrate Semgrep with OWASP ruleset for vulnerability scanning<br>• Integrate Bandit for Python security analysis<br>• Flag HIGH/CRITICAL vulnerabilities and require user acknowledgment<br>• Denylist: rm -rf, dd, mkfs, iptables, sudo commands without user confirmation<br>• Run dependency CVE scanning on every install the assistant performs; block on High/Critical findings</td>
+</tr>
+<tr>
+<td>RISK-041</td>
+<td><strong>CTRL-0076</strong> (Level 0): Require human approval for destructive changes that cannot be readily undone<br><strong>CTRL-0077</strong> (Level 0): Enable versioning or soft-delete<br><strong>CTRL-0094</strong> (Level 0): Measure the quality of human oversight<br><strong>CTRL-0075</strong> (Level 1): Do not grant write access unless necessary</td>
+<td>• Restrict write access to workspace directory only (no system files)<br>• Integrate with Git to ensure all changes are tracked and reversible; edits to tracked files proceed without approval<br>• Require explicit confirmation, enforced in the tool layer, before deleting untracked files, force-pushing, or running destructive database commands<br>• Track how often users approve these prompts and review a monthly sample; a prompt approved almost every time is redesigned</td>
+</tr>
+<tr>
+<td>RISK-043</td>
+<td><strong>CTRL-0047</strong> (Level 0): Implement output guardrails to detect and redact PII<br><strong>CTRL-0081</strong> (Level 1): Implement input guardrails to detect PII in accessed data</td>
+<td>• Scan all generated code for API keys, tokens, passwords using regex patterns<br>• Flag and redact detected secrets before displaying to user<br>• Warn user when reading config files containing credentials</td>
+</tr>
+<tr>
+<td>RISK-044</td>
+<td><strong>CTRL-0062</strong> (Level 0): Implement input guardrails to detect prompt injection<br><strong>CTRL-0083</strong> (Level 0): Disallow unknown external files unless scanned<br><strong>CTRL-0097</strong> (Level 0): Do not give one agent untrusted content, sensitive data, and an unrestricted outbound channel at once</td>
+<td>• Scan all file contents for prompt injection patterns before processing<br>• Warn user when opening repositories from untrusted sources<br>• Sanitize code comments and docstrings before including in prompts<br>• The outbound channel is gated outside the agents: code runs in containers with no network access by default, and the only destinations that can be enabled are the package mirror and the organisation's Git server</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="step-4-assess-residual-risks">Step 4: Assess Residual Risks</h2><a class="sl-anchor-link" href="#step-4-assess-residual-risks"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Step 4: Assess Residual Risks”</span></a></div>
+<p>After implementing controls, key residual risks remain:</p>
+<table>
+<thead>
+<tr>
+<th>Risk ID</th>
+<th>Residual Risk Description</th>
+<th>Mitigation Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RISK-040</td>
+<td><strong>Subtle Security Vulnerabilities</strong>: Static analyzers may miss logic flaws, race conditions, or business logic vulnerabilities that require deeper semantic understanding.</td>
+<td>• Require security-focused code review for authentication, authorization, and payment logic<br>• Integrate periodic penetration testing of generated features<br>• Maintain security checklist for high-risk code categories</td>
+</tr>
+<tr>
+<td>RISK-044</td>
+<td><strong>Sophisticated Prompt Injection</strong>: Advanced attacks embedded in dependency documentation or third-party code may bypass current detection and manipulate assistant behaviour.</td>
+<td>• Monitor command execution patterns for anomalies (e.g., unexpected network calls)<br>• Regularly update injection detection patterns based on emerging attacks<br>• Implement rate limiting on destructive operations</td>
+</tr>
+<tr>
+<td>RISK-041</td>
+<td><strong>Misinterpreted User Intent</strong>: User requests like "clean up the code" may be interpreted too broadly, leading to unintended file deletions or modifications despite approval workflows.</td>
+<td>• Require assistant to explicitly list files to be modified before execution<br>• Implement dry-run mode showing proposed changes before applying<br>• Maintain undo history for last 10 operations</td>
+</tr>
+<tr>
+<td>RISK-028</td>
+<td><strong>Framework/Library Hallucination</strong>: Assistant may hallucinate non-existent APIs, deprecated methods, or incorrect framework usage in less common libraries.</td>
+<td>• Prioritize official documentation retrieval for library-specific questions<br>• Display confidence scores for code suggestions involving external dependencies<br>• Encourage developers to verify against official docs for critical integrations</td>
+</tr>
+</tbody>
+</table>
+<p>These residual risks and mitigation strategies will be reviewed monthly during the first six months of deployment, then quarterly thereafter based on observed incident rates and developer feedback.</p>
+</div><footer class="sl-flex" data-astro-cid-ddtxxk7k><div class="meta sl-flex" data-astro-cid-ddtxxk7k><a href="https://github.com/govtech-responsibleai/arc-v2-draft/edit/main/docs/implementation/examples/coding-assistant.md" class="sl-flex print:hidden" data-astro-cid-qlekgd3o><svg data-astro-cid-qlekgd3o="true" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.2em;" data-astro-cid-hkc32dio><path d="M22 7.24a1 1 0 0 0-.29-.71l-4.24-4.24a1 1 0 0 0-1.1-.22 1 1 0 0 0-.32.22l-2.83 2.83L2.29 16.05a1 1 0 0 0-.29.71V21a1 1 0 0 0 1 1h4.24a1 1 0 0 0 .76-.29l10.87-10.93L21.71 8c.1-.1.17-.2.22-.33a1 1 0 0 0 0-.24v-.14l.07-.05ZM6.83 20H4v-2.83l9.93-9.93 2.83 2.83L6.83 20ZM18.17 8.66l-2.83-2.83 1.42-1.41 2.82 2.82-1.41 1.42Z"/></svg>Edit page</a></div><div class="pagination-links print:hidden" dir="ltr" data-astro-cid-b5raizh3></div></footer><p class="arc-feedback">Something wrong or unclear on this page? <a href="https://forms.gle/KoXecxDuPHf8izP2A">Tell the ARC team</a>.</p></div></div></main></div></div></div></div><footer class="arc-site-footer"><div class="arc-site-footer-inner"><a class="arc-govtech" href="https://www.tech.gov.sg/"><img class="arc-logo-light" src="/arc-v2-draft/_astro/govtech-logo.BSeeDsrB.png" width="138" height="48" alt="GovTech Singapore" loading="lazy" decoding="async"><img class="arc-logo-dark" src="/arc-v2-draft/_astro/govtech-logo-dark.iUWigleM.png" width="138" height="48" alt="GovTech Singapore" loading="lazy" decoding="async"></a><div class="arc-footer-text"><p>The ARC Framework is developed by the Responsible AI team at <a href="https://www.tech.gov.sg/">GovTech Singapore</a>, and released under the <a href="https://github.com/govtech-responsibleai/arc-v2-draft/blob/main/LICENSE">Apache 2.0 licence</a>.</p><ul class="arc-footer-links"><li><a href="/arc-v2-draft/about/">About ARC</a></li><li><a href="https://github.com/govtech-responsibleai/arc-v2-draft">GitHub</a></li><li><a href="https://blog.ai.gov.sg/">Our blog, ai@govtech</a></li><li><a href="https://playbooks.aip.gov.sg/responsibleai/">Responsible AI Playbook</a></li></ul></div></div></footer></body></html>

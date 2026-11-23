@@ -1,0 +1,61 @@
+{
+ "id": "RISK-015",
+ "type": "risk",
+ "statement": "Overly permissive roles and permissions",
+ "description": "This risk arises when agents are granted roles or permissions that exceed their intended responsibilities or operational needs. As a result, agents may access sensitive resources, invoke high-impact capabilities, or perform unauthorised actions that increase the likelihood of security, privacy, or operational failures.",
+ "elements": [
+  {
+   "id": "DSN-02",
+   "name": "Roles and Access Controls"
+  }
+ ],
+ "failure_mode": "Safeguard Failure",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-04",
+   "name": "Identity and access management",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0029",
+   "level": 0,
+   "statement": "Grant agents only the minimum permissions required for their designated tasks"
+  },
+  {
+   "id": "CTRL-0030",
+   "level": 1,
+   "statement": "Assign each agent a unique, verifiable identity with no shared credentials"
+  }
+ ],
+ "sources": [
+  "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+  "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T3",
+    "title": "Privilege compromise"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0053",
+    "title": "AI Agent Tool Invocation"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-015/"
+}

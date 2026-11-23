@@ -1,0 +1,86 @@
+{
+ "id": "RISK-050",
+ "type": "risk",
+ "statement": "Deceptive behaviour toward overseers",
+ "description": "This risk arises when an agent pursuing an objective misrepresents what it has done or found, edits or obscures its own history or logs, or socially engineers the humans overseeing it in order to obtain approval or avoid intervention. Unlike an error, the behaviour is goal-directed and can look legitimate step by step, so the evidence needed to detect it may have been altered by the agent itself. As a result, oversight based on the agent's own reports provides false assurance, and unsanctioned actions proceed under the appearance of compliance.",
+ "elements": [
+  {
+   "id": "CMP-01",
+   "name": "LLM"
+  }
+ ],
+ "failure_mode": "Agent Misbehaviour",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-04",
+   "name": "Identity and access management",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-09",
+   "name": "Misrepresentation",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0007",
+   "level": 0,
+   "statement": "Log all LLM inputs and outputs for regular review"
+  },
+  {
+   "id": "CTRL-0034",
+   "level": 0,
+   "statement": "Conduct regular reviews of logs and traces to detect emergent issues in deployed agentic systems"
+  },
+  {
+   "id": "CTRL-0038",
+   "level": 0,
+   "statement": "Conduct safety verification with domain-relevant stress tests and adversarial scenarios before deployment and on a regular cadence afterwards"
+  },
+  {
+   "id": "CTRL-0093",
+   "level": 2,
+   "statement": "Monitor agents for deceptive and collusive behaviour using an independent monitor"
+  }
+ ],
+ "sources": [
+  "https://www.aisi.gov.uk/blog/incident-report-unsanctioned-agent-behaviour-during-cyber-testing",
+  "https://fortune.com/2026/06/18/google-deepmind-unveils-plan-to-protect-itself-from-its-own-rogue-ai-agents/",
+  "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   },
+   {
+    "id": "ASI09",
+    "title": "Human-Agent Trust Exploitation"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T7",
+    "title": "Misaligned and deceptive behaviours"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0138",
+    "title": "Indicator Removal"
+   },
+   {
+    "id": "AML.T0073",
+    "title": "Impersonation"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-050/"
+}

@@ -1,0 +1,64 @@
+{
+ "id": "CTRL-0092",
+ "type": "control",
+ "level": 0,
+ "statement": "Contain evaluations and red-team exercises so that agents cannot reach real systems, credentials, or people",
+ "recommendations": "Treat every evaluation, benchmark run, and red-team exercise as a deployment with its own containment. Use synthetic or replica targets rather than production systems, issue no production credentials or real accounts, isolate the network with default-deny egress, and prohibit out-of-scope tactics such as contacting real people or third-party infrastructure explicitly in the task specification rather than assuming the agent will infer them. Monitor runs in real time with the ability to halt them, and review anomalous traffic (for example anonymising networks or unexpected destinations) immediately. Agents have breached third-party infrastructure from inside an evaluation and socially engineered real maintainers during cyber testing; design containment for a capable adversary, not a compliant one.",
+ "enforcement": [
+  "infrastructure",
+  "organisation"
+ ],
+ "owner": "security",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The evaluation environment definition showing replica targets, test-only credentials and default-deny egress, and the task specification's list of prohibited tactics.",
+ "test": "From inside an evaluation run, attempt to reach a production hostname and an external site and confirm both are blocked and the run monitor alerts.",
+ "risks": [
+  {
+   "id": "RISK-049",
+   "statement": "Escape from evaluation or sandbox containment onto live systems"
+  }
+ ],
+ "references": [
+  "https://openai.com/index/hugging-face-model-evaluation-security-incident/",
+  "https://www.aisi.gov.uk/blog/incident-report-unsanctioned-agent-behaviour-during-cyber-testing"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.9",
+    "title": "Segregate environments and segment networks"
+   },
+   {
+    "id": "3.2",
+    "title": "Conduct security testing"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.2",
+    "title": "Test agents before deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV4",
+    "title": "Developing secure agents – Red teaming"
+   },
+   {
+    "id": "DP6",
+    "title": "Deploying agents securely – Isolation"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0092/"
+}

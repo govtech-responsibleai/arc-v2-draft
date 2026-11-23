@@ -1,0 +1,74 @@
+{
+ "id": "RISK-011",
+ "type": "risk",
+ "statement": "Sensitive data leakage across memory contexts",
+ "description": "This risk arises when the memory component retains or exposes sensitive information across sessions, tasks, or users with different scopes or authorisations. As a result, data may be inappropriately accessed or reused in unrelated contexts, leading to privacy breaches, confidentiality violations, or unauthorised disclosure.",
+ "elements": [
+  {
+   "id": "CMP-04",
+   "name": "Memory"
+  }
+ ],
+ "failure_mode": "Tool or Resource Malfunction",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0021",
+   "level": 0,
+   "statement": "Implement allowlists and denylists to restrict what categories of information can be written to the agent's persistent memory"
+  },
+  {
+   "id": "CTRL-0047",
+   "level": 0,
+   "statement": "Implement output guardrails to detect and redact personally identifiable information"
+  },
+  {
+   "id": "CTRL-0023",
+   "level": 2,
+   "statement": "Log all modifications to persistent memory with comprehensive source metadata for audit purposes"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2506.12699v2"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI06",
+    "title": "Memory and Context Poisoning"
+   },
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T1",
+    "title": "Memory poisoning"
+   },
+   {
+    "id": "T3",
+    "title": "Privilege compromise"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-011/"
+}

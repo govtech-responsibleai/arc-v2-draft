@@ -1,0 +1,64 @@
+{
+ "id": "CTRL-0077",
+ "type": "control",
+ "level": 0,
+ "statement": "Enable versioning or soft-delete for managed object stores to allow recovery from accidental modifications",
+ "recommendations": "Even with access controls and approval workflows, agents may occasionally execute unintended destructive operations due to misunderstandings, bugs, or edge cases. Implement versioning or soft-delete mechanisms for file stores, object storage, and databases that preserve previous versions of data when modifications occur, enabling recovery from accidental overwrites or deletions.",
+ "enforcement": [
+  "infrastructure"
+ ],
+ "owner": "platform",
+ "phase": [
+  "build",
+  "deploy"
+ ],
+ "evidence": "The storage and database settings showing versioning, soft-delete or point-in-time recovery enabled, with retention period, on every store the agent can write to.",
+ "test": "Overwrite and delete a test object with the agent's credentials, restore the earlier version and confirm its contents match the original.",
+ "risks": [
+  {
+   "id": "RISK-041",
+   "statement": "Unintended overwriting or deletion of files or data"
+  },
+  {
+   "id": "RISK-056",
+   "statement": "Actions beyond the agent's tools through code execution and reachable credentials"
+  }
+ ],
+ "references": [
+  "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.5",
+    "title": "Have regular backups in the event of compromise"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS2",
+    "title": "Designing secure agents – Oversight mechanisms"
+   },
+   {
+    "id": "DV5",
+    "title": "Developing secure agents – Resilience"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0077/"
+}

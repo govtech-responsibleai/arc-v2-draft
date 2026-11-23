@@ -1,0 +1,73 @@
+{
+ "id": "CTRL-0062",
+ "type": "control",
+ "level": 0,
+ "statement": "Implement input guardrails to detect prompt injection and adversarial attacks",
+ "recommendations": "Malicious actors may attempt to inject hidden instructions through web content, uploaded files, or external data sources to hijack agent behaviour and bypass intended constraints. Use prompt injection detection tools or classifiers trained to identify adversarial inputs before they reach the agent's context.",
+ "enforcement": [
+  "model",
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The injection detector's configuration naming the classifier, its threshold and the input channels it screens, with a log of flagged inputs.",
+ "test": "Run garak or PyRIT injection probes through user input, uploaded files and retrieved web content and confirm detections meet the documented rate.",
+ "risks": [
+  {
+   "id": "RISK-034",
+   "statement": "Prompt injection via malicious websites"
+  },
+  {
+   "id": "RISK-036",
+   "statement": "Prompt injection risks through computer use"
+  },
+  {
+   "id": "RISK-044",
+   "statement": "Prompt injection via malicious files or data"
+  },
+  {
+   "id": "RISK-047",
+   "statement": "Data exfiltration through combined access to untrusted content, sensitive data, and an outbound channel"
+  },
+  {
+   "id": "RISK-059",
+   "statement": "Prompt injection through inbound messages"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services",
+  "https://www.frontiermodelforum.org/uploads/2026/06/FMF-Issue-Brief-on-Emerging-Security-Practices-for-AI-Agents.pdf"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.1",
+    "title": "Validate inputs to models and agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV3",
+    "title": "Developing secure agents – Input management"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0062/"
+}

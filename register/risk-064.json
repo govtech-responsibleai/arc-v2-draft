@@ -1,0 +1,110 @@
+{
+ "id": "RISK-064",
+ "type": "risk",
+ "statement": "Harm from a connected tool server or agent to the system that connects to it",
+ "description": "This risk arises when a tool server or agent that another party builds or operates attacks the system that connects to it, or fails in a way that damages it. The connection itself is the route: a malicious server can abuse the protocol's authorisation or discovery steps to run commands on the connecting machine, obtain credentials meant for other services, or pose as a trusted server, and a faulty shared server can deliver one client's results to another. RISK-006 covers a connected party misleading the agent through what it says about itself; this risk covers harm that needs no cooperation from the model at all. As a result, connecting to a server can compromise the host, its credentials, or other users' data, as when a malicious tool server could run commands on any machine that connected to it through a widely used client, and a race condition in a protocol library sent tool results to the wrong client.",
+ "elements": [
+  {
+   "id": "CMP-05",
+   "name": "Protocols"
+  }
+ ],
+ "failure_mode": "External Manipulation",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-04",
+   "name": "Identity and access management",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0009",
+   "level": 0,
+   "statement": "Use only tool servers and APIs, including MCP servers, that implement robust authentication mechanisms in production environments"
+  },
+  {
+   "id": "CTRL-0013",
+   "level": 0,
+   "statement": "Test all untested MCP servers in a sandboxed environment before deploying to production"
+  },
+  {
+   "id": "CTRL-0091",
+   "level": 0,
+   "statement": "Require verified provenance for tools, skills, and dependencies, and re-verify them on every update"
+  },
+  {
+   "id": "CTRL-0096",
+   "level": 0,
+   "statement": "Harden agent frameworks and runtimes before exposing them, and patch framework vulnerabilities promptly"
+  },
+  {
+   "id": "CTRL-0010",
+   "level": 1,
+   "statement": "Use only MCP servers that validate credentials on every inbound request"
+  },
+  {
+   "id": "CTRL-0031",
+   "level": 1,
+   "statement": "Use only MCP servers that validate token provenance and prohibit unauthorised token passthrough"
+  },
+  {
+   "id": "CTRL-0012",
+   "level": 2,
+   "statement": "Use only MCP servers that integrate with authorisation servers implementing per-client consent mechanisms"
+  }
+ ],
+ "sources": [
+  "https://jfrog.com/blog/2025-6514-critical-mcp-remote-rce-vulnerability/",
+  "https://vulnerablemcp.info/vuln/cve-2026-25536-sdk-cross-client-data-leak.html",
+  "https://www.pillar.security/blog/open-and-shut-remote-code-execution-in-opencode-via-mcp-oauth",
+  "https://github.com/advisories/GHSA-jm63-cq47-j5jp"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI04",
+    "title": "Agentic Supply Chain Vulnerabilities"
+   },
+   {
+    "id": "ASI07",
+    "title": "Insecure Inter-Agent Communication"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T16",
+    "title": "Insecure inter-agent protocol abuse"
+   },
+   {
+    "id": "T17",
+    "title": "Supply chain compromise"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0010.005",
+    "title": "Supply Chain Compromise: AI Agent Tool"
+   },
+   {
+    "id": "AML.T0011.002",
+    "title": "User Execution: Poisoned AI Agent Tool"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-064/"
+}

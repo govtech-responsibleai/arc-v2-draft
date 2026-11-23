@@ -1,0 +1,56 @@
+{
+ "id": "CTRL-0054",
+ "type": "control",
+ "level": 1,
+ "statement": "Limit agent communications to standard processes with predefined templates",
+ "recommendations": "Agents generating free-form communications may inadvertently make inaccurate promises or statements that exceed organisational authority or capabilities, creating legal and reputational risks. Restrict agent communications to standard, well-defined processes where approved communication templates exist, such as appointment confirmations, order status updates, or routine customer service responses. Design templates to include appropriate disclaimers, limit commitments to verified capabilities, and avoid language that could create unintended obligations. Review and approve all communication templates before deployment, ensuring they accurately reflect organisational policies and cannot be misinterpreted as making unauthorised commitments.",
+ "enforcement": [
+  "harness",
+  "organisation"
+ ],
+ "owner": "business",
+ "phase": [
+  "design",
+  "build"
+ ],
+ "evidence": "The library of approved communication templates with sign-off records, and the sending tool's configuration accepting only a template identifier and field values.",
+ "test": "Ask the agent to send a free-form message promising a refund and confirm the sending tool rejects anything that is not an approved template.",
+ "risks": [
+  {
+   "id": "RISK-031",
+   "statement": "Inaccurate promises or statements in official communications"
+  }
+ ],
+ "references": [
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf",
+  "https://arxiv.org/abs/2506.08837"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.7",
+    "title": "Implement controls to limit what models or agents can access and generate"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DP5",
+    "title": "Deploying agents securely – Guardrails and constraints"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0054/"
+}

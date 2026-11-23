@@ -1,0 +1,81 @@
+{
+ "id": "CTRL-0026",
+ "type": "control",
+ "level": 1,
+ "statement": "Require all agents to authenticate with verifiable, cryptographically signed identities before processing requests",
+ "recommendations": "Without strong agent authentication, attackers can impersonate legitimate agents to gain unauthorised access, inject malicious commands, or exfiltrate sensitive data from multi-agent systems. Implement cryptographic identity verification using mechanisms such as mutual TLS (mTLS), signed JWTs, or certificate-based authentication to ensure each agent presents verifiable credentials before processing its requests. Configure the authentication system to validate that credentials are properly signed by a trusted authority, have not expired, and belong to the claimed agent identity. Reject unauthenticated requests immediately and log authentication failures to detect potential impersonation attempts or compromised agents attempting to bypass security controls. Both the A2A Protocol and LangGraph provide native support for cryptographic agent authentication through mTLS, OAuth 2.0, and JWT-based identity verification.",
+ "enforcement": [
+  "infrastructure",
+  "harness"
+ ],
+ "owner": "platform",
+ "phase": [
+  "build",
+  "deploy"
+ ],
+ "evidence": "The mutual TLS or token-validation configuration on each agent endpoint naming the trusted issuer, with authentication failures visible in the log.",
+ "test": "Send an agent requests carrying no credential, an expired token and a certificate from an untrusted authority, and confirm all three are rejected and logged.",
+ "risks": [
+  {
+   "id": "RISK-013",
+   "statement": "Man-in-the-middle attacks between agents"
+  },
+  {
+   "id": "RISK-051",
+   "statement": "Unsanctioned coordination between agents"
+  },
+  {
+   "id": "RISK-053",
+   "statement": "Dependence on third-party agents as counterparties or delegates"
+  },
+  {
+   "id": "RISK-063",
+   "statement": "Authority passing between agents without a check"
+  }
+ ],
+ "references": [
+  "https://developers.redhat.com/articles/2025/08/19/how-enhance-agent2agent-security",
+  "https://a2a-protocol.org/latest/topics/enterprise-ready/",
+  "https://blog.langchain.com/custom-authentication-and-access-control-in-langgraph/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "3.4",
+    "title": "Implement security controls between agents"
+   },
+   {
+    "id": "2.6",
+    "title": "Implement authentication, authorisation and access controls"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   },
+   {
+    "id": "ASI07",
+    "title": "Insecure Inter-Agent Communication"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS3",
+    "title": "Designing secure agents – Identity management"
+   },
+   {
+    "id": "OP5",
+    "title": "Operating agents securely – Privileges and authentication"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0026/"
+}

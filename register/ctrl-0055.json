@@ -1,0 +1,52 @@
+{
+ "id": "CTRL-0055",
+ "type": "control",
+ "level": 1,
+ "statement": "Provide alternative channels for users to clarify communications or provide feedback",
+ "recommendations": "When agents make inaccurate statements or commitments in communications, recipients need accessible mechanisms to seek clarification, report concerns, or correct misunderstandings before problems escalate. Establish clear alternative channels for recipients to contact human representatives when they have questions about AI-generated communications, such as dedicated email addresses, phone numbers, or contact forms prominently displayed in agent communications.",
+ "enforcement": [
+  "organisation",
+  "harness"
+ ],
+ "owner": "business",
+ "phase": [
+  "design",
+  "operate"
+ ],
+ "evidence": "The footer of the agent's message templates showing a staffed contact address or number, and the queue where enquiries from recipients are logged.",
+ "test": "Reply to an agent-sent message through the published contact channel and confirm a human responds within the stated service time.",
+ "risks": [
+  {
+   "id": "RISK-031",
+   "statement": "Inaccurate promises or statements in official communications"
+  }
+ ],
+ "references": [
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://www.pdpc.gov.sg/-/media/files/pdpc/pdf-files/resource-for-organisation/ai/sgmodelaigovframework2.pdf"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.5",
+    "title": "Establish a vulnerability disclosure process"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.4.2",
+    "title": "Users who interact with agents (transparency, disclosure, escalation)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI09",
+    "title": "Human-Agent Trust Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0055/"
+}

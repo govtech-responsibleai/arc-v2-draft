@@ -1,0 +1,68 @@
+{
+ "id": "RISK-045",
+ "type": "risk",
+ "statement": "Misconfiguration of system resources",
+ "description": "This risk arises when an agent incorrectly configures system settings, infrastructure resources, or operational parameters. As a result, system performance, reliability, or security may be degraded, leading to service disruptions or unintended operational behaviour.",
+ "elements": [
+  {
+   "id": "CAP-12",
+   "name": "System Management"
+  }
+ ],
+ "min_authority": {
+  "CAP-12": "act-with-approval"
+ },
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-03",
+   "name": "Infrastructure and network",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0084",
+   "level": 0,
+   "statement": "Set minimum and maximum limits on what agents can modify within system resources"
+  },
+  {
+   "id": "CTRL-0085",
+   "level": 0,
+   "statement": "Log system health metrics and implement automated alerts for abnormal conditions"
+  }
+ ],
+ "sources": [
+  "https://neurips.cc/virtual/2024/poster/97835",
+  "https://arxiv.org/html/2507.10584v1"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   },
+   {
+    "id": "ASI08",
+    "title": "Cascading Failures"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T2",
+    "title": "Tool misuse"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-045/"
+}

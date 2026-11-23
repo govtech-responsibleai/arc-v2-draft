@@ -1,0 +1,67 @@
+{
+ "id": "CTRL-0043",
+ "type": "control",
+ "level": 1,
+ "level_when": [
+  {
+   "level": 0,
+   "authority": "act-alone"
+  }
+ ],
+ "statement": "Log all tool selection decisions and invocations with comprehensive metadata",
+ "recommendations": "Without comprehensive tool invocation logs, diagnosing incorrect tool selection or misuse becomes extremely difficult, preventing effective debugging and post-incident analysis. Implement detailed logging for all tool selection decisions and invocations, capturing the tool name, input arguments, caller identity, authorisation outcome, timestamp, and resulting outputs or side effects. Structure logs to enable correlation between tool selection reasoning and actual outcomes, allowing investigation of why particular tools were chosen and whether they produced expected results.",
+ "enforcement": [
+  "harness",
+  "infrastructure"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "A log query for one session returning each tool call with tool name, arguments, caller identity, authorisation outcome, timestamp and result.",
+ "test": "Trigger one permitted and one denied tool call and confirm both appear in the log with the correct authorisation outcome and the selection reasoning.",
+ "risks": [
+  {
+   "id": "RISK-023",
+   "statement": "Incorrect tool selection or misuse"
+  }
+ ],
+ "references": [
+  "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.3",
+    "title": "Continuous monitoring and logging"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.3",
+    "title": "Continuously monitor and test when deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV7",
+    "title": "Developing secure agents – Manage third-party components"
+   },
+   {
+    "id": "OP1",
+    "title": "Operating agents securely – Monitoring and auditing"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0043/"
+}

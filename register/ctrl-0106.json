@@ -1,0 +1,61 @@
+{
+ "id": "CTRL-0106",
+ "type": "control",
+ "level": 1,
+ "statement": "Minimise the personal data an agent sends through its tools, and set a retention period for what it keeps",
+ "recommendations": "Personal data leaves through ordinary tool calls: a search query, an API parameter, a file upload. Decide for each tool which categories of personal data it may carry, and enforce this in the tool layer by redacting or blocking the rest (see CTRL-0047 and CTRL-0081), with stricter rules for tools that reach other organisations. Collect only the records a task needs instead of indexing whole mailboxes, drives, or repositories, and make any upload to a hosted service an explicit choice, not a default. Set a retention period for everything the agent stores, including indexes, caches, transcripts, and memory, and delete on schedule and when the user leaves or the purpose ends. Tell people when an agent is recording or processing their data, and obtain consent where the law requires it.",
+ "enforcement": [
+  "harness",
+  "organisation"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build",
+  "operate"
+ ],
+ "evidence": "The per-tool data rules and redaction configuration, the retention schedule for agent stores, and deletion logs showing the schedule being met.",
+ "test": "Give the agent a task whose natural tool call would send a personal identifier to an external service, and confirm that the identifier is removed or the call is blocked.",
+ "risks": [
+  {
+   "id": "RISK-066",
+   "statement": "Personal data collected, kept, or passed on beyond what the task needs"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.7",
+    "title": "Implement controls to limit what models or agents can access and generate"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS1",
+    "title": "Designing secure agents – Controlled context"
+   },
+   {
+    "id": "DP5",
+    "title": "Deploying agents securely – Guardrails and constraints"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0106/"
+}

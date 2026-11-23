@@ -1,0 +1,56 @@
+{
+ "id": "CTRL-0085",
+ "type": "control",
+ "level": 0,
+ "statement": "Log system health metrics and implement automated alerts for abnormal conditions",
+ "recommendations": "Misconfigurations by agents may not cause immediate visible failures but instead gradually degrade system health, performance, or stability over time. Implement comprehensive logging of system health metrics including resource utilisation, error rates, response times, and performance indicators that reflect the impact of configuration changes. Configure automated alerting that triggers when metrics deviate from expected baselines or exceed acceptable thresholds.",
+ "enforcement": [
+  "infrastructure"
+ ],
+ "owner": "platform",
+ "phase": [
+  "deploy",
+  "operate"
+ ],
+ "evidence": "The dashboards and alert rules for resource utilisation, error rate and response time on systems the agent administers, each with a stated baseline.",
+ "test": "Apply a configuration change in staging that degrades response time and confirm an alert fires and the change appears in the alert's timeline.",
+ "risks": [
+  {
+   "id": "RISK-045",
+   "statement": "Misconfiguration of system resources"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf",
+  "https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.3",
+    "title": "Continuous monitoring and logging"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.3",
+    "title": "Continuously monitor and test when deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI08",
+    "title": "Cascading Failures"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP1",
+    "title": "Operating agents securely – Monitoring and auditing"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0085/"
+}

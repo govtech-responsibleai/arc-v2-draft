@@ -1,0 +1,23 @@
+{
+ "id": "CAP-10",
+ "type": "element",
+ "kind": "capability",
+ "name": "Code Execution",
+ "category": "Operational",
+ "description": "The capability to write, execute, and debug code in various programming languages to automate tasks or solve computational problems. This includes implementing algorithms, writing scripts, compiling and running code, debugging errors, and integrating with external systems through APIs or backend services.",
+ "authority": [
+  "propose",
+  "act-with-approval",
+  "act-alone"
+ ],
+ "irreversible": "ask",
+ "external": "ask",
+ "risks": [
+  "RISK-039",
+  "RISK-040",
+  "RISK-049",
+  "RISK-056"
+ ],
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/cap-10/"
+}

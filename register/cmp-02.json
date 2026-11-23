@@ -1,0 +1,16 @@
+{
+ "id": "CMP-02",
+ "type": "element",
+ "kind": "component",
+ "name": "Instructions",
+ "category": null,
+ "description": "Instructions are structured inputs provided to an LLM that define the task, constraints, and context, guiding how the model interprets inputs and generates outputs. They guide the LLM's decision process by conditioning prompts and tool use with objectives, policies, and guardrails. Forms include system prompts, policies, schemas, and rubrics, varying by framework and enforcement strictness.",
+ "risks": [
+  "RISK-008",
+  "RISK-009",
+  "RISK-058",
+  "RISK-067"
+ ],
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/cmp-02/"
+}

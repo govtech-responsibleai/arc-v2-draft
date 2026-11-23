@@ -1,0 +1,98 @@
+{
+ "id": "RISK-044",
+ "type": "risk",
+ "statement": "Prompt injection via malicious files or data",
+ "description": "This risk arises when an agent ingests or processes maliciously crafted files or data that embed hidden instructions or manipulative content. As a result, the agent may follow unintended prompts, alter its behaviour, or execute actions that compromise system safety or integrity.",
+ "elements": [
+  {
+   "id": "CAP-11",
+   "name": "File and Data Management"
+  }
+ ],
+ "failure_mode": "External Manipulation",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-02",
+   "name": "Application",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0062",
+   "level": 0,
+   "statement": "Implement input guardrails to detect prompt injection and adversarial attacks"
+  },
+  {
+   "id": "CTRL-0083",
+   "level": 0,
+   "statement": "Disallow unknown or external files unless they have been scanned for threats"
+  },
+  {
+   "id": "CTRL-0097",
+   "level": 0,
+   "statement": "Do not give one agent untrusted content, access to sensitive data, and an unrestricted outbound channel at once; remove one, or gate the outbound channel outside the agent"
+  },
+  {
+   "id": "CTRL-0090",
+   "level": 1,
+   "statement": "Enforce data-flow and capability policies at runtime with a deterministic policy layer that separates untrusted content from privileged actions"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2509.10540",
+  "https://arxiv.org/abs/2403.02817"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   },
+   {
+    "id": "ASI06",
+    "title": "Memory and Context Poisoning"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T6",
+    "title": "Intent breaking and goal manipulation"
+   },
+   {
+    "id": "T1",
+    "title": "Memory poisoning"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0051.001",
+    "title": "LLM Prompt Injection: Indirect"
+   },
+   {
+    "id": "AML.T0099",
+    "title": "AI Agent Tool Data Poisoning"
+   },
+   {
+    "id": "AML.T0070",
+    "title": "RAG Poisoning"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-044/"
+}

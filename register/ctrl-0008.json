@@ -1,0 +1,65 @@
+{
+ "id": "CTRL-0008",
+ "type": "control",
+ "level": 1,
+ "statement": "Implement automated alerts when agent behaviour drifts from predefined thresholds",
+ "recommendations": "Behavioural drift may indicate model degradation, adversarial manipulation, or emergent unsafe patterns that require immediate investigation. Define baseline metrics for expected agent behaviour (e.g., tool usage patterns, response times, error rates, decision distributions) and establish acceptable variance thresholds based on your risk tolerance. Implement monitoring systems that continuously track these metrics and trigger alerts when deviations exceed thresholds, enabling rapid response to anomalies. Configure alerts to include sufficient diagnostic context (timestamp, affected sessions, deviation magnitude) and establish clear escalation procedures for investigating and remediating drift incidents.",
+ "enforcement": [
+  "infrastructure",
+  "organisation"
+ ],
+ "owner": "developer",
+ "phase": [
+  "deploy",
+  "operate"
+ ],
+ "evidence": "The alert rules in the monitoring system, each naming a behavioural metric, its baseline, its threshold and the escalation route.",
+ "test": "Replay a staging session with ten times the baseline tool-call rate and confirm an alert fires naming the session and the size of the deviation.",
+ "risks": [
+  {
+   "id": "RISK-002",
+   "statement": "Insufficient alignment of LLM behaviour"
+  },
+  {
+   "id": "RISK-022",
+   "statement": "Malicious or manipulative use of delegated agents"
+  },
+  {
+   "id": "RISK-067",
+   "statement": "Use of the agent by its own principal against others"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services",
+  "https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.3",
+    "title": "Continuous monitoring and logging"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.3",
+    "title": "Continuously monitor and test when deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI10",
+    "title": "Rogue Agents"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "OP1",
+    "title": "Operating agents securely – Monitoring and auditing"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0008/"
+}

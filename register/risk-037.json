@@ -1,0 +1,71 @@
+{
+ "id": "RISK-037",
+ "type": "risk",
+ "statement": "Exposure of sensitive data",
+ "description": "This risk arises when an agent operating a computer interface accesses websites or applications that contain personally identifiable or sensitive information, particularly when authenticated as a user or organisation. As a result, the agent may inadvertently view, process, or disclose confidential data beyond its intended scope or authorisation.",
+ "elements": [
+  {
+   "id": "CAP-08",
+   "name": "Computer Use"
+  }
+ ],
+ "failure_mode": "Agent Error",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0047",
+   "level": 0,
+   "statement": "Implement output guardrails to detect and redact personally identifiable information"
+  },
+  {
+   "id": "CTRL-0066",
+   "level": 0,
+   "statement": "Ensure \"take over\" mode is activated when entering sensitive data"
+  },
+  {
+   "id": "CTRL-0089",
+   "level": 0,
+   "statement": "Enforce default-deny network egress for agent runtimes, allowing only approved destinations"
+  },
+  {
+   "id": "CTRL-0097",
+   "level": 0,
+   "statement": "Do not give one agent untrusted content, access to sensitive data, and an unrestricted outbound channel at once; remove one, or gate the outbound channel outside the agent"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/html/2506.00618v3"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T2",
+    "title": "Tool misuse"
+   }
+  ],
+  "mitre_atlas": []
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-037/"
+}

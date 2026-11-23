@@ -1,0 +1,59 @@
+{
+ "id": "RISK-055",
+ "type": "risk",
+ "statement": "Data exfiltration through message and API channels",
+ "description": "This risk arises when an agent that reads messages or data sent by outside parties through a programmatic channel — email, chat, support tickets, form submissions, webhooks, or API responses — also holds access to sensitive data and can send messages or make API calls outward. Instructions injected in an inbound message can then direct the agent to send data out through a legitimate channel: replying or forwarding to an attacker's address, posting to a shared channel, or calling an API with data in its parameters or in a URL. Unlike RISK-047, no web access is needed, because the message channel is both the way in and the way out. As a result, confidential data can leave the organisation without any single control being bypassed, as demonstrated by EchoLeak, where a single crafted email led Microsoft 365 Copilot to send internal data to an attacker, and ForcedLeak, where instructions in a web-form submission led Salesforce Agentforce to exfiltrate CRM records.",
+ "elements": [
+  {
+   "id": "CAP-09",
+   "name": "Other Programmatic Interfaces"
+  },
+  {
+   "id": "CAP-11",
+   "name": "File and Data Management"
+  }
+ ],
+ "failure_mode": "External Manipulation",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  }
+ ],
+ "controls": [],
+ "sources": [
+  "https://www.frontiermodelforum.org/uploads/2026/06/FMF-Issue-Brief-on-Emerging-Security-Practices-for-AI-Agents.pdf",
+  "https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/",
+  "https://www.hackthebox.com/blog/cve-2025-32711-echoleak-copilot-vulnerability",
+  "https://www.varonis.com/blog/forcedleak"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI01",
+    "title": "Agent Goal Hijack"
+   },
+   {
+    "id": "ASI02",
+    "title": "Tool Misuse and Exploitation"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T6",
+    "title": "Intent breaking and goal manipulation"
+   },
+   {
+    "id": "T2",
+    "title": "Tool misuse"
+   }
+  ]
+ },
+ "superseded_by": "RISK-047",
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-055/"
+}

@@ -1,0 +1,61 @@
+{
+ "id": "CTRL-0048",
+ "type": "control",
+ "level": 2,
+ "statement": "Implement methods to reduce hallucination rates in agent outputs",
+ "recommendations": "Agents may generate inaccurate, fabricated, or unsupported information whilst presenting it as factual, misleading users and causing them to make incorrect decisions or lose trust in the system. Implement hallucination reduction techniques such as retrieval-augmented generation (RAG) that grounds agent responses in verified source documents, or citation requirements that force agents to reference specific sources for factual claims. Configure agents to acknowledge uncertainty when information cannot be verified rather than generating plausible-sounding but false content.",
+ "enforcement": [
+  "harness",
+  "prompt"
+ ],
+ "owner": "developer",
+ "phase": [
+  "design",
+  "build"
+ ],
+ "evidence": "The retrieval pipeline configuration, the prompt requiring a cited source for each factual claim, and a groundedness evaluation report with the unsupported-claim rate.",
+ "test": "Ask questions whose answers are absent from the source corpus and confirm the agent says it cannot verify them.",
+ "risks": [
+  {
+   "id": "RISK-028",
+   "statement": "Generation of non-factual or hallucinated content"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services",
+  "https://genai.owasp.org/llmrisk/llm092025-misinformation/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.11",
+    "title": "Implement controls to reduce the likelihood of hallucination"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI08",
+    "title": "Cascading Failures"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DS1",
+    "title": "Designing secure agents – Controlled context"
+   },
+   {
+    "id": "DV6",
+    "title": "Developing secure agents – Accountability"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0048/"
+}

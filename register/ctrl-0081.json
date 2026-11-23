@@ -1,0 +1,56 @@
+{
+ "id": "CTRL-0081",
+ "type": "control",
+ "level": 1,
+ "statement": "Implement input guardrails to detect personally identifiable information in data accessed by agents",
+ "recommendations": "Agents accessing files or databases containing PII may inadvertently expose sensitive personal information through outputs, logs, or downstream processing without appropriate safeguards. Deploy input guardrails that scan data retrieved from files, databases, or other sources for PII categories including names, email addresses, phone numbers, identification numbers, and financial information before agents process it. When PII is detected, trigger protective measures such as flagging the data as sensitive to the agent, applying stricter output filtering, requiring additional access authorisation, or activating enhanced logging to track how the sensitive data is used.",
+ "enforcement": [
+  "harness",
+  "model"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The retrieval-path scanner's configuration listing personal data types and the protective action each triggers, with detection events in the log.",
+ "test": "Have the agent read a seeded file holding identity numbers and bank details and confirm the content is tagged sensitive and stricter output filtering applies.",
+ "risks": [
+  {
+   "id": "RISK-043",
+   "statement": "Exposure of sensitive data through file or database access"
+  },
+  {
+   "id": "RISK-066",
+   "statement": "Personal data collected, kept, or passed on beyond what the task needs"
+  }
+ ],
+ "references": [
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+  "https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.1",
+    "title": "Validate inputs to models and agents"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV5",
+    "title": "Developing secure agents – Resilience"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0081/"
+}

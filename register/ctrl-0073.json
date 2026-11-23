@@ -1,0 +1,56 @@
+{
+ "id": "CTRL-0073",
+ "type": "control",
+ "level": 0,
+ "statement": "Create a denylist of commands that agents are not permitted to execute",
+ "recommendations": "Agents may generate code that invokes dangerous or destructive commands capable of compromising systems, deleting data, or establishing unauthorised network connections. Implement command denylists that explicitly prohibit execution of dangerous operations such as system shutdown commands, file deletion utilities, network scanning tools, or privileged system calls. Enforce denylists at the execution layer, preventing blocked commands from running even if agents generate code containing them. Regularly review and update denylists based on observed agent behaviour, emerging security threats, and identified misuse patterns.",
+ "enforcement": [
+  "harness"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The command denylist file in version control, the execution-layer hook that checks each command against it, and its log of blocked commands.",
+ "test": "Have the agent attempt a denylisted command, such as a recursive delete, in plain and obfuscated forms and confirm both are blocked.",
+ "risks": [
+  {
+   "id": "RISK-040",
+   "statement": "Production or execution of vulnerable or malicious code"
+  }
+ ],
+ "references": [
+  "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services",
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.7",
+    "title": "Implement controls to limit what models or agents can access and generate"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.1.2",
+    "title": "Bound risks through design (agent limits, agent identity)"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI05",
+    "title": "Unexpected Code Execution (RCE)"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DP5",
+    "title": "Deploying agents securely – Guardrails and constraints"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0073/"
+}

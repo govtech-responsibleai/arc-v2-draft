@@ -1,0 +1,48 @@
+{
+ "id": "CTRL-0014",
+ "type": "control",
+ "level": 0,
+ "statement": "Use only MCP servers from verified and trusted developers",
+ "recommendations": "Untrusted or unknown MCP server developers may introduce malicious functionality, security vulnerabilities, or data exfiltration mechanisms that compromise your agentic system. Establish evaluation criteria to assess MCP server developer trustworthiness before adoption, including verification of public code repositories, community reputation, security disclosure practices, and maintenance history. Evaluate whether the developer has a track record of responding to security issues, maintains active development, and provides transparent documentation of server capabilities. Prioritise MCP servers from the official Model Context Protocol repository, well-established organisations, or developers with verified identities and demonstrated security practices.",
+ "risks": [],
+ "references": [
+  "https://modelcontextprotocol.io/specification/draft/basic/security_best_practices"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.1",
+    "title": "Supply chain security – ensure components are from trusted sources"
+   },
+   {
+    "id": "3.3",
+    "title": "Secure the invocation of external tools (e.g. MCP servers)"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.1",
+    "title": "Technical controls during design and development"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI04",
+    "title": "Agentic Supply Chain Vulnerabilities"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV7",
+    "title": "Developing secure agents – Manage third-party components"
+   },
+   {
+    "id": "AA2",
+    "title": "Appendix A, prerequisites – Development"
+   }
+  ]
+ },
+ "superseded_by": "CTRL-0091",
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0014/"
+}

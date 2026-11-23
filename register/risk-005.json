@@ -1,0 +1,55 @@
+{
+ "id": "RISK-005",
+ "type": "risk",
+ "statement": "Lack of proper role-based access control for tools",
+ "description": "This risk arises when tools exposed to an agent do not enforce clear, role-based access controls, allowing agents to access capabilities or resources beyond their intended responsibilities. As a result, agents may perform unauthorised actions, misuse sensitive tools, or exceed their permitted scope, increasing the likelihood of security and operational failures.",
+ "elements": [
+  {
+   "id": "CMP-03",
+   "name": "Tools"
+  }
+ ],
+ "failure_mode": "Tool or Resource Malfunction",
+ "risk_type": [
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-04",
+   "name": "Identity and access management",
+   "type": "Security"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0011",
+   "level": 0,
+   "statement": "Limit token scopes to the minimum privileges required and avoid broad or wildcard scopes"
+  }
+ ],
+ "sources": [
+  "https://embracethered.com/blog/posts/2023/chatgpt-plugin-vulns-chat-with-code/"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI03",
+    "title": "Identity and Privilege Abuse"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T3",
+    "title": "Privilege compromise"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0053",
+    "title": "AI Agent Tool Invocation"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-005/"
+}

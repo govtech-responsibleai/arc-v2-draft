@@ -1,0 +1,73 @@
+{
+ "id": "CTRL-0023",
+ "type": "control",
+ "level": 2,
+ "statement": "Log all modifications to persistent memory with comprehensive source metadata for audit purposes",
+ "recommendations": "Without detailed audit logs, detecting and investigating memory poisoning attacks becomes extremely difficult, preventing effective incident response and forensic analysis. Implement comprehensive logging for all memory write, update, and delete operations, capturing source metadata including timestamps, user or agent identity, session context, and the specific content being modified. Structure logs to enable correlation analysis, allowing security teams to trace how specific memory entries evolved over time and identify suspicious modification patterns. Store audit logs in a tamper-evident system separate from the agent's operational memory to prevent attackers from covering their tracks by deleting or modifying log entries.",
+ "enforcement": [
+  "harness",
+  "infrastructure"
+ ],
+ "owner": "developer",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "A memory audit log query for one entry returning every write, update and delete with timestamp, actor identity, session and changed content.",
+ "test": "Create, edit and delete a memory entry and confirm three matching audit records exist in a store the agent's credentials cannot modify.",
+ "risks": [
+  {
+   "id": "RISK-010",
+   "statement": "Poisoned memory"
+  },
+  {
+   "id": "RISK-011",
+   "statement": "Sensitive data leakage across memory contexts"
+  }
+ ],
+ "references": [
+  "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+  "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "4.3",
+    "title": "Continuous monitoring and logging"
+   }
+  ],
+  "imda_mgf": [
+   {
+    "id": "2.3.3",
+    "title": "Continuously monitor and test when deploying"
+   }
+  ],
+  "owasp_asi": [
+   {
+    "id": "ASI06",
+    "title": "Memory and Context Poisoning"
+   },
+   {
+    "id": "ASI08",
+    "title": "Cascading Failures"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV6",
+    "title": "Developing secure agents – Accountability"
+   },
+   {
+    "id": "OP1",
+    "title": "Operating agents securely – Monitoring and auditing"
+   },
+   {
+    "id": "DP6",
+    "title": "Deploying agents securely – Isolation"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0023/"
+}

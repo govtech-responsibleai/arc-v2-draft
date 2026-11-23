@@ -1,0 +1,82 @@
+{
+ "id": "RISK-010",
+ "type": "risk",
+ "statement": "Poisoned memory",
+ "description": "This risk arises when the memory component of an agentic system is intentionally or inadvertently populated with malicious, misleading, or corrupted information. As a result, the agent may rely on compromised memory to make decisions, propagate false information, or exhibit persistent unsafe behaviour across interactions.",
+ "elements": [
+  {
+   "id": "CMP-04",
+   "name": "Memory"
+  }
+ ],
+ "failure_mode": "External Manipulation",
+ "risk_type": [
+  "Safety",
+  "Security"
+ ],
+ "hazards": [
+  {
+   "id": "HZ-01",
+   "name": "Data",
+   "type": "Security"
+  },
+  {
+   "id": "HZ-08",
+   "name": "Compromised user safety",
+   "type": "Safety"
+  },
+  {
+   "id": "HZ-09",
+   "name": "Misrepresentation",
+   "type": "Safety"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTRL-0021",
+   "level": 0,
+   "statement": "Implement allowlists and denylists to restrict what categories of information can be written to the agent's persistent memory"
+  },
+  {
+   "id": "CTRL-0022",
+   "level": 1,
+   "statement": "Implement content filtering on writes to persistent memory to detect and block known unsafe content patterns"
+  },
+  {
+   "id": "CTRL-0023",
+   "level": 2,
+   "statement": "Log all modifications to persistent memory with comprehensive source metadata for audit purposes"
+  }
+ ],
+ "sources": [
+  "https://arxiv.org/abs/2505.11548v2",
+  "https://arxiv.org/abs/2402.07867",
+  "https://openreview.net/pdf?id=6SIymOqJlc"
+ ],
+ "crosswalks": {
+  "owasp_asi": [
+   {
+    "id": "ASI06",
+    "title": "Memory and Context Poisoning"
+   }
+  ],
+  "owasp_agentic_threats": [
+   {
+    "id": "T1",
+    "title": "Memory poisoning"
+   }
+  ],
+  "mitre_atlas": [
+   {
+    "id": "AML.T0080.000",
+    "title": "AI Agent Context Poisoning: Memory"
+   },
+   {
+    "id": "AML.T0070",
+    "title": "RAG Poisoning"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/risk-010/"
+}

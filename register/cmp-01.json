@@ -1,0 +1,17 @@
+{
+ "id": "CMP-01",
+ "type": "element",
+ "kind": "component",
+ "name": "LLM",
+ "category": null,
+ "description": "A large language model (LLM) is a neural network trained on massive text data to learn statistical patterns of language, enabling it to understand, generate, and reason over natural language inputs. It is the core reasoning engine that processes instructions, interprets user inputs, and generates contextually appropriate responses by leveraging its trained language understanding and generation capabilities. There are a large variety of LLMs to choose from, with different sizes, capabilities, and architectures, from large closed-source model families such as OpenAI's GPT, Anthropic's Claude, and Google's Gemini, to open-weights families such as Llama, Qwen, and Mistral, which include small models that can run on local hardware.",
+ "risks": [
+  "RISK-001",
+  "RISK-002",
+  "RISK-003",
+  "RISK-050",
+  "RISK-061"
+ ],
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/cmp-01/"
+}

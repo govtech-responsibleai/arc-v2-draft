@@ -1,0 +1,18 @@
+{
+ "id": "CAP-04",
+ "type": "element",
+ "kind": "capability",
+ "name": "Multimodal Understanding and Generation",
+ "category": "Interaction",
+ "description": "The capability to communicate with human users across multiple modalities, including natural language conversation (explaining topics, generating documents, interactive discussions) and multimodal understanding/generation (processing and creating image, audio, or video content such as visual analysis, speech transcription, or multimedia creation).",
+ "risks": [
+  "RISK-024",
+  "RISK-025",
+  "RISK-026",
+  "RISK-027",
+  "RISK-028",
+  "RISK-029"
+ ],
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/cap-04/"
+}

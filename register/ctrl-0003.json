@@ -1,0 +1,59 @@
+{
+ "id": "CTRL-0003",
+ "type": "control",
+ "level": 1,
+ "statement": "Use only established and verified model loaders in production environments",
+ "recommendations": "Malicious or unvetted model loaders may execute arbitrary code during model deserialisation, potentially introducing backdoors or system vulnerabilities. Use well-maintained, community-vetted model loading libraries with active security support and regular updates. Examples include Hugging Face Transformers, vLLM, or official framework loaders (PyTorch, TensorFlow), whilst avoiding custom or unmaintained deserialisation code. Monitor for security advisories affecting your chosen loaders and apply patches promptly.",
+ "enforcement": [
+  "infrastructure"
+ ],
+ "owner": "platform",
+ "phase": [
+  "build",
+  "operate"
+ ],
+ "evidence": "The model-serving image's dependency lock file naming the loader library and pinned version, checked against the approved loader list.",
+ "test": "Scan the production serving image and confirm it holds only an approved loader, at a version with no open security advisory, and no custom deserialisation code.",
+ "risks": [
+  {
+   "id": "RISK-001",
+   "statement": "Use of untrusted or compromised LLMs"
+  }
+ ],
+ "references": [
+  "https://www.ncsc.gov.uk/files/Guidelines-for-secure-AI-system-development.pdf",
+  "https://huggingface.co/docs/hub/security-pickle",
+  "https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/"
+ ],
+ "crosswalks": {
+  "csa_addendum": [
+   {
+    "id": "2.1",
+    "title": "Supply chain security – ensure components are from trusted sources"
+   }
+  ],
+  "imda_mgf": [],
+  "owasp_asi": [
+   {
+    "id": "ASI04",
+    "title": "Agentic Supply Chain Vulnerabilities"
+   },
+   {
+    "id": "ASI05",
+    "title": "Unexpected Code Execution (RCE)"
+   }
+  ],
+  "fiveeyes_agentic": [
+   {
+    "id": "DV7",
+    "title": "Developing secure agents – Manage third-party components"
+   },
+   {
+    "id": "AA2",
+    "title": "Appendix A, prerequisites – Development"
+   }
+  ]
+ },
+ "register_version": "2.0.0-draft.1",
+ "url": "https://govtech-responsibleai.github.io/arc-v2-draft/register/ctrl-0003/"
+}
