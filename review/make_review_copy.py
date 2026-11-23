@@ -104,6 +104,13 @@ def main():
             path = root / rel
             if path.exists():
                 path.write_text(path.read_text().replace(f'/{OFFICIAL}', f'/{args.repo}'))
+        # The draft asks search engines not to index it, and Lighthouse's SEO score counts that against
+        # every page, so the SEO budget is off in a review copy. The accessibility budget still applies.
+        lhci = root / 'website' / 'lighthouserc.json'
+        if lhci.exists():
+            text, n = re.subn(r'"categories:seo":\s*\[[^\]]*\]', '"categories:seo": "off"', lhci.read_text())
+            assert n == 1, 'lighthouserc.json: the SEO budget was not found'
+            lhci.write_text(text)
         # A draft is not cited, released, or kept up to date by Dependabot
         for rel in ('CITATION.cff', '.zenodo.json', '.github/workflows/release.yml', '.github/dependabot.yml'):
             (root / rel).unlink(missing_ok=True)
