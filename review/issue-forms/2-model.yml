@@ -1,0 +1,35 @@
+name: Comment on the model, the method or the guides
+description: How version 2.0 works, how it is applied, or how it is explained
+title: ""
+labels: ["model"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part?
+      options:
+        - Protocols and conditional components
+        - How a capability is used (authority, irreversibility, reach)
+        - Combination rules
+        - Failure modes and hazards
+        - The new risks and controls, as a set
+        - Control levels and Level 0
+        - Control fields (enforcement, owner, evidence, test)
+        - Overlays
+        - Crosswalks
+        - Guides, assessment template and worked examples
+        - The assessment script or other tools
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: comment
+    attributes:
+      label: Your comment
+    validations:
+      required: true
+  - type: input
+    id: context
+    attributes:
+      label: What kind of system or organisation are you applying ARC to?
+      description: Optional. It helps us understand the comment.

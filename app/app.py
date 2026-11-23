@@ -1,0 +1,869 @@
+"""Agentic Risk Capability Framework - Streamlit Application"""
+
+import streamlit as st
+from dotenv import load_dotenv
+import os
+
+# Import our modules
+from models.schemas import SessionKeys, RiskAssessment, ScoreAssessment
+from utils.data_loader import (
+    load_data,
+    load_sample_data,
+    controls_by_risk,
+    is_level0,
+    get_applicable_risk_ids,
+    is_baseline_risk,
+    describe_risk_element,
+)
+from utils.llm_utils import (
+    get_llm_capability_analysis,
+    get_llm_risk_analysis,
+    get_application_description,
+    analyze_public_repo,
+)
+from utils.session_utils import (
+    initialize_session_state,
+    initialize_control_implementation,
+    control_implementation_key,
+    NOT_IMPLEMENTED_TEXT,
+    LEVEL0_PLACEHOLDER,
+)
+# Import will be done inside the function to avoid relative import issues
+from datetime import datetime
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Page configuration
+st.set_page_config(
+    page_title="Agentic Risk Capability Framework",
+    page_icon="🤖",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+
+def application_assessment_page():
+    """First page: Application Assessment"""
+    st.title("🤖 ARCvisor: Agentic Risk & Capability (ARC) Framework Advisor")
+    st.markdown("### Step 1: Tell us about your application")
+    
+    # Load all data for LLM analysis
+    capabilities, risks, controls, components, design = load_data()
+    
+    # Check if data loading failed
+    if not capabilities or not risks or not controls or not components or not design:
+        st.error("Failed to load required data files. Please check that all YAML files exist and are valid.")
+        st.stop()
+    
+    # Create two columns for the panels
+    col1, col2 = st.columns([1, 1])
+
+    # Set up col2 header and placeholder first
+    with col2:
+        # Header with edit button
+        header_col1, header_col2 = st.columns([4, 1])
+        with header_col1:
+            st.subheader("📋 Generated Application Description")
+        with header_col2:
+            # Show edit button if description exists
+            if 'application_description' in st.session_state:
+                if st.session_state.get('edit_mode', False):
+                    if st.button("✅ Done", key="edit_toggle_btn"):
+                        # Save changes and exit edit mode
+                        if 'final_description_display' in st.session_state:
+                            st.session_state.application_description = st.session_state.final_description_display
+                        st.session_state.edit_mode = False
+                        st.rerun()
+                else:
+                    if st.button("✏️ Edit", key="edit_toggle_btn"):
+                        # Enter edit mode
+                        st.session_state.edit_mode = True
+                        st.rerun()
+
+        # Create placeholder for streaming repo analysis
+        description_stream_slot = st.empty()
+
+    with col1:
+        st.subheader("📝 Application Details")
+
+        # Initialize variables
+        repo_submitted = False
+        repo_url_input = ""
+
+        # Show repo analysis section
+        st.markdown("---")
+        st.markdown("**Option 1: Analyze a public GitHub repository**")
+
+        with st.form("repo_analysis_form"):
+            repo_url_input = st.text_input(
+                "Public repo URL (GitHub)",
+                value=st.session_state.get(SessionKeys.REPO_URL, ""),
+                placeholder="https://github.com/org/project",
+                key="repo_url_input",
+            )
+            st.caption("We'll analyze the codebase and generate an application description automatically.")
+
+            repo_submitted = st.form_submit_button("Generate Application Description", type="primary", use_container_width=True, key="analyze_repo_btn")
+
+        # Divider between repo analysis and form
+        st.markdown("---")
+
+        # Option 2 header with Try Sample button
+        option2_col1, option2_col2 = st.columns([3, 1])
+        with option2_col1:
+            st.markdown("**Option 2: Fill in the application details manually**")
+        with option2_col2:
+            if st.button("📋 Try Sample", help="Auto-fill form with sample application data", key="try_sample_btn"):
+                try:
+                    sample_data = load_sample_data()
+                    if sample_data:
+                        # Store sample data directly in widget session state using the keys
+                        st.session_state.purpose_text = sample_data.get('description', '')
+                        st.session_state.components_text = sample_data.get('components', '')
+                        st.session_state.form_data_classification = sample_data.get('data_classification', 'Public/Open')
+                        st.session_state.form_public_facing = sample_data.get('public_facing', 'Yes')
+                        st.session_state.form_criticality = sample_data.get('criticality', 'Medium')
+                        st.session_state.pii_text = sample_data.get('pii_data', '')
+                        st.session_state.human_in_loop_text = sample_data.get('human_in_loop', '')
+                        st.rerun()
+                    else:
+                        st.warning("Sample data not available. Please check sample_data.yaml file.")
+                except Exception as e:
+                    st.error(f"Error loading sample data: {str(e)}")
+
+        # Initialize manual form variables
+        submitted = False
+        description = ""
+        components = ""
+        data_classification = "Public/Open"
+        human_in_loop = ""
+        public_facing = "Yes"
+        criticality = "Medium"
+        pii_data = ""
+
+        # Application information form
+        with st.form("application_form"):
+            # Form field defaults are initialized in initialize_session_state()
+
+            description = st.text_area(
+                "What does your application do?",
+                placeholder="Describe the main functionality and purpose of your agentic AI application, as well as how a user interacts with it...",
+                height=140,
+                key="purpose_text"
+            )
+
+            components = st.text_area(
+                "Describe the components of your application",
+                placeholder="Describe the technical components, architecture, tools, MCP servers, integrations, and data flows...",
+                height=140,
+                key="components_text"
+            )
+
+            data_classification = st.selectbox(
+                "What data classification is your application?",
+                options=["Public/Open", "Internal", "Confidential", "Restricted"],
+                key="form_data_classification"
+            )
+
+            human_in_loop = st.text_area(
+                "Is there any human in the loop?",
+                placeholder="Describe any human oversight, review, or intervention in your application...",
+                height=100,
+                key="human_in_loop_text"
+            )
+
+            public_facing = st.selectbox(
+                "Is the application public facing?",
+                options=["Yes", "No"],
+                key="form_public_facing"
+            )
+
+            criticality = st.selectbox(
+                "How critical is this application to your operations?",
+                options=["Low", "Medium", "High", "Critical"],
+                key="form_criticality"
+            )
+
+            pii_data = st.text_area(
+                "Is there PII data? If so, how is it used?",
+                placeholder="Describe any personally identifiable information collected, processed, or stored...",
+                height=100,
+                key="pii_text"
+            )
+
+            submitted = st.form_submit_button("Generate Application Description", type="primary", use_container_width=True, key="generate_desc_btn")
+
+    # Continue with col2 content
+    with col2:
+        # Handle repo analysis submission
+        if repo_submitted:
+            if not repo_url_input.strip():
+                st.error("Please enter a public GitHub repository URL.")
+            else:
+                # Create a status placeholder that will be cleared when streaming starts
+                status_placeholder = st.empty()
+                with status_placeholder:
+                    st.info("🔍 Fetching repository files and analyzing repo...")
+                summary, _ = analyze_public_repo(repo_url_input.strip(), stream_target=description_stream_slot, status_placeholder=status_placeholder)
+                if summary:
+                    st.session_state[SessionKeys.REPO_URL] = repo_url_input.strip()
+                    st.session_state[SessionKeys.REPO_ANALYSIS] = summary
+
+                    # Store application info from repo analysis
+                    st.session_state.application_info = {
+                        'description': 'Generated from repository analysis',
+                        'data_classification': 'Not specified',
+                        'human_in_loop': 'Not specified',
+                        'public_facing': 'Unknown',
+                        'criticality': 'Not specified',
+                        'pii_data': 'Not specified',
+                        'components': summary,
+                        'repo_url': repo_url_input.strip(),
+                        'repo_analysis': summary
+                    }
+                    # Store the generated description
+                    st.session_state.application_description = summary
+                    st.success("Repository analyzed! Review the generated description on the right, then continue to the next step.")
+                    st.rerun()
+
+        if submitted:
+            # Form submission - only happens when manual form is used
+            if not description.strip():
+                st.error("Please provide a description of your application.")
+            else:
+                # Store application info in session state
+                st.session_state.application_info = {
+                    'description': description,
+                    'data_classification': data_classification,
+                    'human_in_loop': human_in_loop,
+                    'public_facing': public_facing,
+                    'criticality': criticality,
+                    'pii_data': pii_data,
+                    'components': components,
+                    'repo_url': '',
+                    'repo_analysis': ''
+                }
+                
+                # Clear form data after form submission
+                for key in [SessionKeys.PURPOSE_TEXT, SessionKeys.COMPONENTS_TEXT,
+                           SessionKeys.FORM_DATA_CLASSIFICATION, SessionKeys.FORM_PUBLIC_FACING,
+                           SessionKeys.FORM_CRITICALITY,
+                           SessionKeys.PII_TEXT, SessionKeys.HUMAN_IN_LOOP_TEXT]:
+                    if key in st.session_state:
+                        del st.session_state[key]
+                
+                # Generate comprehensive application description
+                application_description = get_application_description(st.session_state.application_info)
+                st.session_state.application_description = application_description
+                st.rerun()
+
+        # Display the generated description
+        if 'application_description' in st.session_state:
+            # Display content based on edit mode
+            if st.session_state.edit_mode:
+                # Editable text area
+                description_stream_slot.text_area(
+                    "",
+                    value=st.session_state.application_description,
+                    height=700,
+                    disabled=False,
+                    key="final_description_display"
+                )
+            else:
+                # Markdown display (also used as the streaming target)
+                description_stream_slot.markdown(st.session_state.application_description)
+            
+            # Button to proceed to capability identification
+            if st.button("Continue to Capability Identification", type="primary", use_container_width=True, key="continue_capability_btn"):
+                # Use the current description (whether edited or not)
+                current_description = st.session_state.application_description
+                st.session_state.page = "capability_identification"
+                st.rerun()
+
+
+def capability_identification_page():
+    """Second page: Capability Identification"""
+    st.title("🤖 ARCvisor: Agentic Risk & Capability (ARC) Framework Advisor")
+    
+    # Add back button
+    if st.button("← Back to Application Assessment"):
+        st.session_state.page = "application_assessment"
+        st.rerun()
+    
+    st.markdown("### Step 2: Identify Applicable Capabilities")
+    
+    # Load data
+    capabilities, risks, controls, components, design = load_data()
+    
+    # Check if data loading failed
+    if not capabilities or not risks or not controls or not components or not design:
+        st.error("Failed to load required data files. Please check that all YAML files exist and are valid.")
+        st.stop()
+    
+    # Show application summary
+    if 'application_info' in st.session_state:
+        with st.expander("📋 Application Summary", expanded=False):
+            info = st.session_state.application_info
+            st.write(f"**Description:** {info['description']}")
+            st.write(f"**Data Classification:** {info['data_classification']}")
+            st.write(f"**Public Facing:** {info['public_facing']}")
+            st.write(f"**Criticality:** {info['criticality']}")
+            st.write(f"**PII Data:** {info['pii_data']}")
+            st.write(f"**Human in Loop:** {info['human_in_loop']}")
+            st.write(f"**Components:** {info['components']}")
+            if info.get('repo_url'):
+                st.write(f"**Repo:** {info['repo_url']}")
+            if info.get('repo_analysis'):
+                st.caption(f"Repo Summary: {info['repo_analysis'][:500]}{'...' if len(info['repo_analysis']) > 500 else ''}")
+    
+    # Initialize capability analysis if not done
+    if SessionKeys.CAPABILITY_ANALYSIS not in st.session_state:
+        st.info("🔍 Analyzing application to identify applicable capabilities...")
+        analysis_result = get_llm_capability_analysis(st.session_state.application_info, capabilities)
+        st.session_state[SessionKeys.CAPABILITY_ANALYSIS] = analysis_result
+        st.session_state[SessionKeys.SELECTED_CAPABILITIES] = analysis_result.applicable_capabilities.copy()
+        st.rerun()
+    
+    # Show AI reasoning
+    if SessionKeys.CAPABILITY_ANALYSIS in st.session_state:
+        st.markdown("**Analysis of System Capabilities:**")
+        st.info(st.session_state[SessionKeys.CAPABILITY_ANALYSIS].reasoning)
+    
+    # Capability selection interface
+    st.markdown("**📋 Select Applicable Capabilities:**")
+    
+    # Group capabilities by category
+    capability_categories = {}
+    for cap_id, cap_data in capabilities.items():
+        category = cap_data['category']
+        if category not in capability_categories:
+            capability_categories[category] = []
+        capability_categories[category].append((cap_id, cap_data))
+    
+    # Display capabilities by category
+    for category, caps in capability_categories.items():
+        with st.expander(f"**{category}** ({len(caps)} capabilities)", expanded=True):
+            for cap_id, cap_data in caps:
+                col1, col2, col3 = st.columns([1, 2, 5])
+                with col1:
+                    is_selected = st.checkbox(
+                        "",
+                        value=cap_id in st.session_state[SessionKeys.SELECTED_CAPABILITIES],
+                        key=f"cap_{cap_id}"
+                    )
+                with col2:
+                    st.write(f"**{cap_id}**: {cap_data['name']}")
+                with col3:
+                    description = cap_data.get('description', '')
+                    if description:
+                        st.write(description)
+                    else:
+                        st.write("*No description available*")
+                
+                if is_selected:
+                    if cap_id not in st.session_state[SessionKeys.SELECTED_CAPABILITIES]:
+                        st.session_state[SessionKeys.SELECTED_CAPABILITIES].append(cap_id)
+                else:
+                    if cap_id in st.session_state[SessionKeys.SELECTED_CAPABILITIES]:
+                        st.session_state[SessionKeys.SELECTED_CAPABILITIES].remove(cap_id)
+    
+    # Component and Design categories section
+    st.markdown("---")
+    st.markdown("**📋 Components & Design Patterns:**")
+    st.markdown("The following system components and design patterns are included in the assessment. These categories help identify applicable risks based on your system architecture.")
+
+    # Display Components
+    if components:
+        with st.expander(f"**Components** ({len(components)} categories)", expanded=False):
+            for component_id, component_data in components.items():
+                st.markdown(f"**{component_id}**: {component_data.get('name', component_id)}")
+                if 'description' in component_data:
+                    st.caption(component_data['description'])
+                st.markdown("")
+
+    # Display Design patterns
+    if design:
+        with st.expander(f"**Design Patterns** ({len(design)} categories)", expanded=False):
+            for design_id, design_data in design.items():
+                st.markdown(f"**{design_id}**: {design_data.get('name', design_id)}")
+                if 'description' in design_data:
+                    st.caption(design_data['description'])
+                st.markdown("")
+
+    st.info("✅ Risks associated with these components and design patterns will be automatically included in the risk assessment.")
+    
+    # Show selected capabilities summary
+    if st.session_state[SessionKeys.SELECTED_CAPABILITIES]:
+        st.markdown(f"**Selected {len(st.session_state[SessionKeys.SELECTED_CAPABILITIES])} capabilities:**")
+        selected_caps_text = ", ".join(st.session_state[SessionKeys.SELECTED_CAPABILITIES])
+        st.info(selected_caps_text)
+    
+    # Continue button
+    if st.button("Continue to Risk Assessment", type="primary", use_container_width=True, key="continue_risk_btn"):
+        st.session_state.page = "risk_assessment"
+        st.rerun()
+
+
+def risk_assessment_page():
+    """Third page: Risk Assessment and Controls"""
+    st.title("🤖 ARCvisor: Agentic Risk & Capability (ARC) Framework Advisor")
+    
+    # Add back button
+    if st.button("← Back to Capability Identification"):
+        st.session_state.page = "capability_identification"
+        st.rerun()
+    
+    st.markdown("### Step 3: Risk Assessment & Controls")
+    
+    # Load data
+    capabilities, risks, controls, components, design = load_data()
+    
+    # Check if data loading failed
+    if not capabilities or not risks or not controls or not components or not design:
+        st.error("Failed to load required data files. Please check that all YAML files exist and are valid.")
+        st.stop()
+    
+    # Determine applicable risks: every baseline (component/design) risk plus the
+    # risks arising from the selected capabilities, straight from the register
+    if SessionKeys.APPLICABLE_RISKS not in st.session_state:
+        all_applicable_risks = get_applicable_risk_ids(risks, st.session_state[SessionKeys.SELECTED_CAPABILITIES])
+        st.session_state[SessionKeys.APPLICABLE_RISKS] = all_applicable_risks
+        
+        
+        # Now get LLM contextualization for all these risks
+        st.info("🔍 Analyzing risks and generating contextualization... This can take up to a couple of minutes.")
+        analysis_result = get_llm_risk_analysis(
+            st.session_state.application_info,
+            st.session_state[SessionKeys.SELECTED_CAPABILITIES],
+            capabilities,
+            risks,
+            components,
+            design,
+            all_applicable_risks
+        )
+        st.session_state[SessionKeys.RISK_ASSESSMENTS] = analysis_result.risk_assessments
+        st.session_state.analysis_reasoning = analysis_result.reasoning
+        st.rerun()
+    
+    # Risk Assessment Interface
+    if SessionKeys.APPLICABLE_RISKS in st.session_state and st.session_state[SessionKeys.APPLICABLE_RISKS]:
+        # Organize risks by type (component/design vs capability-specific)
+        component_design_risks = []
+        capability_risks = []
+
+        for risk_id in st.session_state[SessionKeys.APPLICABLE_RISKS]:
+            if risk_id in risks:
+                risk_data = risks[risk_id]
+                # Store both risk_id and risk_data as a tuple
+                risk_info = (risk_id, risk_data)
+                if is_baseline_risk(risk_data):
+                    component_design_risks.append(risk_info)
+                else:
+                    capability_risks.append(risk_info)
+        
+        # Show AI reasoning
+        if 'analysis_reasoning' in st.session_state:
+            st.markdown("**Risk Analysis Approach:**")
+            st.info(st.session_state.analysis_reasoning)
+        
+        # Capability-specific risks
+        if capability_risks:
+            with st.expander(f"### Capability-Specific Risks ({len(capability_risks)} risks)", expanded=True):
+                for risk_id, risk_data in capability_risks:
+                    risk_category_info = describe_risk_element(risk_data, capabilities, components, design)
+                
+                    with st.container():
+                        st.markdown("---")
+                        col_risk, col_likelihood, col_impact = st.columns([1, 1, 1])
+                        
+                        with col_risk:
+                            st.markdown(f"**{risk_data['statement']}** ({risk_category_info})")
+                            st.caption(risk_data['description'])
+                            if SessionKeys.RISK_ASSESSMENTS in st.session_state and risk_id in st.session_state[SessionKeys.RISK_ASSESSMENTS]:
+                                assessment = st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id]
+                                if hasattr(assessment, 'context'):
+                                    st.info(f"💡 {assessment.context}")
+                        
+                        with col_likelihood:
+                            st.markdown("**Likelihood**")
+                            if SessionKeys.RISK_ASSESSMENTS in st.session_state and risk_id in st.session_state[SessionKeys.RISK_ASSESSMENTS]:
+                                assessment = st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id]
+                                likelihood_score = assessment.likelihood.score
+                                likelihood_reasoning = assessment.likelihood.reasoning
+                                
+                                new_likelihood_score = st.selectbox(
+                                    "Score",
+                                    options=[1, 2, 3, 4, 5],
+                                    index=likelihood_score-1,
+                                    key=f"likelihood_score_{risk_id}",
+                                    format_func=lambda x: f"{['🟢', '🟡', '🟠', '🔴', '🔴'][x-1]} {x} - {['Very Low', 'Low', 'Medium', 'High', 'Very High'][x-1]}"
+                                )
+                                new_likelihood_reasoning = st.text_area(
+                                    "Reasoning",
+                                    value=likelihood_reasoning,
+                                    height=80,
+                                    key=f"likelihood_reasoning_{risk_id}"
+                                )
+                                
+                                # Update session state if changed
+                                if new_likelihood_score != likelihood_score or new_likelihood_reasoning != likelihood_reasoning:
+                                    if SessionKeys.RISK_ASSESSMENTS not in st.session_state:
+                                        st.session_state[SessionKeys.RISK_ASSESSMENTS] = {}
+                                    if risk_id not in st.session_state[SessionKeys.RISK_ASSESSMENTS]:
+                                        st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id] = RiskAssessment(
+                                            context=assessment.context,
+                                            likelihood=ScoreAssessment(score=new_likelihood_score, reasoning=new_likelihood_reasoning),
+                                            impact=assessment.impact
+                                        )
+                                    else:
+                                        # Update existing assessment
+                                        existing = st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id]
+                                        st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id] = RiskAssessment(
+                                            context=existing.context,
+                                            likelihood=ScoreAssessment(score=new_likelihood_score, reasoning=new_likelihood_reasoning),
+                                            impact=ScoreAssessment(score=existing.impact.score, reasoning=existing.impact.reasoning)
+                                        )
+                        
+                        with col_impact:
+                            st.markdown("**Impact**")
+                            if SessionKeys.RISK_ASSESSMENTS in st.session_state and risk_id in st.session_state[SessionKeys.RISK_ASSESSMENTS]:
+                                assessment = st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id]
+                                impact_score = assessment.impact.score
+                                impact_reasoning = assessment.impact.reasoning
+                                
+                                new_impact_score = st.selectbox(
+                                    "Score",
+                                    options=[1, 2, 3, 4, 5],
+                                    index=impact_score-1,
+                                    key=f"impact_score_{risk_id}",
+                                    format_func=lambda x: f"{['🟢', '🟡', '🟠', '🔴', '🔴'][x-1]} {x} - {['Very Low', 'Low', 'Medium', 'High', 'Very High'][x-1]}"
+                                )
+                                new_impact_reasoning = st.text_area(
+                                    "Reasoning",
+                                    value=impact_reasoning,
+                                    height=80,
+                                    key=f"impact_reasoning_{risk_id}"
+                                )
+                                
+                                # Update session state if changed
+                                if new_impact_score != impact_score or new_impact_reasoning != impact_reasoning:
+                                    if SessionKeys.RISK_ASSESSMENTS not in st.session_state:
+                                        st.session_state[SessionKeys.RISK_ASSESSMENTS] = {}
+                                    if risk_id not in st.session_state[SessionKeys.RISK_ASSESSMENTS]:
+                                        st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id] = RiskAssessment(
+                                            context=assessment.context,
+                                            likelihood=assessment.likelihood,
+                                            impact=ScoreAssessment(score=new_impact_score, reasoning=new_impact_reasoning)
+                                        )
+                                    else:
+                                        # Update existing assessment
+                                        existing = st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id]
+                                        st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id] = RiskAssessment(
+                                            context=existing.context,
+                                            likelihood=ScoreAssessment(score=existing.likelihood.score, reasoning=existing.likelihood.reasoning),
+                                            impact=ScoreAssessment(score=new_impact_score, reasoning=new_impact_reasoning)
+                                        )
+        
+        # Component and Design risks
+        if component_design_risks:
+            with st.expander(f"### Component & Design Risks ({len(component_design_risks)} risks)", expanded=True):
+                for risk_id, risk_data in component_design_risks:
+                    with st.container():
+                        st.markdown("---")
+                        col_risk, col_likelihood, col_impact = st.columns([1, 1, 1])
+                    
+                        with col_risk:
+                            st.markdown(f"**{risk_data['statement']}** ({describe_risk_element(risk_data, capabilities, components, design)})")
+                            st.caption(risk_data['description'])
+                            if SessionKeys.RISK_ASSESSMENTS in st.session_state and risk_id in st.session_state[SessionKeys.RISK_ASSESSMENTS]:
+                                assessment = st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id]
+                                if hasattr(assessment, 'context'):
+                                    st.info(f"💡 {assessment.context}")
+                    
+                        with col_likelihood:
+                            st.markdown("**Likelihood**")
+                            if SessionKeys.RISK_ASSESSMENTS in st.session_state and risk_id in st.session_state[SessionKeys.RISK_ASSESSMENTS]:
+                                assessment = st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id]
+                                likelihood_score = assessment.likelihood.score
+                                likelihood_reasoning = assessment.likelihood.reasoning
+                                
+                                new_likelihood_score = st.selectbox(
+                                    "Score",
+                                    options=[1, 2, 3, 4, 5],
+                                    index=likelihood_score-1,
+                                    key=f"likelihood_score_{risk_id}",
+                                    format_func=lambda x: f"{['🟢', '🟡', '🟠', '🔴', '🔴'][x-1]} {x} - {['Very Low', 'Low', 'Medium', 'High', 'Very High'][x-1]}"
+                                )
+                                new_likelihood_reasoning = st.text_area(
+                                    "Reasoning",
+                                    value=likelihood_reasoning,
+                                    height=80,
+                                    key=f"likelihood_reasoning_{risk_id}"
+                                )
+                                
+                                # Update session state if changed
+                                if new_likelihood_score != likelihood_score or new_likelihood_reasoning != likelihood_reasoning:
+                                    if SessionKeys.RISK_ASSESSMENTS not in st.session_state:
+                                        st.session_state[SessionKeys.RISK_ASSESSMENTS] = {}
+                                    if risk_id not in st.session_state[SessionKeys.RISK_ASSESSMENTS]:
+                                        st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id] = RiskAssessment(
+                                            context=assessment.context,
+                                            likelihood=ScoreAssessment(score=new_likelihood_score, reasoning=new_likelihood_reasoning),
+                                            impact=assessment.impact
+                                        )
+                                    else:
+                                        # Update existing assessment
+                                        existing = st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id]
+                                        st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id] = RiskAssessment(
+                                            context=existing.context,
+                                            likelihood=ScoreAssessment(score=new_likelihood_score, reasoning=new_likelihood_reasoning),
+                                            impact=ScoreAssessment(score=existing.impact.score, reasoning=existing.impact.reasoning)
+                                        )
+                        
+                        with col_impact:
+                            st.markdown("**Impact**")
+                            if SessionKeys.RISK_ASSESSMENTS in st.session_state and risk_id in st.session_state[SessionKeys.RISK_ASSESSMENTS]:
+                                assessment = st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id]
+                                impact_score = assessment.impact.score
+                                impact_reasoning = assessment.impact.reasoning
+                                
+                                new_impact_score = st.selectbox(
+                                    "Score",
+                                    options=[1, 2, 3, 4, 5],
+                                    index=impact_score-1,
+                                    key=f"impact_score_{risk_id}",
+                                    format_func=lambda x: f"{['🟢', '🟡', '🟠', '🔴', '🔴'][x-1]} {x} - {['Very Low', 'Low', 'Medium', 'High', 'Very High'][x-1]}"
+                                )
+                                new_impact_reasoning = st.text_area(
+                                    "Reasoning",
+                                    value=impact_reasoning,
+                                    height=80,
+                                    key=f"impact_reasoning_{risk_id}"
+                                )
+                                
+                                # Update session state if changed
+                                if new_impact_score != impact_score or new_impact_reasoning != impact_reasoning:
+                                    if SessionKeys.RISK_ASSESSMENTS not in st.session_state:
+                                        st.session_state[SessionKeys.RISK_ASSESSMENTS] = {}
+                                    if risk_id not in st.session_state[SessionKeys.RISK_ASSESSMENTS]:
+                                        st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id] = RiskAssessment(
+                                            context=assessment.context,
+                                            likelihood=assessment.likelihood,
+                                            impact=ScoreAssessment(score=new_impact_score, reasoning=new_impact_reasoning)
+                                        )
+                                    else:
+                                        # Update existing assessment
+                                        existing = st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id]
+                                        st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id] = RiskAssessment(
+                                            context=existing.context,
+                                            likelihood=ScoreAssessment(score=existing.likelihood.score, reasoning=existing.likelihood.reasoning),
+                                            impact=ScoreAssessment(score=new_impact_score, reasoning=new_impact_reasoning)
+                                        )
+        
+        # Control Thresholds
+        st.markdown("---")
+        st.markdown("### Control Thresholds")
+        st.caption("Level 0 controls apply to every applicable risk, whatever its score. "
+                   "These thresholds decide which risks also get their Level 1 and 2 controls.")
+        col_likelihood, col_impact = st.columns(2)
+
+        with col_likelihood:
+            likelihood_threshold = st.slider(
+                "Minimum Likelihood Score for Level 1–2 Controls",
+                min_value=1,
+                max_value=5,
+                value=st.session_state.get('likelihood_threshold', 4),
+                help="Risks at or above this likelihood (and the impact threshold) get their Level 1 and 2 controls"
+            )
+
+        with col_impact:
+            impact_threshold = st.slider(
+                "Minimum Impact Score for Level 1–2 Controls",
+                min_value=1,
+                max_value=5,
+                value=st.session_state.get('impact_threshold', 4),
+                help="Risks at or above this impact (and the likelihood threshold) get their Level 1 and 2 controls"
+            )
+        
+        # Calculate high-priority risks
+        high_priority_risks = []
+        for risk_id in st.session_state[SessionKeys.APPLICABLE_RISKS]:
+            if risk_id in st.session_state[SessionKeys.RISK_ASSESSMENTS]:
+                assessment = st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id]
+                if (assessment.likelihood.score >= likelihood_threshold and 
+                    assessment.impact.score >= impact_threshold):
+                    high_priority_risks.append(risk_id)
+        
+        # Display summary
+        n_applicable = len(st.session_state[SessionKeys.APPLICABLE_RISKS])
+        st.info(f"**{len(high_priority_risks)} out of {n_applicable} risks** meet the thresholds and get their "
+                f"Level 1 and 2 controls. Level 0 controls apply to all {n_applicable} applicable risks.")
+        
+        # Store thresholds in session state
+        st.session_state.likelihood_threshold = likelihood_threshold
+        st.session_state.impact_threshold = impact_threshold
+        st.session_state.high_priority_risks = high_priority_risks
+        
+        # Continue to Controls button
+        if st.button("Continue to Controls", type="primary", use_container_width=True, key="continue_to_controls_btn"):
+            st.session_state.page = "controls"
+            st.rerun()
+        
+
+def controls_page():
+    """Fourth page: Controls"""
+    st.title("🤖 ARCvisor: Agentic Risk & Capability (ARC) Framework Advisor")
+    
+    # Header with back button and export button
+    header_col1, header_col2 = st.columns([3, 1])
+    with header_col1:
+        if st.button("← Back to Risk Assessment"):
+            st.session_state.page = "risk_assessment"
+            st.rerun()
+    with header_col2:
+        if st.button("📄 Export Assessment", type="secondary"):
+            try:
+                # Import here to avoid relative import issues
+                from utils.export_utils import export_assessment_to_word
+                doc = export_assessment_to_word()
+                if doc is None:
+                    st.error("Failed to create document. Please try again.")
+                    return
+                
+                # Save to bytes
+                from io import BytesIO
+                doc_buffer = BytesIO()
+                doc.save(doc_buffer)
+                doc_buffer.seek(0)
+                
+                # Download button
+                st.download_button(
+                    label="Download Word Document",
+                    data=doc_buffer.getvalue(),
+                    file_name=f"risk_assessment_{datetime.now().strftime('%Y%m%d_%H%M%S')}.docx",
+                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                )
+            except Exception as e:
+                st.error(f"Error generating document: {str(e)}")
+                st.error("Please ensure all required data is available and try again.")
+    
+    st.markdown("### Step 4: Controls & Mitigation")
+    
+    # Load data
+    capabilities, risks, controls, components, design = load_data()
+    
+    # Check if data loading failed
+    if not capabilities or not risks or not controls or not components or not design:
+        st.error("Failed to load required data files. Please check that all YAML files exist and are valid.")
+        st.stop()
+    
+    applicable_risks = st.session_state.get(SessionKeys.APPLICABLE_RISKS) or []
+    if applicable_risks:
+        above_threshold = st.session_state.get('high_priority_risks') or []
+        risks_with_controls = controls_by_risk(applicable_risks, above_threshold, risks, controls)
+
+        st.info(
+            f"**Level 0 controls** are shown for all **{len(applicable_risks)} applicable risks**: scoring never "
+            f"waives them. **Level 1 and 2 controls** are shown for the "
+            f"**{len(above_threshold)} risks** at or above your thresholds (Likelihood ≥ "
+            f"{st.session_state.get('likelihood_threshold', 4)} AND Impact ≥ {st.session_state.get('impact_threshold', 4)})."
+        )
+        def _status_text(risk_id, control_id):
+            # The widget holds the latest edit; the stored copy is updated after it renders
+            widget_key = f"implementation_text_{risk_id}_{control_id}"
+            stored = st.session_state.get(control_implementation_key(risk_id, control_id), "")
+            return str(st.session_state.get(widget_key, stored) or "")
+
+        undescribed = sum(
+            1 for risk_id, risk_controls in risks_with_controls for control in risk_controls
+            if is_level0(control) and not _status_text(risk_id, control['id']).strip()
+        )
+        if undescribed:
+            st.warning(f"{undescribed} Level 0 control entries have no implementation described yet. "
+                       "Describe how each is implemented, or why it is waived because the capability or component it "
+                       "concerns is not present.")
+
+        for risk_id, risk_controls in risks_with_controls:
+            if risk_id in risks:
+                risk_data = risks[risk_id]
+
+                risk_category = describe_risk_element(risk_data, capabilities, components, design)
+
+                # Minimal risk header (always visible)
+                st.markdown(f"**{risk_id}: {risk_data['statement']}**")
+                if risk_category:
+                    st.caption(f"📌 {risk_category}")
+                st.caption(risk_data.get('description', ''))
+                
+                # Show minimal risk context inline
+                if SessionKeys.RISK_ASSESSMENTS in st.session_state and risk_id in st.session_state[SessionKeys.RISK_ASSESSMENTS]:
+                    assessment = st.session_state[SessionKeys.RISK_ASSESSMENTS][risk_id]
+                    if hasattr(assessment, 'context'):
+                        st.caption(f"Context: {assessment.context}")
+                
+                # Display the controls in scope for this risk (expanded focus)
+                if risk_controls:
+                    for i, control in enumerate(risk_controls, 1):
+                        with st.expander(f"Control {i}: {control['statement']}", expanded=True):
+                            # Two-column layout: control info on left, implementation on right
+                            col_control_info, col_implementation = st.columns([1, 1])
+                            
+                            with col_control_info:
+                                st.write(f"**{control['id']}** · {control['level_label']}")
+                                st.write(control['recommendations'] or "*No implementation guidance recorded for this control.*")
+                                if control['references']:
+                                    st.caption("References: " + ", ".join(control['references']))
+                            
+                            with col_implementation:
+                                # Editable text box for control implementation
+                                control_key = control_implementation_key(risk_id, control['id'])
+                                level0 = is_level0(control)
+
+                                # Level 0 starts blank so nothing pre-accepts the risk; it is waived only if its subject is absent
+                                initialize_control_implementation(risk_id, control['id'],
+                                                                  "" if level0 else NOT_IMPLEMENTED_TEXT)
+
+                                st.write("**Your Implementation Status:**")
+                                implementation_text = st.text_area(
+                                    f"Describe how you have implemented this control and remaining residual risks.",
+                                    value=st.session_state[control_key],
+                                    height=150,
+                                    key=f"implementation_text_{risk_id}_{control['id']}",
+                                    placeholder=LEVEL0_PLACEHOLDER if level0 else None,
+                                    help=("Level 0: describe how this control is implemented, or why it is waived (its capability or component is not present)."
+                                          if level0 else
+                                          "Describe what you have implemented for this control, or leave the default text if not implemented.")
+                                )
+                                
+                                # Update session state when text changes
+                                if implementation_text != st.session_state[control_key]:
+                                    st.session_state[control_key] = implementation_text
+                else:
+                    st.warning("No specific controls found for this risk.")
+        if not risks_with_controls:
+            st.info("None of the applicable risks has a Level 0 control, and none meets the thresholds for "
+                    "Level 1 and 2 controls. Adjust the thresholds in the Risk Assessment page to see them.")
+    else:
+        st.info("Please complete the risk assessment to view controls.")
+
+
+def main():
+    """Main application entry point."""
+    
+    # Initialize session state
+    initialize_session_state()
+    
+    # Route to appropriate page
+    if st.session_state.page == "application_assessment":
+        application_assessment_page()
+    elif st.session_state.page == "capability_identification":
+        capability_identification_page()
+    elif st.session_state.page == "risk_assessment":
+        risk_assessment_page()
+    elif st.session_state.page == "controls":
+        controls_page()
+
+
+if __name__ == "__main__":
+    main()

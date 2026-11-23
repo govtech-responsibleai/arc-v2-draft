@@ -1,0 +1,37 @@
+name: Comment on a risk, control or element
+description: An entry in the register is wrong, unclear, missing, or applies to the wrong systems
+title: "[ID] "
+labels: ["register"]
+body:
+  - type: input
+    id: entry
+    attributes:
+      label: Which entry?
+      description: The ID or IDs, for example RISK-058 or CTRL-0101. Write "new" if you are proposing an entry.
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of comment is it?
+      options:
+        - It is wrong
+        - It is unclear
+        - It is at the wrong level, or applies to the wrong systems
+        - It overlaps with another entry
+        - Something is missing
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: comment
+    attributes:
+      label: Your comment
+      description: What is the problem, and why does it matter? An example system or incident helps.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested wording or change
+      description: Optional.

@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: How to read and comment on this draft
+    url: {REPO_URL}#readme
+    about: Where to start, what changed in 2.0, and the questions we most want answered
+  - name: The published ARC Framework (1.3.0)
+    url: {OFFICIAL_SITE}
+    about: This repository holds a draft. The published framework is here

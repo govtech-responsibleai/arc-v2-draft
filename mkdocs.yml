@@ -1,0 +1,93 @@
+# Project Information
+site_name: Agentic Risk & Capability Framework (2.0 draft)
+site_url: https://govtech-responsibleai.github.io/arc-v2-draft/
+site_description: A technical governance framework for identifying, assessing, and mitigating safety and security risks in agentic AI systems, from GovTech Singapore.
+site_author: GovTech AI Practice
+copyright: GovTech Singapore
+docs_dir: docs
+repo_url: https://github.com/govtech-responsibleai/arc-v2-draft
+
+# Theme Configuration
+theme:
+  name: material
+  custom_dir: overrides
+  features:
+    - toc.integrate
+    - toc.follow
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.sections
+    - navigation.footer
+    - navigation.path
+    - navigation.expand
+  palette:
+    scheme: default
+    primary: white
+    accent: blue
+  icon: 
+    logo: material/shield-star
+    favicon: material/shield-star
+
+markdown_extensions:
+  - footnotes
+  - attr_list
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+# Extra CSS and JavaScript
+extra_css:
+  - https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator_materialize.min.css
+
+extra_javascript:
+  - https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js
+  - assets/risk-register.js
+  - assets/combination-check.js
+
+# Extra Configuration
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/orgs/govtech-responsibleai/
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/govtech-singapore
+    - icon: fontawesome/brands/twitter
+      link: https://x.com/GovTechSG
+# Navigation
+nav:
+  - ARC Framework:
+    - index.md
+    - Introduction: arc_framework/introduction.md
+    - Elements of agentic systems: arc_framework/elements.md
+    - Risks of agentic systems: arc_framework/risks.md
+    - Capability combinations: arc_framework/capability-combinations.md
+    - Controls for agentic systems: arc_framework/controls.md
+    - Interactive Risk Register: arc_framework/risk-register.md
+    - Risk Register (full text): arc_framework/register-full-text.md
+    - Crosswalks to other frameworks: arc_framework/crosswalks.md
+    - Keeping the register current: arc_framework/keeping-current.md
+    - Changelog: arc_framework/changelog.md
+  - Implementation:
+    - Implementing ARC: implementation/index.md
+    - For Governance Teams: implementation/for-governance-teams.md
+    - For AI Developers: implementation/for-ai-developers.md
+    - Assessment Template: implementation/assessment-template.md
+  - Resources:
+    - Resources: resources/index.md
+# Generate the register's JSON and Crosswalks page from arc-risk-register/ at build time
+hooks:
+  - scripts/mkdocs_hooks.py
+
+# Rebuild `mkdocs serve` when the register or its generator changes
+watch:
+  - arc-risk-register
+  - scripts
+
+# Plugins
+plugins:
+  - search
+  - section-index
