@@ -2,7 +2,7 @@
 """
 Generate the website's views of the ARC risk register from its YAML source.
 
-The YAML in arc-risk-register/ is the register. This module derives two files
+The YAML in arc-risk-register/ is the register. This module derives five files
 for the website and nothing else:
 
 - assets/risk_register_data.json: the data behind the interactive register
@@ -14,9 +14,10 @@ for the website and nothing else:
 - arc_framework/capability-combinations.md: the page in docs/ of the same name, with its
   `<!-- arc:... -->` markers replaced by tables generated from the register
 
-None of the generated output is committed. MkDocs generates them at build time through
-scripts/mkdocs_hooks.py, so the site can never serve a stale copy. Run this
-script directly to validate and preview, or with --out DIR to write the files.
+None is committed (the Capability combinations page commits only its prose, in docs/).
+scripts/build_site.py generates them on every website build, so the site can never
+serve a stale copy. Run this script directly to
+validate and preview, or with --out DIR to write the files.
 """
 
 import argparse
@@ -551,24 +552,31 @@ ARC describes an agentic system by three kinds of element: components (LLM, inst
 
 ARC is meant to be adapted: an organisation contextualises the baseline register to its own setting, and teams then assess individual systems against that version. When citing ARC, give the register version and the entry ID (for example RISK-034 or CTRL-0062).
 
+Every page is also available as Markdown at the same address ending in `.md` (for example {site}arc_framework/controls.md), and [llms-full.txt]({site}llms-full.txt) has every page in one file.
+
 ## Framework
 
+- [ARC in five minutes]({site}arc_framework/in-five-minutes/): the whole framework on one page
 - [Introduction]({site}arc_framework/introduction/): motivation, the capability-based approach, and related work
 - [Elements]({site}arc_framework/elements/): definitions of the components, design elements, and twelve capabilities
 - [Risks]({site}arc_framework/risks/): failure modes and hazards
 - [Capability combinations]({site}arc_framework/capability-combinations/): risks that arise only when capabilities are held together, and the check for the lethal trifecta
 - [Controls]({site}arc_framework/controls/): what the control levels mean and when they apply
 - [Risk Register (full text)]({site}arc_framework/register-full-text/): every risk and control, one linkable section per entry
+- [Glossary]({site}glossary/): every term ARC uses, defined once
 
 ## Implementation
 
 - [Implementing ARC]({site}implementation/): the two-stage methodology
 - [For governance teams]({site}implementation/for-governance-teams/): contextualising ARC for an organisation
-- [For AI developers]({site}implementation/for-ai-developers/): assessing a system, with worked examples
+- [For AI developers]({site}implementation/for-ai-developers/): assessing a system in four steps, with [worked examples]({site}implementation/examples/)
+- [What applies to my system?]({site}explorer/): pick a system's capabilities and see the risks and Level 0 controls that apply
 - [Assessment template]({site}implementation/assessment-template/)
 
 ## Register data
 
+- [The register]({site}register/): a page for every risk, control and element at {site}register/<id>/ (for example {site}register/risk-034/), each also as `.json` and `.md` ({site}register/risk-034.json)
+- [register.json]({site}register/register.json), with a [JSON Schema]({site}register/register.schema.json), and [risks.csv]({site}register/risks.csv) and [controls.csv]({site}register/controls.csv): the whole register at v{v}
 - [risks.yaml]({raw}/risks.yaml) and [controls.yaml]({raw}/controls.yaml): the machine-readable register at v{v}
 - [capabilities.yaml]({raw}/capabilities.yaml), [components.yaml]({raw}/components.yaml), [design.yaml]({raw}/design.yaml), [hazards.yaml]({raw}/hazards.yaml): elements and hazard categories
 - [combinations.yaml]({raw}/combinations.yaml): which capabilities supply each leg of a checked combination

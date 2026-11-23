@@ -8,6 +8,9 @@ on:
 permissions:
   contents: write   # deploy job pushes the built site to gh-pages
 
+env:
+  ASTRO_TELEMETRY_DISABLED: 1
+
 jobs:
   validate:
     name: Validate register and build site
@@ -26,11 +29,36 @@ jobs:
       - name: Validate the incident file against the register
         run: python scripts/validate_incidents.py
 
-      - name: Build site (warnings are errors; generates the register JSON and Crosswalks page)
-        run: mkdocs build --strict
+      - name: Check CITATION.cff gives the register's version
+        run: |
+          [ -f CITATION.cff ] || { echo "No CITATION.cff (a review copy has none)"; exit 0; }
+          reg=$(python -c "import yaml;print(yaml.safe_load(open('arc-risk-register/register.yaml'))['version'])")
+          cff=$(python -c "import yaml;print(yaml.safe_load(open('CITATION.cff'))['version'])")
+          [ "$reg" = "$cff" ] || { echo "CITATION.cff says $cff but register.yaml says $reg"; exit 1; }
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+      - run: npm ci
+        working-directory: website
+
+      - name: Build site (generates the register's pages; an invalid register or a broken link fails it)
+        run: npm run build
+        working-directory: website
 
       - name: Test the ARC assessment skill against this register (offline)
         run: python skills/tests/test_arc_assessment.py
+
+      # Accessibility and SEO scores below the budgets in website/lighthouserc.json fail the build;
+      # performance and best practices only warn. The site is served under its real base path.
+      - name: Lighthouse budgets
+        working-directory: website
+        run: |
+          mkdir -p "$RUNNER_TEMP/site" && ln -s "$PWD/dist" "$RUNNER_TEMP/site/arc-v2-draft"
+          python -m http.server 4321 --directory "$RUNNER_TEMP/site" >/dev/null 2>&1 &
+          npx --yes @lhci/cli@0.16.1 autorun --config=lighthouserc.json
 
   app-smoke-test:
     name: ARCvisor smoke test
@@ -52,15 +80,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0   # gh-deploy needs the gh-pages branch history
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
           cache: pip
       - run: pip install -r requirements.txt
-      - name: Deploy with mkdocs gh-deploy
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+      - run: npm ci && npm run build
+        working-directory: website
+        env:
+          # Optional: the Google Search Console verification token, set as a repository variable
+          GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
+
+      # Replaces gh-pages with a single commit of the built site, as `mkdocs gh-deploy --force` did,
+      # so the Pages settings stay as they are. .nojekyll stops GitHub ignoring Astro's _astro/ folder.
+      - name: Publish to the gh-pages branch
+        working-directory: website/dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          mkdocs gh-deploy --force
+          touch .nojekyll
+          git init -q -b gh-pages
+          git add -A
+          git -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" \
+            commit -q -m "Deploy ${GITHUB_SHA}"
+          git push -q -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages

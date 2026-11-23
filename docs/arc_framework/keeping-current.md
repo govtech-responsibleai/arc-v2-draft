@@ -1,3 +1,7 @@
+---
+description: "How the ARC register is kept in step with what goes wrong: an incident file that every change is checked against, a quarterly review, and reference systems that guard the tools."
+---
+
 # Keeping the register current
 
 !!! abstract "Page Summary"

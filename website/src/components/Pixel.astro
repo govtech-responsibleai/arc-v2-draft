@@ -1,0 +1,7 @@
+---
+// A pixel-art sprite from src/pixels/sprites.json (the ARC Pixel Kit) as inline SVG.
+import { spriteSvg, type SpriteName } from '../pixels/svg';
+interface Props { name: SpriteName; scale?: number; label?: string; class?: string }
+const { name, scale = 2, label, class: className = '' } = Astro.props;
+---
+<Fragment set:html={spriteSvg(name, scale, label, className)} />

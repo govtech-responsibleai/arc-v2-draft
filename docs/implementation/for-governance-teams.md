@@ -1,4 +1,15 @@
+---
+description: "How a governance team adapts ARC to its organisation: customise capabilities, contextualise risks, adapt controls, set relevance thresholds, pilot and scale."
+---
+
 # For Governance Teams
+
+!!! tip "In short"
+
+    - Adapt ARC to your organisation before teams use it: customise the capabilities, contextualise the risks, adapt the controls, and set relevance thresholds.
+    - Pilot with two or three real systems, then scale up with templates and training.
+    - Level 0 controls stay mandatory wherever their risk applies; your thresholds decide which Level 1 and Level 2 controls to require.
+    - Keep your version as an [overlay](#keeping-your-version-as-an-overlay), one file of changes, so that you can take up each new ARC version.
 
 !!! abstract "Page Summary"
 

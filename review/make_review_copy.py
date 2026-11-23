@@ -11,6 +11,7 @@ What it does, and nothing else:
     so that links to files which exist only in the draft resolve;
   - labels the register `2.0.0-draft.N`, dated the day of the snapshot;
   - adds a banner to every page, and asks search engines not to index the site;
+  - leaves out what a draft should not have: its citation files, release workflow and dependency updates;
   - replaces the README with a guide for reviewers, and adds forms for comments;
   - if the incident file is present, points its cases at the risk that replaces a retired one;
   - removes the site's analytics, so draft traffic stays out of the published site's figures.
@@ -20,6 +21,7 @@ draft; nothing is merged back from this copy.
 """
 import argparse
 import datetime
+import json
 import re
 import subprocess
 import sys
@@ -29,7 +31,7 @@ ORG = 'govtech-responsibleai'
 OFFICIAL = 'agentic-risk-capability-framework'
 OFFICIAL_SITE = f'https://{ORG}.github.io/{OFFICIAL}/'
 KIT = Path(__file__).parent
-TEXT = {'.md', '.py', '.yml', '.yaml', '.js', '.html', '.txt', '.json', '.toml', '.css'}
+TEXT = {'.md', '.py', '.yml', '.yaml', '.js', '.mjs', '.ts', '.astro', '.html', '.txt', '.json', '.toml', '.css', '.cff'}
 SKIP = ('archive/', 'review/', 'site/', 'incidents/')
 
 
@@ -51,7 +53,7 @@ def main():
     args = parser.parse_args()
 
     root = Path.cwd()
-    if (root / 'overrides' / 'main.html').exists():
+    if (root / 'overrides' / 'main.html').exists() or (root / 'website' / 'src' / 'review.json').exists():
         sys.exit('this checkout has already been turned into a review copy; start from a clean checkout of the draft')
     day = datetime.date.fromisoformat(args.date)
     version = f'2.0.0-draft.{args.draft}'
@@ -85,37 +87,64 @@ def main():
     reg.write_text(text)
 
     # 3. Site: name, banner, no indexing, no analytics
-    cfg = root / 'mkdocs.yml'
-    lines = cfg.read_text().split('\n')
-    out, skipping = [], False
-    for line in lines:
-        if line == '  analytics:':
-            skipping = True
-            continue
-        if skipping and (re.match(r'^  \S', line) or re.match(r'^\S', line)):
-            skipping = False
-        if skipping:
-            continue
-        if line.startswith('site_name: '):
-            line += ' (2.0 draft)'
-        out.append(line)
-        if line == '  name: material':
-            out.append('  custom_dir: overrides')
-    text = '\n'.join(out)
-    assert 'custom_dir: overrides' in text and 'analytics' not in text and '(2.0 draft)' in text
-    cfg.write_text(text)
-    (root / 'overrides').mkdir()
-    (root / 'overrides' / 'main.html').write_text(fill((KIT / 'main.template.html').read_text(), values))
-
-    home = root / 'docs' / 'index.md'
-    text = home.read_text()
-    marker = '!!! info "What\'s new'
-    assert text.count(marker) == 1, 'homepage: the "What\'s new" box was not found'
     box = (f'!!! warning "Draft for review"\n\n'
            f'    This site is draft {args.draft} of ARC 2.0 ({values["DATE_LONG"]}). It is not the published framework, which is '
            f'[version 1.3.0]({OFFICIAL_SITE}). Please do not cite or adopt it. '
            f'[How to read and comment on this draft]({repo_url}#readme).\n\n')
-    home.write_text(text.replace(marker, box + marker))
+    marker = '!!! info "What\'s new'
+    website = root / 'website'
+    if (website / 'astro.config.mjs').exists():
+        # The Astro Starlight site reads src/review.json: its own title (short enough for a phone's header),
+        # a banner for every page, noindex, and no analytics (see website/astro.config.mjs and website/src/routeData.ts).
+        review = {'title': 'ARC 2.0 draft', 'banner': fill((KIT / 'banner.template.html').read_text(), values).strip()}
+        (website / 'src' / 'review.json').write_text(json.dumps(review, indent=1, ensure_ascii=False) + '\n')
+        # The site's base path follows its address, which step 1 rewrote. The Lighthouse check in CI serves
+        # the built site under that path too, and names it without the organisation.
+        for rel in ('website/lighthouserc.json', '.github/workflows/ci.yml'):
+            path = root / rel
+            if path.exists():
+                path.write_text(path.read_text().replace(f'/{OFFICIAL}', f'/{args.repo}'))
+        # The draft asks search engines not to index it, and Lighthouse's SEO score counts that against
+        # every page, so the SEO budget is off in a review copy. The accessibility budget still applies.
+        lhci = root / 'website' / 'lighthouserc.json'
+        if lhci.exists():
+            text, n = re.subn(r'"categories:seo":\s*\[[^\]]*\]', '"categories:seo": "off"', lhci.read_text())
+            assert n == 1, 'lighthouserc.json: the SEO budget was not found'
+            lhci.write_text(text)
+        # A draft is not cited, released, or kept up to date by Dependabot
+        for rel in ('CITATION.cff', '.zenodo.json', '.github/workflows/release.yml', '.github/dependabot.yml'):
+            (root / rel).unlink(missing_ok=True)
+        about = root / 'docs' / 'about.md'
+        text = about.read_text()
+        assert text.count(marker) == 1, 'about page: the "What\'s new" box was not found'
+        about.write_text(text.replace(marker, box + marker))
+    else:   # the MkDocs site of draft 1
+        cfg = root / 'mkdocs.yml'
+        lines = cfg.read_text().split('\n')
+        out, skipping = [], False
+        for line in lines:
+            if line == '  analytics:':
+                skipping = True
+                continue
+            if skipping and (re.match(r'^  \S', line) or re.match(r'^\S', line)):
+                skipping = False
+            if skipping:
+                continue
+            if line.startswith('site_name: '):
+                line += ' (2.0 draft)'
+            out.append(line)
+            if line == '  name: material':
+                out.append('  custom_dir: overrides')
+        text = '\n'.join(out)
+        assert 'custom_dir: overrides' in text and 'analytics' not in text and '(2.0 draft)' in text
+        cfg.write_text(text)
+        (root / 'overrides').mkdir()
+        (root / 'overrides' / 'main.html').write_text(fill((KIT / 'main.template.html').read_text(), values))
+
+        home = root / 'docs' / 'index.md'
+        text = home.read_text()
+        assert text.count(marker) == 1, 'homepage: the "What\'s new" box was not found'
+        home.write_text(text.replace(marker, box + marker))
 
     # 4. Reviewer guide and comment forms
     values['CONTACT_LINE'] = (f'\nIf you do not have a GitHub account, send comments to {args.contact}.\n' if args.contact else '')

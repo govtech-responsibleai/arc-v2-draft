@@ -21,8 +21,22 @@ __pycache__/
 *.pyd
 .Python
 
-# Generated at build time by scripts/mkdocs_hooks.py from arc-risk-register/; never commit
+# Generated at build time from arc-risk-register/ by older MkDocs builds; never commit
 docs/assets/risk_register_data.json
 docs/arc_framework/crosswalks.md
 docs/arc_framework/register-full-text.md
 docs/llms.txt
+
+# Website (Astro Starlight). scripts/build_site.py writes the pages and public files below
+# from docs/ and arc-risk-register/ on every build; edit docs/ instead.
+website/node_modules/
+website/dist/
+website/.astro/
+website/src/content/docs/
+website/public/assets/
+website/public/llms.txt
+website/src/generated/
+website/public/**/*.md
+website/public/llms-full.txt
+website/public/register/
+website/.lighthouseci/

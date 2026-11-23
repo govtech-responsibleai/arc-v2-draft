@@ -49,19 +49,7 @@ if (typeof document !== 'undefined') {
             return node;
         };
 
-        const style = el('style', {
-            text: `
-            #arc-combination-check { border: 1px solid var(--md-default-fg-color--lightest); border-radius: 4px; padding: 0.8rem 1rem; }
-            #arc-combination-check fieldset { border: 0; margin: 0 0 0.6rem; padding: 0; }
-            #arc-combination-check legend { font-weight: 700; padding: 0; }
-            #arc-combination-check .acc-caps { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 0.1rem 1rem; }
-            #arc-combination-check label { display: flex; gap: 0.4rem; align-items: baseline; cursor: pointer; }
-            #arc-combination-check .acc-verdict { font-weight: 700; margin: 0.6rem 0 0.2rem; }
-            #arc-combination-check .acc-result ul { margin-top: 0.2rem; }
-            #arc-combination-check .acc-reset { margin-top: 0.4rem; }`,
-        });
-        root.textContent = '';
-        root.appendChild(style);
+        root.textContent = '';   // styles: website/src/styles/custom.css
 
         const groups = {};
         capabilities.forEach((c) => {
@@ -80,7 +68,7 @@ if (typeof document !== 'undefined') {
         });
 
         const result = el('div', { class: 'acc-result', 'aria-live': 'polite' });
-        const reset = el('button', { type: 'button', class: 'md-button acc-reset', text: 'Clear' });
+        const reset = el('button', { type: 'button', class: 'acc-reset', text: 'Clear' });
         root.appendChild(result);
         root.appendChild(reset);
 

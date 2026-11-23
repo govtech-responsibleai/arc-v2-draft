@@ -1,3 +1,7 @@
+---
+description: "A template for recording an ARC assessment: capabilities, applicable risks, controls with status and evidence, residual risks and sign-off."
+---
+
 # Assessment Template
 
 !!! abstract "Page Summary"

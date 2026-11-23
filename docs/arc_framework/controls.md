@@ -1,3 +1,7 @@
+---
+description: "How ARC's technical controls are developed, and what Level 0, Level 1 and Level 2 mean, including when a Level 0 control can be waived."
+---
+
 # Controls for agentic systems
 
 !!! abstract "Page Summary"
@@ -96,7 +100,7 @@ Next, we categorise the control into three levels based on its criticality:
     2. **CTRL-0061** [Level 1] Use structured retrieval APIs for web searches rather than web scraping → *reduces exposure to malicious web content and injection vectors*
     3. **CTRL-0062** [Level 0] Implement input guardrails to detect prompt injection and adversarial attacks → *reduces likelihood of prompt injection attack succeeding*
 
-Our [Interactive Risk Register](risk-register.md) provides **recommended controls** for each of the 66 documented risks to help organizations get started.
+Our [Interactive Risk Register](risk-register.md) provides **recommended controls** for each of the <span data-arc="risks">66</span> documented risks to help organizations get started.
 
 ---
 

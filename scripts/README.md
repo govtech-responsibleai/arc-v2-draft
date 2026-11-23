@@ -35,15 +35,31 @@ Applies an organisation's overlay to the register and writes the effective regis
 python scripts/apply_overlay.py --overlay examples/overlay/example-agency.yaml --out /tmp/example-register
 ```
 
-## `mkdocs_hooks.py`
+## `build_site.py`
 
-An [MkDocs hook](https://www.mkdocs.org/user-guide/configuration/#hooks) registered in `mkdocs.yml`. On every `mkdocs build` and every `mkdocs serve` rebuild it calls `build_risk_register.generate()` and adds the files to the site in memory. As a result:
+Prepares the website's content. `npm run build` and `npm run dev` in `website/` run it first. It:
 
-- the site always reflects the YAML it was built from, so there is no stale copy to forget to regenerate;
-- an invalid register fails the build, so CI's `mkdocs build --strict` also gates on validation;
-- `mkdocs serve` reloads when anything in `arc-risk-register/` or `scripts/` changes (`watch:` in `mkdocs.yml`).
+- calls `build_risk_register.generate()`, so an invalid register fails the build;
+- converts every page in `docs/`, and the generated pages, from MkDocs-flavoured Markdown into the Markdown Astro Starlight reads. Admonitions become asides or `<details>`, the first `# Heading` becomes the page title, and links to other `.md` files become site URLs;
+- copies `docs/assets/` and the generated JSON and `llms.txt` into `website/public/`.
 
-The output paths are in `.gitignore`, except the Capability combinations page, whose prose is committed in `docs/` and whose tables are filled in at build time. A generated file replaces a file of the same path in `docs/`.
+The pages keep their MkDocs-flavoured Markdown, so they read well on GitHub and the assessment skill can fetch them unchanged. Heading anchors are kept as they were, including explicit `{ #id }` ones (`website/src/plugins/heading-ids.mjs`), so existing links into the site keep working.
+
+```bash
+python scripts/build_site.py            # once
+python scripts/build_site.py --watch    # rebuild when docs/, the register or scripts/ change (npm run dev does this)
+```
+
+Everything it writes is in `.gitignore`. The Capability combinations page is the one exception to "generated, not committed": its prose is committed in `docs/`, and the register's generated copy of it, with its tables filled in, replaces it at build time.
+
+## `site_components.py` and `site_entries.py`
+
+Used by `build_site.py`:
+
+- `site_components.py` draws the pixel-art sprites as SVG, the ARC diagram and the element grid, and fills in the markers a page in `docs/` can use: `<!-- arc:diagram -->`, `<!-- arc:elements -->`, `<!-- arc:register -->`, `<!-- arc:sprite NAME SCALE -->`, and `<span data-arc="risks">66</span>` for a live count.
+- `site_entries.py` generates a page for every risk, control and element (`register/risk-034/`), the register's front page and lists, one Crosswalk page per framework, the data files (`register/register.json` with a JSON Schema, CSV files, a JSON and Markdown copy of each entry, and a copy under `register/v<version>/`), the list of risks on `arc_framework/risk-register/`, and the data for the applicability explorer.
+
+Neither writes anything that is committed.
 
 ## Incident file scripts
 

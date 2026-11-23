@@ -314,6 +314,58 @@ def test_site_check_matches_script():
                                          for s in subsets]
 
 
+def test_explorer_matches_script():
+    """The website's "What applies to my system?" page (website/src/scripts/applicability.mjs) gives the
+    script's answer: the same risks, Level 0 controls, risks left out for authority, and combination verdicts,
+    for the reference systems and for random systems with random context."""
+    if shutil.which("node") is None:
+        print("  (node not found; skipping the explorer comparison)")
+        return
+    import random
+    sys.path.insert(0, str(REPO / "scripts"))
+    import site_entries
+    data = site_entries.explorer_data(site_entries.load())
+    reg = _register()
+    elements = arc.element_index(reg)
+    caps = sorted(reg["capabilities"])
+    conditional = sorted(e for e, v in elements.items() if v["present_when"])
+    rnd = random.Random(20261123)
+    systems = [{k: p[k] for k in ("caps", "authority", "reversible", "internal", "components")} for p in data["presets"]]
+    systems.append({"caps": caps, "authority": {}, "reversible": [], "internal": [], "components": conditional})
+    systems.append({"caps": [], "authority": {}, "reversible": [], "internal": [], "components": []})
+    for _ in range(400):
+        chosen = sorted(rnd.sample(caps, rnd.randint(0, len(caps))))
+        authority = {c: rnd.choice(elements[c]["authority"]) for c in chosen if elements[c]["authority"] and rnd.random() < 0.6}
+        systems.append({"caps": chosen, "authority": authority,
+                        "reversible": [c for c in chosen if rnd.random() < 0.3], "internal": [c for c in chosen if rnd.random() < 0.3],
+                        "components": [c for c in conditional if rnd.random() < 0.5]})
+
+    def expected(s):
+        profile = arc.build_profile(reg, s["caps"], s["authority"], s["reversible"], s["internal"])
+        baseline, single, combination = arc.applicable_risks(reg, s["caps"] + s["components"], profile)
+        applicable = baseline + single + combination
+        level0 = sorted({cid for rid in applicable for cid in reg["risks"][rid].get("controls") or []
+                         if arc.effective_level(reg["controls"][cid], profile) == 0})
+        return {"baseline": baseline, "single": single, "combination": combination, "level0": level0,
+                "below": sorted(rid for rid, r in reg["risks"].items() if not r.get("superseded_by") and arc.below_authority(r, profile)),
+                "verdicts": {c["id"]: c["verdict"] for c in arc.combination_checks(reg, s["caps"], profile)}}
+
+    script = (
+        "const input = JSON.parse(require('fs').readFileSync(0, 'utf8'));"
+        "import(input.module).then((m) => console.log(JSON.stringify(input.systems.map((s) => {"
+        "  const r = m.assess(input.data, s);"
+        "  return { baseline: r.baseline.map((x) => x.id), single: r.single.map((x) => x.id),"
+        "    combination: r.combination.map((x) => x.id), level0: r.level0, below: r.below.map((x) => x.id).sort(),"
+        "    verdicts: Object.fromEntries(r.checks.map((c) => [c.id, c.verdict])) };"
+        "}))));"
+    )
+    module = (REPO / "website" / "src" / "scripts" / "applicability.mjs").as_uri()
+    result = subprocess.run(["node", "-e", script], input=json.dumps({"module": module, "data": data, "systems": systems}),
+                            capture_output=True, text=True, check=True)
+    for s, got in zip(systems, json.loads(result.stdout)):
+        assert got == expected(s), (s, got, expected(s))
+
+
 def test_overlay():
     """An organisation's overlay is applied to the base register by ID, and what it does not mention is inherited."""
     reg = _register()
@@ -358,12 +410,13 @@ def test_overlay():
 def test_worked_examples_match_the_guide():
     """The developer guide quotes risk and Level 0 counts for its worked examples; they must be what the tool gives.
 
-    Each example in the guide carries a marker such as
+    Each worked example (one page each, under docs/implementation/examples/) carries a marker such as
     `<!-- arc:example fact-checker risks=45 level0=28 lethal-trifecta=present -->`, and its profile is in
-    examples/systems/. When the register changes these numbers, update the guide's prose and its marker together.
+    examples/systems/. When the register changes these numbers, update the example's prose and its marker together.
     """
     import re
-    guide = (REPO / "docs" / "implementation" / "for-ai-developers.md").read_text()
+    docs = REPO / "docs" / "implementation"
+    guide = "\n".join(p.read_text() for p in [docs / "for-ai-developers.md", *sorted((docs / "examples").glob("*.md"))])
     markers = re.findall(r"<!-- arc:example ([a-z-]+) (.+?) -->", guide)
     assert len(markers) >= 3, "the guide should mark each worked example"
     for name, fields in markers:
@@ -401,6 +454,7 @@ if __name__ == "__main__":
     test_combination_check()
     test_register_without_combinations()
     test_site_check_matches_script()
+    test_explorer_matches_script()
     test_overlay()
     test_worked_examples_match_the_guide()
     test_template_is_plain_markdown()
