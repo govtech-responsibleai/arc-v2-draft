@@ -1,0 +1,270 @@
+---
+// "What applies to my system?": describe a system (its capabilities, how each is used, and its conditional
+// components) and see the risks that apply, the Level 0 controls they carry, and the combination checks.
+// The rule is in src/scripts/applicability.mjs, which matches the ARC assessment skill's `arc.py assess`;
+// skills/tests/test_arc_assessment.py checks the two agree.
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import Pixel from '../components/Pixel.astro';
+import data from '../generated/explorer.json';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const groups = ['Cognitive', 'Interaction', 'Operational'];
+const AUTH: Record<string, string> = { read: 'Read only', propose: 'Propose (a person acts)', 'act-with-approval': 'Act with approval', 'act-alone': 'Act alone' };
+const caps = data.elements.filter((e) => e.id.startsWith('CAP'));
+const conditional = data.elements.filter((e) => !e.id.startsWith('CAP') && e.present_when);
+const always = data.elements.filter((e) => !e.id.startsWith('CAP') && !e.present_when);
+---
+<StarlightPage frontmatter={{
+  title: 'What applies to my system?',
+  description: 'Describe your agentic system, its capabilities and how it uses them, and see the ARC risks that apply and the Level 0 controls they carry.',
+  tableOfContents: false,
+}}>
+  <p class="arc-lead">Tick the capabilities your system has and say how it uses them. ARC lists the risks that apply and the controls they carry. Anything you leave unstated is taken in its most cautious form.</p>
+
+  <div class="arc-ex not-content" data-arc-explorer data-base={base}>
+    <section class="arc-ex-pick" aria-labelledby="pick">
+      <h2 id="pick" class="arc-ex-h">1. Your system</h2>
+      <div class="arc-ex-presets">
+        <span>Start from a reference system:</span>
+        {data.presets.map((p, i) => <button type="button" data-preset={i} title={p.note}>{p.name}</button>)}
+      </div>
+      {groups.map((g) => (
+        <fieldset class="arc-ex-group">
+          <legend>{g} capabilities</legend>
+          <div class="arc-ex-caps">
+            {caps.filter((c) => c.group === g).map((c) => (
+              <div class="arc-ex-cap-wrap">
+                <label class="arc-ex-cap" title={c.description}>
+                  <input type="checkbox" name="cap" value={c.id} />
+                  <Pixel name={`icon-${c.id}` as never} scale={2} />
+                  <span><b>{c.name}</b><small>{c.id}</small></span>
+                </label>
+                {c.authority && (
+                  <div class="arc-ex-ctx">
+                    <label>How it is used
+                      <select name="auth" data-cap={c.id}>
+                        {c.authority.map((a, i) => <option value={a} selected={i === c.authority.length - 1}>{AUTH[a]}</option>)}
+                      </select>
+                    </label>
+                    {c.irreversible === 'ask' && <label class="arc-ex-tick"><input type="checkbox" name="rev" value={c.id} /> Its effects can be undone</label>}
+                    {c.external === 'ask' && <label class="arc-ex-tick"><input type="checkbox" name="int" value={c.id} /> Its effects stay inside the organisation</label>}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </fieldset>
+      ))}
+      {conditional.length > 0 && (
+        <fieldset class="arc-ex-group">
+          <legend>Components only some systems have</legend>
+          <div class="arc-ex-caps">
+            {conditional.map((c) => (
+              <label class="arc-ex-cap" title={c.description}>
+                <input type="checkbox" name="comp" value={c.id} />
+                <Pixel name={`icon-${c.id}` as never} scale={2} />
+                <span><b>{c.name}</b><small>{c.id} · present when: {c.present_when}</small></span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      )}
+      <p class="arc-ex-base">
+        <span class="arc-ex-icons">{always.map((e) => <Pixel name={`icon-${e.id}` as never} scale={1.5} label={e.name} />)}</span>
+        In every system: {always.map((e) => e.name).join(', ')}.
+      </p>
+    </section>
+
+    <section class="arc-ex-result" aria-labelledby="result">
+      <h2 id="result" class="arc-ex-h">2. What applies</h2>
+      <div class="arc-ex-stats" aria-live="polite">
+        <div><b data-stat="risks">0</b><span>risks apply</span></div>
+        <div><b data-stat="controls">0</b><span>controls</span></div>
+        <div><b data-stat="l0">0</b><span>Level 0 controls</span></div>
+        <div><b data-stat="adopt">0</b><span>Level 0 to adopt</span></div>
+      </div>
+      <p class="arc-ex-note">Counts are before any waiver. A Level 0 control is waived only when the capability or component it concerns is absent from your system: mark those below, and record the evidence in your <a href={`${base}implementation/assessment-template/`}>assessment</a>. Scoring never waives a Level 0 control. Unstated context counts as the most cautious case: each capability at the highest authority it allows, with effects that cannot be undone and that reach outside the organisation (see <a href={`${base}arc_framework/elements/#context-how-a-capability-is-used`}>how a capability is used</a>).</p>
+      <div class="arc-ex-actions">
+        <button type="button" data-action="link">Copy link</button>
+        <button type="button" data-action="markdown">Copy as Markdown</button>
+        <button type="button" data-action="json">Download JSON</button>
+        <span class="arc-ex-msg" role="status"></span>
+      </div>
+
+      <h3 class="arc-ex-h3">Capability combinations</h3>
+      <p class="arc-ex-note">Some risks arise when capabilities together complete a dangerous combination. See <a href={`${base}arc_framework/capability-combinations/`}>Capability combinations</a>.</p>
+      <div data-out="checks"></div>
+      <div data-out="extra"></div>
+      <h3 class="arc-ex-h3">Level 0 controls</h3>
+      <div data-out="l0"></div>
+      <h3 class="arc-ex-h3">Risks that apply</h3>
+      <div data-out="risks"></div>
+    </section>
+    <noscript><p>This page needs JavaScript. Without it, see <a href={`${base}arc_framework/risk-register/`}>all risks</a>, which you can filter by element, or the page for each <a href={`${base}register/elements/`}>element</a>. The ARC assessment skill's <code>arc.py assess</code> gives the same answer offline.</p></noscript>
+  </div>
+  <script type="application/json" id="arc-explorer-data" set:html={JSON.stringify(data)} />
+</StarlightPage>
+
+<script>
+  import { assess, combinationAdvice, AUTHORITY } from '../scripts/applicability.mjs';
+
+  type Element = { id: string; name: string; group: string; present_when?: string; authority?: string[]; irreversible?: string; external?: string };
+  type Risk = { id: string; s: string; e: string[]; c: string[]; comb?: string; min?: Record<string, string> };
+  type Data = {
+    version: string; elements: Element[]; risks: Risk[]; controls: Record<string, [number, string, unknown[]]>;
+    rules: Record<string, { name: string }>;
+    presets: { name: string; caps: string[]; authority: Record<string, string>; reversible: string[]; internal: string[]; components: string[] }[];
+  };
+  const AUTH: Record<string, string> = { read: 'read only', propose: 'propose', 'act-with-approval': 'act with approval', 'act-alone': 'act alone' };
+  const root = document.querySelector<HTMLElement>('[data-arc-explorer]')!;
+  const data: Data = JSON.parse(document.getElementById('arc-explorer-data')!.textContent!);
+  const base = root.dataset.base!;
+  const el = Object.fromEntries(data.elements.map((e) => [e.id, e]));
+  const names = Object.fromEntries(data.elements.map((e) => [e.id, e.name]));
+  const all = (name: string) => [...root.querySelectorAll<HTMLInputElement>(`input[name=${name}]`)];
+  const selects = [...root.querySelectorAll<HTMLSelectElement>('select[name=auth]')];
+  const highest = (cap: string) => el[cap].authority![el[cap].authority!.length - 1];
+  const waived = new Set<string>();
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+  const page = (id: string) => `${base}register/${id.toLowerCase()}/`;
+
+  /** The system as the form describes it. */
+  function system() {
+    const caps = all('cap').filter((b) => b.checked).map((b) => b.value);
+    const authority: Record<string, string> = {};
+    selects.forEach((s) => { if (caps.includes(s.dataset.cap!) && s.value !== highest(s.dataset.cap!)) authority[s.dataset.cap!] = s.value; });
+    const ticked = (name: string) => all(name).filter((b) => b.checked && caps.includes(b.value)).map((b) => b.value);
+    return { caps, authority, reversible: ticked('rev'), internal: ticked('int'), components: all('comp').filter((b) => b.checked).map((b) => b.value) };
+  }
+  function setSystem(s: { caps: string[]; authority: Record<string, string>; reversible: string[]; internal: string[]; components: string[] }) {
+    all('cap').forEach((b) => (b.checked = s.caps.includes(b.value)));
+    selects.forEach((x) => (x.value = s.authority[x.dataset.cap!] && el[x.dataset.cap!].authority!.includes(s.authority[x.dataset.cap!]) ? s.authority[x.dataset.cap!] : highest(x.dataset.cap!)));
+    all('rev').forEach((b) => (b.checked = s.reversible.includes(b.value)));
+    all('int').forEach((b) => (b.checked = s.internal.includes(b.value)));
+    all('comp').forEach((b) => (b.checked = s.components.includes(b.value)));
+  }
+
+  // The link records the system: caps=CAP-06:act-with-approval,CAP-11 & rev=… & int=… & comp=… & waive=…
+  function readHash() {
+    const p = new URLSearchParams(location.hash.slice(1));
+    const list = (k: string) => (p.get(k) || '').split(',').filter(Boolean);
+    const authority: Record<string, string> = {};
+    const caps = list('caps').map((x) => { const [c, a] = x.split(':'); if (a && AUTHORITY.includes(a)) authority[c] = a; return c; });
+    setSystem({ caps, authority, reversible: list('rev'), internal: list('int'), components: list('comp') });
+    waived.clear();
+    list('waive').forEach((c) => waived.add(c));
+  }
+  function writeHash(s: ReturnType<typeof system>) {
+    const p = new URLSearchParams();
+    if (s.caps.length) p.set('caps', s.caps.map((c) => (s.authority[c] ? `${c}:${s.authority[c]}` : c)).join(','));
+    if (s.reversible.length) p.set('rev', s.reversible.join(','));
+    if (s.internal.length) p.set('int', s.internal.join(','));
+    if (s.components.length) p.set('comp', s.components.join(','));
+    if (waived.size) p.set('waive', [...waived].join(','));
+    const hash = p.toString().replace(/%2C/g, ',').replace(/%3A/g, ':');
+    history.replaceState(null, '', hash ? `#${hash}` : location.pathname);
+  }
+
+  let current: { system: ReturnType<typeof system>; result: ReturnType<typeof assess> };
+
+  function describe(cap: string, ctx: Record<string, unknown>) {
+    const parts = [];
+    if (ctx.authority) parts.push(AUTH[ctx.authority as string]);
+    if ('irreversible' in ctx) parts.push(ctx.irreversible ? 'cannot be undone' : 'can be undone');
+    if ('external' in ctx) parts.push(ctx.external ? 'reaches outside' : 'stays inside');
+    return `${names[cap]} (${cap})${parts.length ? `: ${parts.join(', ')}` : ''}`;
+  }
+
+  function render() {
+    const s = system();
+    const result = assess(data, s);
+    const { applicable, controls, level0, checks, below, implied } = result;
+    [...waived].forEach((c) => { if (!level0.includes(c)) waived.delete(c); });
+    current = { system: s, result };
+    const stat = (k: string, v: number) => (root.querySelector(`[data-stat=${k}]`)!.textContent = String(v));
+    stat('risks', applicable.length); stat('controls', Object.keys(controls).length); stat('l0', level0.length); stat('adopt', level0.length - waived.size);
+
+    const verdictClass = (v: string) => (v === 'present' ? 'is-present' : v === 'possible' ? 'is-possible' : 'is-absent');
+    root.querySelector('[data-out=checks]')!.innerHTML = checks.map((c) => `
+      <div class="arc-ex-check ${verdictClass(c.verdict)}">
+        <p class="arc-ex-check-head"><b>${esc(c.name)}</b><span class="arc-ex-verdict">${c.verdict}</span></p>
+        <ul>${c.legs.map((l) => `<li>${esc(l.name)}: <b>${l.status === 'none' ? 'not supplied' : l.status}</b>${l.suppliers.length
+          ? ` <small>${(l.suppliers.some((x) => x.mark === 'yes') ? l.suppliers.filter((x) => x.mark === 'yes') : l.suppliers).map((x) => `${esc(names[x.id])} (${x.id})${x.mark === 'yes' ? '' : `: ${esc(x.note)}`}`).join('; ')}</small>` : ''}</li>`).join('')}</ul>
+        ${c.verdict !== 'not present' ? `<p class="arc-ex-advice">${esc(combinationAdvice(c))} <a href="${page(c.control)}">${c.control}</a></p>` : ''}
+      </div>`).join('');
+
+    const extra = [];
+    if (below.length) extra.push(`<h3 class="arc-ex-h3">Left out because of how a capability is used</h3><ul class="arc-ex-plain">${below.map((b) =>
+      `<li><a href="${page(b.id)}">${b.id}</a> needs ${esc(names[b.capability])} at ${AUTH[b.needs]} or above.</li>`).join('')}</ul>`);
+    if (implied.length) extra.push(`<h3 class="arc-ex-h3">Capabilities this system may also have</h3><p class="arc-ex-note">Add each one that applies, or record why it does not.</p><ul class="arc-ex-plain">${implied.map((i) =>
+      `<li>${esc(names[i.from])} gives ${i.capability === 'any' ? 'any capability of the agents it delegates to' : `<a href="${page(i.capability)}">${esc(names[i.capability])}</a>`} (${i.mark === 'yes' ? 'yes' : 'maybe'}): <small>${esc(i.note)}</small></li>`).join('')}</ul>`);
+    root.querySelector('[data-out=extra]')!.innerHTML = extra.join('');
+
+    root.querySelector('[data-out=l0]')!.innerHTML = level0.length ? `<ul class="arc-ex-l0">${level0.map((c) => `
+      <li class="${waived.has(c) ? 'is-waived' : ''}"><a href="${page(c)}"><span class="arc-ctl-id">${c}</span> ${esc(data.controls[c][1])}</a>
+        <small>From ${controls[c].risks.map((r) => `<a href="${page(r)}">${r}</a>`).join(', ')}${controls[c].base > 0 ? ` · Level 0 because of how this system uses a capability (Level ${controls[c].base} otherwise)` : ''}</small>
+        <label><input type="checkbox" data-waive="${c}" ${waived.has(c) ? 'checked' : ''}> Its capability or component is absent from my system (waive)</label></li>`).join('')}</ul>` : '<p>None.</p>';
+
+    const group = (title: string, list: Risk[]) => list.length ? `<details class="arc-ex-risks" ${list.length <= 30 ? 'open' : ''}>
+      <summary>${title} <span>${list.length}</span></summary><ul>${list.map((r) => {
+        const n0 = r.c.filter((c) => controls[c] && controls[c].level === 0).length;
+        const from = r.comb ? `Combination: ${data.rules[r.comb].name}` : r.e.map((e) => names[e]).join(' + ');
+        return `<li><a href="${page(r.id)}"><span class="arc-ctl-id">${r.id}</span> ${esc(r.s)}</a><small>${esc(from)} · ${r.c.length} controls, ${n0} at Level 0 here</small></li>`;
+      }).join('')}</ul></details>` : '';
+    root.querySelector('[data-out=risks]')!.innerHTML =
+      group('From the components and design every system has', result.baseline)
+      + group('From your capabilities and conditional components', result.single)
+      + group('From combinations', result.combination);
+    writeHash(s);
+  }
+
+  function markdown() {
+    const { system: s, result: r } = current;
+    const lines = [`# What applies: ARC register ${data.version}`, '',
+      `Capabilities: ${s.caps.length ? s.caps.map((c) => describe(c, r.profile[c] || {})).join('; ') : 'none (baseline only)'}`, '',
+      `Conditional components: ${s.components.length ? s.components.map((c) => `${names[c]} (${c})`).join(', ') : 'none'}`, '',
+      `${r.applicable.length} risks apply; ${r.level0.length} Level 0 controls before waivers, ${r.level0.length - waived.size} to adopt.`, '',
+      '## Capability combinations', '', ...r.checks.map((c) => `- ${c.name}: ${c.verdict}`), '',
+      '## Level 0 controls', '', '| Control | Statement | Waived (subject absent) |', '| --- | --- | --- |',
+      ...r.level0.map((c) => `| ${c} | ${data.controls[c][1]} | ${waived.has(c) ? 'Yes: record the evidence' : 'No'} |`), '',
+      '## Risks', '', '| Risk | Statement | Arises from |', '| --- | --- | --- |',
+      ...r.applicable.map((x) => `| ${x.id} | ${x.s} | ${x.comb ? `Combination: ${data.rules[x.comb].name}` : x.e.join(' + ')} |`), '',
+      ...(r.below.length ? ['Left out because of how a capability is used: ' + r.below.map((b) => `${b.id} (needs ${b.capability} at ${b.needs} or above)`).join('; '), ''] : []),
+      `Source: ${location.href}`];
+    return lines.join('\n');
+  }
+  const msg = (t: string) => { const m = root.querySelector('.arc-ex-msg')!; m.textContent = t; setTimeout(() => (m.textContent = ''), 2500); };
+  async function copy(text: string, what: string) {
+    try { await navigator.clipboard.writeText(text); msg(`${what} copied`); } catch { msg('Copying is blocked here; select and copy instead'); }
+  }
+
+  root.addEventListener('change', (e) => {
+    const t = e.target as HTMLInputElement;
+    if (t.dataset.waive) { t.checked ? waived.add(t.dataset.waive) : waived.delete(t.dataset.waive); }
+    render();
+    if (t.name === 'cap') (window as any).gtag?.('event', 'explorer_capabilities', { capabilities: current.system.caps.join(',') || 'none' });
+  });
+  root.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest('button');
+    if (!b) return;
+    if (b.dataset.preset) {
+      const p = data.presets[+b.dataset.preset];
+      setSystem(p); waived.clear(); render();
+      (window as any).gtag?.('event', 'explorer_preset', { preset: p.name });
+    }
+    if (b.dataset.action === 'link') copy(location.href, 'Link');
+    if (b.dataset.action === 'markdown') copy(markdown(), 'Markdown');
+    if (b.dataset.action === 'json') {
+      const { system: s, result: r } = current;
+      const blob = new Blob([JSON.stringify({ register_version: data.version, capabilities: s.caps, context: r.profile, components: s.components,
+        risks: r.applicable.map((x) => x.id), left_out: r.below, combinations: r.checks.map((c) => ({ id: c.id, verdict: c.verdict })),
+        level0: r.level0.map((c) => ({ id: c, waived: waived.has(c) })), source: location.href }, null, 1)], { type: 'application/json' });
+      const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: `arc-applicability-${data.version}.json` });
+      a.click(); URL.revokeObjectURL(a.href); msg('Downloaded');
+    }
+    if (b.dataset.action) (window as any).gtag?.('event', 'explorer_export', { kind: b.dataset.action });
+  });
+  window.addEventListener('hashchange', () => { readHash(); render(); });
+  readHash();
+  render();
+</script>

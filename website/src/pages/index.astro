@@ -1,0 +1,110 @@
+---
+// The homepage. Its numbers come from src/generated/summary.json, which scripts/build_site.py
+// writes from the register on every build, so they never need editing by hand.
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import Pixel from '../components/Pixel.astro';
+import { heroSceneSvg } from '../pixels/scene';
+import summary from '../generated/summary.json';
+import diagram from '../generated/arc-diagram.html?raw';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const url = (path: string) => base + path;
+const REPO = 'https://github.com/govtech-responsibleai/arc-v2-draft';
+const SITE = 'https://govtech-responsibleai.github.io/arc-v2-draft/';
+const released = new Date(summary.released + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const heroArt = `<figure class="arc-hero-art">${heroSceneSvg(4)}`
+  + `<figcaption class="arc-slogan">With great <strong>capabilities</strong><br>come great responsibility</figcaption></figure>`;
+
+const routes = [
+  { icon: 'prop-clipboard', scale: 4, tile: 1, title: "I'm assessing a system", links: [
+    ['What applies to my system?', 'explorer/'],
+    ['Assess a system, step by step', 'implementation/for-ai-developers/'],
+    ['Capabilities that are dangerous together', 'arc_framework/capability-combinations/'],
+    ['Assessment template', 'implementation/assessment-template/'] ] },
+  { icon: 'prop-shield', scale: 4, tile: 2, title: 'I set policy for my organisation', links: [
+    ['ARC in five minutes', 'arc_framework/in-five-minutes/'],
+    ['Adopt ARC in your organisation', 'implementation/for-governance-teams/'],
+    ['Controls and their levels', 'arc_framework/controls/'] ] },
+  { icon: 'prop-lens', scale: 4, tile: 3, title: "I'm looking something up", links: [
+    ['The risk register: a page for every entry', 'register/'],
+    ['All risks, with filters', 'arc_framework/risk-register/'],
+    ['Crosswalks to OWASP, CSA, IMDA, MITRE ATLAS and more', 'arc_framework/crosswalks/'] ] },
+  { icon: 'icon-CAP-10', scale: 3, tile: 4, title: "I'm building with AI agents", links: [
+    ['llms.txt for agents', 'llms.txt'],
+    ['Register data: JSON, CSV and schema', 'register/data/'],
+    ['ARC assessment Agent Skill', `${REPO}/tree/main/skills`] ] },
+] as const;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'WebSite', name: 'Agentic Risk & Capability Framework', alternateName: 'ARC Framework', url: SITE,
+      publisher: { '@type': 'GovernmentOrganization', name: 'GovTech Singapore', url: 'https://www.tech.gov.sg/' } },
+    { '@type': 'Dataset', name: 'ARC risk register', version: summary.version, datePublished: summary.released,
+      description: `${summary.counts.risks} risks of agentic AI systems, each tied to the elements it arises from, with ${summary.counts.controls} technical controls at three levels.`,
+      url: SITE + 'arc_framework/risk-register/', license: 'https://www.apache.org/licenses/LICENSE-2.0',
+      creator: { '@type': 'GovernmentOrganization', name: 'GovTech Singapore' },
+      distribution: [{ '@type': 'DataDownload', encodingFormat: 'application/yaml', contentUrl: `${REPO}/tree/v${summary.version}/arc-risk-register` }] },
+    { '@type': 'ScholarlyArticle', name: 'With Great Capabilities Come Great Responsibilities: Introducing the Agentic Risk & Capability Framework for Governing Agentic AI Systems',
+      author: ['Shaun Khoo', 'Jessica Foo', 'Roy Ka-Wei Lee'].map((name) => ({ '@type': 'Person', name })),
+      datePublished: '2026', url: 'https://arxiv.org/abs/2512.22211' },
+  ],
+};
+---
+<StarlightPage
+  frontmatter={{
+    title: 'Agentic Risk & Capability Framework',
+    description: 'ARC helps you find the safety and security risks in an agentic AI system, from what it is made of and what it can do, and the technical controls that address them. From GovTech Singapore.',
+    template: 'splash',
+    head: [
+      { tag: 'title', content: 'Agentic Risk & Capability Framework (ARC)' },
+      { tag: 'script', attrs: { type: 'application/ld+json' }, content: JSON.stringify(jsonLd) },
+      // Old links to sections of the former homepage now go to the About page
+      { tag: 'script', content: `(function(){var h=location.hash,m={'#citation':1,'#about-the-authors':1,'#referenced-by':1};if(m[h])location.replace('${url('about/')}'+h);})();` },
+    ],
+    hero: {
+      title: 'Identify and manage your agent’s capabilities and risks',
+      tagline: 'ARC, the Agentic Risk & Capability Framework, works out a system’s safety and security risks from what it is made of and what it can do, and recommends technical controls for each.',
+      image: { html: heroArt },
+      actions: [
+        { text: 'What applies to my system?', link: url('explorer/'), variant: 'primary', icon: 'right-arrow' },
+        { text: 'ARC in five minutes', link: url('arc_framework/in-five-minutes/'), variant: 'secondary' },
+      ],
+    },
+  }}
+>
+  <p class="arc-new">
+    <span class="arc-new-tag">Register {summary.version}</span>
+    Released {released}: {summary.counts.risks} risks and {summary.counts.controls} controls.
+    <a href={url(`arc_framework/changelog/#${summary.changelog_anchor}`)}>What changed</a>
+  </p>
+
+  <h2 class="arc-h2" id="start">Start where you are</h2>
+  <div class="arc-routes not-content">
+    {routes.map((r) => (
+      <section class="arc-route">
+        <span class={`arc-route-icon arc-tile-${r.tile}`}><Pixel name={r.icon} scale={r.scale} /></span>
+        <div>
+          <h3>{r.title}</h3>
+          <ul>{r.links.map(([text, href]) => <li><a href={href.startsWith('http') ? href : url(href)}>{text}</a></li>)}</ul>
+        </div>
+      </section>
+    ))}
+  </div>
+
+  <h2 class="arc-h2" id="in-brief">ARC in brief</h2>
+  <p>A system's elements give rise to risks, and each risk comes with controls. Pick out the capabilities your system has, and the register gives you the risks that apply and what to do about them.</p>
+  <Fragment set:html={diagram} />
+  <p><a href={url('arc_framework/in-five-minutes/')}>Read ARC in five minutes</a> · <a href={url('arc_framework/introduction/')}>Why capabilities?</a></p>
+
+  <h2 class="arc-h2" id="references">Referenced by</h2>
+  <ul class="arc-refs">
+    <li><a href="https://www.tech.gov.sg/media/opening-address-by-sms-tan-kiat-how-at-govtech-stack-conference-2026-day-2/">Opening address by SMS Tan Kiat How at GovTech's STACK Conference 2026</a>, 5 November 2026</li>
+    <li><a href="https://www.csa.gov.sg/resources/publications/addendum-on-securing-ai-systems/">Cyber Security Agency of Singapore, Securing Agentic AI addendum</a>, which adopts ARC's twelve capabilities as its organising taxonomy</li>
+    <li><a href="https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf">IMDA, Model AI Governance Framework for Agentic AI</a>, which lists ARC under both risks and technical controls</li>
+    <li><a href="https://partnershiponai.org/resource/ai-agents-global-governance-analyzing-foundational-legal-policy-and-accountability-tools/">Partnership on AI, AI Agents &amp; Global Governance</a>, an analysis of the legal, policy and accountability tools for AI agents by Talita Dias, September 2025</li>
+    <li>The framework paper, published in the main track of <a href="https://arxiv.org/abs/2512.22211">IASEAI'26</a></li>
+  </ul>
+  <p><a href={url('about/')}>More about ARC, its authors, and how to cite it</a></p>
+</StarlightPage>

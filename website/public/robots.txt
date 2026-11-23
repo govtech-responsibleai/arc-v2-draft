@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://govtech-responsibleai.github.io/arc-v2-draft/sitemap-index.xml

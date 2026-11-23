@@ -1,0 +1,320 @@
+/* ARC website styles. Colours follow the ARC Pixel Kit; Starlight's own tokens do the rest.
+   Starlight puts the dark theme on :root and the light theme on [data-theme='light']. */
+
+:root {
+  --sl-font: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --arc-pixel-font: 'Pixelify Sans', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Accent: ARC teal */
+  --sl-color-accent-low: #0f3a3d;
+  --sl-color-accent: #3fa3a8;
+  --sl-color-accent-high: #c8eeee;
+
+  /* Pixel Kit palette. Only the ink outline changes with the theme. */
+  --px-ink: #d7ebe6;
+  --px-navy: #12313a; --px-cream: #f3e4b6; --px-cream-2: #d6c08a; --px-teal: #52a8ad; --px-teal-2: #2f7c82; --px-teal-3: #9fdcd8;
+  --px-orange: #f2901d; --px-yellow: #ffd24a; --px-white: #ffffff; --px-blue: #4f8fd6; --px-blue-2: #2f5f9e; --px-green: #5cb85c;
+  --px-green-2: #2f7d3a; --px-red: #d9534a; --px-red-2: #9e2f2a; --px-pink: #f2a5b8; --px-pink-2: #c76d88; --px-grey: #aab7bc;
+  --px-grey-2: #66767d; --px-brown: #8a5a2b;
+
+  /* Diagram panels: white text on each passes WCAG AA */
+  --arc-el: #2f6fa3; --arc-risk: #b23d2c; --arc-ctrl: #367a36;
+  --arc-l0-bg: #f3e4b6; --arc-l0-fg: #12313a; --arc-l1-bg: #2f7c82; --arc-l1-fg: #ffffff; --arc-l2-fg: var(--sl-color-white);
+  --arc-frame: #9fcfca;
+  /* Tiles behind the route icons on the homepage */
+  --arc-tile-1: #3a3322; --arc-tile-2: #133a3c; --arc-tile-3: #1a2d42; --arc-tile-4: #2a3036;
+}
+:root[data-theme='light'] {
+  --sl-color-accent-low: #d5ecea;
+  --sl-color-accent: #1c7177;
+  --sl-color-accent-high: #0e3b3f;
+  --px-ink: #0e2a30;
+  --arc-l0-bg: #12313a; --arc-l0-fg: #f3e4b6;
+  --arc-frame: #0e2a30;
+  --arc-tile-1: #f8ecc9; --arc-tile-2: #d5ecea; --arc-tile-3: #dbe8f7; --arc-tile-4: #e2e7ea;
+}
+
+svg.px { display: block; flex: none; }
+.site-title { font-family: var(--arc-pixel-font); font-weight: 600; letter-spacing: 0.01em; }
+/* Buttons: rounded boxes rather than pills, site-wide */
+.sl-link-button { border-radius: 0.5rem; }
+
+/* ---------- Page frame ----------
+   Every page sits in one centred frame, --arc-page-width wide, so the logo, sidebar, content and
+   contents list keep the same edges from the homepage to the docs. Below that width the frame is
+   the screen, as Starlight has it. The header and sidebar backgrounds still run to the screen's
+   edges; only what is inside them lines up with the frame. */
+:root {
+  --arc-page-width: 80rem;
+  --arc-page-edge: max(0px, (100vw - var(--arc-page-width)) / 2);
+  /* Narrower sidebars than Starlight's 18.75rem, so the text column keeps about 43rem in the frame */
+  --sl-sidebar-width: 17rem;
+}
+/* The homepage has no sidebar: its content fills the frame. (:root outranks Starlight's inline
+   html:not([data-has-sidebar]) rule, which loads after this file.) */
+:root:not([data-has-sidebar]) { --sl-content-width: calc(var(--arc-page-width) - 2 * var(--sl-content-pad-x)); }
+.main-frame { padding-inline: calc(var(--arc-page-edge) + var(--sl-content-inline-start, 0rem)) var(--arc-page-edge); }
+/* Starlight fixes both sidebars to the screen, which would cover the site footer (PageFrame.astro).
+   Here they are sticky instead: they stay in view while the page scrolls and stop where it ends.
+   The left one sits in a row beside the main frame; phones keep Starlight's pop-over menu. */
+@media (min-width: 50rem) {
+  header.header { padding-inline: calc(var(--arc-page-edge) + var(--sl-nav-pad-x)); }
+  :root[data-has-sidebar] .page { flex-direction: row; }
+  :root[data-has-sidebar] .page > .sidebar { flex: none; width: calc(var(--arc-page-edge) + var(--sl-sidebar-width));
+    padding-top: var(--sl-nav-height); }
+  :root[data-has-sidebar] .main-frame { flex: 1 1 0; min-width: 0; padding-inline-start: 0; }
+  .sidebar-pane { position: sticky; inset-block: var(--sl-nav-height) auto; height: calc(100vh - var(--sl-nav-height));
+    width: 100%; padding-inline-start: var(--arc-page-edge); }
+}
+@media (min-width: 72rem) {
+  .right-sidebar { position: sticky; top: var(--sl-nav-height); padding-top: 0; height: calc(100vh - var(--sl-nav-height)); }
+}
+
+/* ---------- Homepage ---------- */
+.hero { gap: 2rem; padding-block: 2.5rem 1.5rem; }
+.hero h1 { font-size: clamp(2rem, 4.2vw, 3rem); line-height: 1.1; }
+.arc-hero-art { margin: 0; display: grid; justify-items: center; gap: 0.4rem; }
+.arc-hero-art .arc-scene { width: 100%; max-width: 26rem; height: auto; }
+.arc-slogan { font-family: var(--arc-pixel-font); font-weight: 500; font-size: 1.05rem; line-height: 1.35;
+  color: var(--sl-color-gray-2); text-align: center; }
+.arc-slogan strong { font-weight: 700; color: var(--sl-color-white); }
+
+/* Light animation, CSS only: signals run out along the wires, the robot bobs and reaches
+   with each hand in turn, the antenna blinks, and every few seconds the screen shows a tick.
+   Off for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .arc-scene .arc-wire { animation: arc-flow 1.5s steps(1, end) infinite; opacity: 0.4; }
+  .arc-scene .arc-wire-1 { animation-delay: 0.5s; }
+  .arc-scene .arc-wire-2 { animation-delay: 1s; }
+  .arc-scene .arc-bob { animation: arc-bob 2.4s steps(1, end) infinite; }
+  .arc-scene .arc-arm-rest { animation: arc-arm-rest 1.6s steps(1, end) infinite; }
+  .arc-scene .arc-arm-out1 { animation: arc-arm-out1 1.6s steps(1, end) infinite; }
+  .arc-scene .arc-arm-out2 { animation: arc-arm-out2 1.6s steps(1, end) infinite; }
+  .arc-scene .arc-arm-r { animation-delay: -0.8s; }
+  .arc-scene .arc-blink { animation: arc-blink 3s steps(1, end) infinite; }
+  .arc-scene .arc-status { animation: arc-status 9s steps(1, end) infinite; }
+}
+.arc-scene .arc-status, .arc-scene .arc-blink { opacity: 0; }
+@keyframes arc-flow { 0% { opacity: 1; } 33.3% { opacity: 0.4; } }
+@keyframes arc-bob { 0% { transform: translateY(0); } 50% { transform: translateY(-1px); } }
+/* Arms reach out in three frames: out 1 pixel, out 2, back to 1, then rest */
+.arc-scene .arc-arm-out1, .arc-scene .arc-arm-out2 { opacity: 0; }
+@keyframes arc-arm-rest { 0% { opacity: 0; } 40% { opacity: 1; } }
+@keyframes arc-arm-out1 { 0% { opacity: 1; } 8% { opacity: 0; } 32% { opacity: 1; } 40% { opacity: 0; } }
+@keyframes arc-arm-out2 { 0% { opacity: 0; } 8% { opacity: 1; } 32% { opacity: 0; } }
+@keyframes arc-blink { 0% { opacity: 0; } 80% { opacity: 1; } 90% { opacity: 0; } }
+@keyframes arc-status { 0% { opacity: 0; } 60% { opacity: 1; } 80% { opacity: 0; } }
+
+.arc-new { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; padding: 0.75rem 1rem;
+  border: 1px solid var(--sl-color-gray-5); border-radius: 0.5rem; background: var(--sl-color-gray-7, var(--sl-color-black)); }
+.arc-new-tag { font: 600 0.8rem/1 var(--sl-font); padding: 0.3rem 0.5rem; border-radius: 0.25rem; background: var(--sl-color-accent); color: #0b1a1e; }
+:root[data-theme='light'] .arc-new-tag { color: #ffffff; }
+.arc-h2 { margin-top: 2.5rem; }
+/* The homepage's text runs the frame's width; keep its paragraphs to a readable line length */
+:root[data-has-hero] .sl-markdown-content > p:not(.arc-new) { max-width: 48rem; }
+.arc-routes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+@media (max-width: 45rem) { .arc-routes { grid-template-columns: minmax(0, 1fr); } }
+.arc-route { display: grid; grid-template-columns: 5rem minmax(0, 1fr); gap: 1.25rem; align-items: start; padding: 1.25rem 1.5rem;
+  border: 1px solid var(--sl-color-gray-5); border-radius: 0.5rem; background: var(--sl-color-bg-nav); }
+.arc-route-icon { width: 5rem; height: 5rem; display: grid; place-items: center; border-radius: 0.5rem; }
+.arc-tile-1 { background: var(--arc-tile-1); } .arc-tile-2 { background: var(--arc-tile-2); }
+.arc-tile-3 { background: var(--arc-tile-3); } .arc-tile-4 { background: var(--arc-tile-4); }
+.arc-route h3 { margin: 0 0 0.6rem; font-size: 1.1rem; line-height: 1.3; color: var(--sl-color-white); }
+.arc-route ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.4rem; font-size: 0.95rem; line-height: 1.4; }
+.arc-route a { color: var(--sl-color-text-accent); text-decoration: none; }
+.arc-route a::before { content: '→ '; }
+.arc-route a:hover { text-decoration: underline; }
+.arc-refs { padding-left: 1.25rem; }
+
+/* ---------- ARC diagram (scripts/site_components.py) ---------- */
+.arc-diagram { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr); gap: 0.6rem; align-items: stretch; margin-block: 1.5rem; }
+.arc-win { background: var(--sl-color-bg); margin: 3px; font-size: 0.9rem; line-height: 1.45; color: var(--sl-color-gray-1);
+  box-shadow: 0 -3px 0 0 var(--arc-frame), 0 3px 0 0 var(--arc-frame), -3px 0 0 0 var(--arc-frame), 3px 0 0 0 var(--arc-frame); }
+.arc-bar { padding: 0.45rem 0.75rem; color: #ffffff; font: 600 1.15rem/1.1 var(--arc-pixel-font); }
+.arc-el { background: var(--arc-el); } .arc-risk { background: var(--arc-risk); } .arc-ctrl { background: var(--arc-ctrl); }
+.arc-body { padding: 0.8rem; display: grid; gap: 0.75rem; align-content: start; }
+.arc-body p { margin: 0; }
+.arc-what, .arc-note { color: var(--sl-color-gray-2); }
+.arc-note { font-size: 0.82rem; }
+.arc-row { display: grid; gap: 0.3rem; }
+.arc-row b, .arc-item b { color: var(--sl-color-white); }
+.arc-strip { display: flex; flex-wrap: wrap; gap: 0.2rem; }
+.arc-item { display: grid; grid-template-columns: auto 1fr; gap: 0.6rem; align-items: start; }
+.arc-item > .arc-lvl { margin-top: -0.1rem; }
+.arc-joint { display: grid; place-items: center; align-content: center; gap: 0.2rem; width: 4.5rem; text-align: center;
+  font-size: 0.8rem; font-style: italic; color: var(--sl-color-gray-2); }
+.arc-joint span { font: 600 1.4rem/1 var(--arc-pixel-font); font-style: normal; color: var(--sl-color-white); }
+/* Three panels side by side when there is room (the homepage); stacked in a page column */
+.arc-diagram-wrap { container-type: inline-size; }
+@container (max-width: 54rem) {
+  .arc-diagram { grid-template-columns: minmax(0, 1fr); }
+  .arc-joint { width: auto; grid-auto-flow: column; gap: 0.6rem; }
+  .arc-joint span { transform: rotate(90deg); }
+}
+
+/* Level badges: shape and colour both mark the level */
+.arc-lvl { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.15rem 0.5rem 0.15rem 0.35rem; border-radius: 0.25rem;
+  font: 600 0.8rem/1.2 var(--sl-font); white-space: nowrap; border: 1.5px solid transparent; }
+.arc-l0 { background: var(--arc-l0-bg); color: var(--arc-l0-fg); --px-ink: var(--arc-l0-fg); --px-navy: var(--arc-l0-bg); --px-cream: var(--arc-l0-fg); }
+.arc-l1 { background: var(--arc-l1-bg); color: var(--arc-l1-fg); --px-ink: var(--arc-l1-fg); }
+.arc-l2 { color: var(--arc-l2-fg); border-color: currentColor; }
+
+/* Element grid (Elements page) */
+.arc-elements { display: grid; gap: 1.25rem; margin-block: 1.5rem; }
+.arc-group-title { margin: 0 0 0.5rem; font-weight: 600; color: var(--sl-color-white); }
+.arc-group-title span { font-weight: 400; font-size: 0.85rem; color: var(--sl-color-gray-3); margin-left: 0.4rem; }
+.arc-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 0.5rem; }
+.arc-card { display: grid; grid-template-columns: auto 1fr; gap: 0.75rem; align-items: center; padding: 0.6rem 0.75rem;
+  border: 1px solid var(--sl-color-gray-5); border-radius: 0.5rem; font-size: 0.9rem; line-height: 1.3; }
+.arc-card b { display: block; font-weight: 500; color: var(--sl-color-white); }
+.arc-card span { font: 500 0.72rem var(--__sl-font-mono, monospace); color: var(--sl-color-gray-3); }
+
+/* Footer feedback link */
+.arc-feedback { margin-top: 1.5rem; font-size: 0.875rem; color: var(--sl-color-gray-3); }
+.arc-feedback a { color: var(--sl-color-text-accent); }
+/* Site footer (PageFrame.astro): a full-width band like the header, its contents in the page frame.
+   GovTech's logo links to tech.gov.sg. Dark is Starlight's default theme. */
+.arc-site-footer { position: relative; border-top: 1px solid var(--sl-color-hairline-shade); background: var(--sl-color-bg-nav);
+  font-size: 0.875rem; line-height: 1.6; color: var(--sl-color-gray-3); }
+.arc-site-footer-inner { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem; max-width: var(--arc-page-width);
+  margin-inline: auto; padding: 2rem var(--sl-nav-pad-x); }
+.arc-footer-text { flex: 1 1 18rem; }
+.arc-footer-text p { margin: 0; }
+.arc-footer-text a { color: var(--sl-color-text-accent); }
+.arc-footer-links { display: flex; flex-wrap: wrap; gap: 0 0.5rem; margin: 0.35rem 0 0; padding: 0; list-style: none; }
+.arc-footer-links li + li::before { content: '·'; content: '·' / ''; margin-inline-end: 0.5rem; }
+.arc-govtech { flex: none; display: block; border-radius: 0.25rem; }
+.arc-govtech img { display: block; height: 3rem; width: auto; }
+.arc-govtech .arc-logo-light { display: none; }
+:root[data-theme='light'] .arc-govtech .arc-logo-light { display: block; }
+:root[data-theme='light'] .arc-govtech .arc-logo-dark { display: none; }
+.arc-sprite { margin-block: 1rem; }
+
+/* ---------- Register entries (scripts/site_entries.py) ---------- */
+.arc-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.5rem; }
+.arc-chip { font: 500 0.8rem/1 var(--sl-font); padding: 0.35rem 0.55rem; border-radius: 0.3rem; border: 1px solid var(--sl-color-gray-5); color: var(--sl-color-gray-2); }
+.arc-chip-id { font-family: var(--__sl-font-mono, ui-monospace, monospace); font-weight: 600; background: var(--sl-color-gray-6); color: var(--sl-color-white); }
+.arc-arises { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.6rem; padding: 0.75rem 1rem; border-radius: 0.5rem; background: var(--sl-color-gray-6); }
+.arc-arises > b { color: var(--sl-color-white); margin-right: 0.25rem; }
+.arc-el-link { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--sl-color-text-accent); text-decoration: none; font-weight: 500; }
+.arc-el-link:hover span { text-decoration: underline; }
+.arc-plus { font-weight: 700; color: var(--sl-color-gray-3); }
+.arc-ctl-list { display: grid; gap: 0.4rem; margin-block: 0.75rem; }
+.arc-ctl { display: grid; grid-template-columns: auto auto minmax(0, 1fr) auto auto; gap: 0.75rem; align-items: center; padding: 0.6rem 0.8rem;
+  border: 1px solid var(--sl-color-gray-5); border-radius: 0.5rem; color: var(--sl-color-gray-1); text-decoration: none; font-size: 0.92rem; line-height: 1.4; }
+.arc-ctl:hover { border-color: var(--sl-color-accent); background: var(--sl-color-gray-7, var(--sl-color-black)); }
+.arc-ctl:not(:has(.arc-lvl)) { grid-template-columns: auto minmax(0, 1fr) auto auto; }
+.arc-ctl-id { font: 600 0.78rem var(--__sl-font-mono, ui-monospace, monospace); color: var(--sl-color-gray-3); white-space: nowrap; }
+.arc-ctl-els { display: inline-flex; align-items: center; gap: 0.2rem; color: var(--sl-color-gray-3); font-size: 0.8rem; }
+.arc-ctl-n { font-size: 0.78rem; color: var(--sl-color-gray-3); white-space: nowrap; }
+@media (max-width: 40rem) {
+  .arc-ctl, .arc-ctl:not(:has(.arc-lvl)) { grid-template-columns: auto minmax(0, 1fr); }
+  .arc-ctl-text { grid-column: 1 / -1; }
+}
+a.arc-card { color: inherit; text-decoration: none; }
+a.arc-card:hover { border-color: var(--sl-color-accent); }
+
+/* ---------- List of risks (arc_framework/risk-register) ---------- */
+.arc-register { margin-top: 1.5rem; }
+.arc-filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.75rem; align-items: end; padding: 1rem;
+  border: 1px solid var(--sl-color-gray-5); border-radius: 0.5rem; background: var(--sl-color-gray-7, var(--sl-color-black)); }
+.arc-filters label { display: grid; gap: 0.3rem; font-size: 0.82rem; font-weight: 600; color: var(--sl-color-white); }
+.arc-filters select, .arc-filters input { font: 400 0.9rem var(--sl-font); padding: 0.45rem 0.5rem; border-radius: 0.375rem;
+  border: 1px solid var(--sl-color-gray-4); background: var(--sl-color-bg); color: var(--sl-color-white); min-width: 0; }
+.arc-filters .arc-search { grid-column: span 2; }
+.arc-filters button { font: 600 0.85rem var(--sl-font); padding: 0.5rem 0.9rem; border-radius: 0.375rem; border: 1px solid var(--sl-color-gray-4);
+  background: var(--sl-color-bg); color: var(--sl-color-white); cursor: pointer; }
+.arc-count { margin: 0.9rem 0 0.4rem; font-size: 0.9rem; color: var(--sl-color-gray-2); }
+.arc-table-wrap { overflow-x: auto; border: 1px solid var(--sl-color-gray-5); border-radius: 0.5rem; }
+.arc-risk-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.arc-risk-table th { text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--sl-color-gray-3);
+  padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--sl-color-gray-5); background: var(--sl-color-gray-7, var(--sl-color-black)); }
+.arc-risk-table td { padding: 0.65rem 0.75rem; border-bottom: 1px solid var(--sl-color-gray-6); vertical-align: top; }
+.arc-risk-table tr:last-child td { border-bottom: 0; }
+.arc-risk-table td:first-child { display: grid; gap: 0.15rem; min-width: 16rem; }
+.arc-risk-table td:first-child a { font-weight: 600; color: var(--sl-color-white); text-decoration: none; }
+.arc-risk-table td:first-child a:hover { color: var(--sl-color-text-accent); text-decoration: underline; }
+.arc-risk-table td:nth-child(2) { min-width: 12rem; }
+.arc-risk-table .arc-el-link { font-weight: 400; font-size: 0.85rem; }
+.arc-num { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.arc-l0n { display: block; font-size: 0.75rem; color: var(--sl-color-gray-3); }
+.arc-empty { padding: 1rem; color: var(--sl-color-gray-2); }
+@media (max-width: 40rem) { .arc-filters .arc-search { grid-column: auto; } }
+
+/* ---------- Explorer (src/pages/explorer.astro) ---------- */
+.arc-lead { font-size: 1.1rem; }
+.arc-ex { display: grid; gap: 2rem; margin-top: 1rem; }
+.arc-ex-h { font-size: 1.3rem; margin: 0 0 0.75rem; color: var(--sl-color-white); }
+.arc-ex-h3 { font-size: 1.05rem; margin: 1.5rem 0 0.5rem; color: var(--sl-color-white); }
+.arc-ex-presets { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 1rem; font-size: 0.9rem; color: var(--sl-color-gray-2); }
+.arc-ex button { font: 600 0.85rem var(--sl-font); padding: 0.45rem 0.8rem; border-radius: 0.375rem; border: 1px solid var(--sl-color-gray-4);
+  background: var(--sl-color-bg); color: var(--sl-color-white); cursor: pointer; }
+.arc-ex button:hover { border-color: var(--sl-color-accent); }
+.arc-ex-group { border: 0; padding: 0; margin: 0 0 1rem; }
+.arc-ex-group legend { font-weight: 600; font-size: 0.9rem; color: var(--sl-color-gray-2); margin-bottom: 0.5rem; }
+.arc-ex-caps { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 0.5rem; }
+.arc-ex-cap { display: grid; grid-template-columns: auto auto 1fr; gap: 0.6rem; align-items: center; padding: 0.6rem 0.75rem; cursor: pointer;
+  border: 1px solid var(--sl-color-gray-5); border-radius: 0.5rem; font-size: 0.9rem; line-height: 1.3; }
+.arc-ex-cap:has(input:checked) { border-color: var(--sl-color-accent); background: var(--sl-color-accent-low); }
+.arc-ex-cap:has(input:focus-visible) { outline: 2px solid var(--sl-color-accent); outline-offset: 2px; }
+.arc-ex-cap input { width: 1.1rem; height: 1.1rem; accent-color: var(--sl-color-accent); }
+.arc-ex-cap b { display: block; font-weight: 500; color: var(--sl-color-white); }
+.arc-ex-cap small { font: 500 0.72rem var(--__sl-font-mono, ui-monospace, monospace); color: var(--sl-color-gray-3); }
+.arc-ex-base { display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; align-items: center; font-size: 0.88rem; color: var(--sl-color-gray-2); margin: 0; }
+.arc-ex-icons { display: inline-flex; gap: 0.2rem; }
+.arc-ex-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; }
+.arc-ex-stats div { padding: 0.75rem; border-radius: 0.5rem; background: var(--sl-color-gray-6); display: grid; gap: 0.15rem; }
+.arc-ex-stats b { font-size: 1.8rem; line-height: 1; color: var(--sl-color-white); font-variant-numeric: tabular-nums; }
+.arc-ex-stats span { font-size: 0.8rem; color: var(--sl-color-gray-2); }
+@media (max-width: 40rem) { .arc-ex-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.arc-ex-note { font-size: 0.88rem; color: var(--sl-color-gray-2); margin: 0.75rem 0; }
+.arc-ex-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.arc-ex-msg { font-size: 0.85rem; color: var(--sl-color-text-accent); }
+.arc-ex-l0, .arc-ex-risks ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.4rem; }
+.arc-ex-l0 li, .arc-ex-risks li { display: grid; gap: 0.25rem; padding: 0.6rem 0.8rem; border: 1px solid var(--sl-color-gray-5); border-radius: 0.5rem; font-size: 0.9rem; }
+.arc-ex-l0 li.is-waived { opacity: 0.6; }
+.arc-ex-l0 li.is-waived > a { text-decoration: line-through; }
+.arc-ex a { color: var(--sl-color-white); text-decoration: none; }
+.arc-ex a:hover { color: var(--sl-color-text-accent); text-decoration: underline; }
+.arc-ex small { font-size: 0.78rem; color: var(--sl-color-gray-3); }
+.arc-ex small a { color: var(--sl-color-text-accent); }
+.arc-ex-l0 label { font-size: 0.8rem; color: var(--sl-color-gray-2); display: flex; gap: 0.4rem; align-items: center; }
+.arc-ex-risks { margin-bottom: 0.75rem; }
+.arc-ex-risks summary { cursor: pointer; font-weight: 600; color: var(--sl-color-white); margin-bottom: 0.5rem; }
+.arc-ex-risks summary span { font-weight: 400; color: var(--sl-color-gray-3); margin-left: 0.3rem; }
+
+.arc-ex-cap:has(input:checked) small { color: var(--sl-color-gray-2); }
+.arc-ex .arc-ex-note a { color: var(--sl-color-text-accent); text-decoration: underline; }
+
+/* ---------- Capability combinations: the interactive check (docs/assets/combination-check.js) ---------- */
+#arc-combination-check { border: 1px solid var(--sl-color-gray-5); border-radius: 0.5rem; padding: 1rem 1.25rem; }
+#arc-combination-check fieldset { border: 0; margin: 0 0 0.75rem; padding: 0; }
+#arc-combination-check legend { font-weight: 600; color: var(--sl-color-white); padding: 0; margin-bottom: 0.25rem; }
+#arc-combination-check .acc-caps { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 0.15rem 1rem; margin: 0; }
+#arc-combination-check label { display: flex; gap: 0.5rem; align-items: baseline; cursor: pointer; }
+#arc-combination-check input { accent-color: var(--sl-color-accent); }
+#arc-combination-check .acc-verdict { font-weight: 700; color: var(--sl-color-white); margin: 0.75rem 0 0.25rem; }
+#arc-combination-check .acc-result ul { margin-top: 0.25rem; }
+#arc-combination-check .acc-reset { margin-top: 0.5rem; font: 600 0.85rem var(--sl-font); padding: 0.45rem 0.8rem; border-radius: 0.375rem;
+  border: 1px solid var(--sl-color-gray-4); background: var(--sl-color-bg); color: var(--sl-color-white); cursor: pointer; }
+#arc-combination-check .acc-reset:hover { border-color: var(--sl-color-accent); }
+
+/* ---------- Explorer: how each capability is used, conditional components, combination checks ---------- */
+.arc-ex-cap-wrap { display: grid; align-content: start; gap: 0.35rem; }
+.arc-ex-ctx { display: none; gap: 0.35rem; padding: 0.5rem 0.75rem; border-radius: 0.5rem; background: var(--sl-color-gray-6); font-size: 0.8rem; color: var(--sl-color-gray-2); }
+.arc-ex-cap-wrap:has(input[name=cap]:checked) .arc-ex-ctx { display: grid; }
+.arc-ex-ctx select { margin-top: 0.2rem; width: 100%; font: 500 0.8rem var(--sl-font); padding: 0.3rem 0.4rem; border-radius: 0.375rem;
+  border: 1px solid var(--sl-color-gray-4); background: var(--sl-color-bg); color: var(--sl-color-white); }
+.arc-ex-ctx label { display: block; }
+.arc-ex-ctx .arc-ex-tick { display: flex; gap: 0.4rem; align-items: center; }
+.arc-ex-ctx input { accent-color: var(--sl-color-accent); }
+.arc-ex-check { border: 1px solid var(--sl-color-gray-5); border-left-width: 4px; border-radius: 0.5rem; padding: 0.6rem 0.9rem; margin-bottom: 0.5rem; font-size: 0.88rem; }
+.arc-ex-check.is-present { border-left-color: #c0392b; }
+.arc-ex-check.is-possible { border-left-color: #d68910; }
+.arc-ex-check.is-absent { border-left-color: var(--sl-color-gray-4); }
+.arc-ex-check-head { display: flex; justify-content: space-between; gap: 1rem; margin: 0 0 0.3rem; color: var(--sl-color-white); }
+.arc-ex-verdict { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--sl-color-gray-2); }
+.arc-ex-check ul, .arc-ex-plain { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.2rem; font-size: 0.88rem; }
+.arc-ex-advice { margin: 0.4rem 0 0; color: var(--sl-color-gray-2); }
+.arc-ex .arc-ex-advice a, .arc-ex-plain a { color: var(--sl-color-text-accent); text-decoration: underline; }
+.arc-combo { display: inline-block; font-size: 0.85em; font-weight: 600; padding: 0.1rem 0.45rem; border-radius: 0.3rem; border: 1px solid var(--sl-color-gray-4); color: var(--sl-color-gray-2); }

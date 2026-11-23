@@ -1,0 +1,43 @@
+---
+// Starlight's page frame, followed by the site footer: a full-width band below everything,
+// sidebars included, with GovTech's logo linking to tech.gov.sg. The logo is the settled last
+// frame of the animated one on tech.gov.sg; govtech-logo-dark.png is the same with the grey
+// wordmark lightened for the dark theme. The sidebars are made sticky in custom.css ("Page
+// frame") so they stop above this footer instead of covering it.
+import Default from '@astrojs/starlight/components/PageFrame.astro';
+import logo from '../assets/govtech-logo.png';
+import logoDark from '../assets/govtech-logo-dark.png';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const REPO = 'https://github.com/govtech-responsibleai/arc-v2-draft';
+const GOVTECH = 'https://www.tech.gov.sg/';
+const BLOG = 'https://blog.ai.gov.sg/'; // ai@govtech, GovTech's AI blog
+const PLAYBOOK = 'https://playbooks.aip.gov.sg/responsibleai/';
+// Both files are drawn at twice the size they are shown, for sharp screens
+const size = { width: Math.round(logo.width / 2), height: Math.round(logo.height / 2) };
+---
+<Default>
+  <slot name="header" slot="header" />
+  <slot name="sidebar" slot="sidebar" />
+  <slot />
+</Default>
+<footer class="arc-site-footer">
+  <div class="arc-site-footer-inner">
+    <a class="arc-govtech" href={GOVTECH}>
+      <img class="arc-logo-light" src={logo.src} {...size} alt="GovTech Singapore" loading="lazy" decoding="async" />
+      <img class="arc-logo-dark" src={logoDark.src} {...size} alt="GovTech Singapore" loading="lazy" decoding="async" />
+    </a>
+    <div class="arc-footer-text">
+      <p>
+        The ARC Framework is developed by the Responsible AI team at <a href={GOVTECH}>GovTech Singapore</a>,
+        and released under the <a href={`${REPO}/blob/main/LICENSE`}>Apache 2.0 licence</a>.
+      </p>
+      <ul class="arc-footer-links">
+        <li><a href={`${base}about/`}>About ARC</a></li>
+        <li><a href={REPO}>GitHub</a></li>
+        <li><a href={BLOG}>Our blog, ai@govtech</a></li>
+        <li><a href={PLAYBOOK}>Responsible AI Playbook</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>

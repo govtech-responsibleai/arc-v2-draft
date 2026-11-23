@@ -1,0 +1,25 @@
+GIMP Palette
+Name: ARC pixel
+Columns: 7
+#
+ 14  42  48	ink
+ 18  49  58	navy
+243 228 182	cream
+214 192 138	cream-2
+ 82 168 173	teal
+ 47 124 130	teal-2
+159 220 216	teal-3
+242 144  29	orange
+255 210  74	yellow
+255 255 255	white
+ 79 143 214	blue
+ 47  95 158	blue-2
+ 92 184  92	green
+ 47 125  58	green-2
+217  83  74	red
+158  47  42	red-2
+242 165 184	pink
+199 109 136	pink-2
+170 183 188	grey
+102 118 125	grey-2
+138  90  43	brown

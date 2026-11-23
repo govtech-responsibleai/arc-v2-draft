@@ -1,3 +1,7 @@
+---
+description: "The 19 elements ARC uses to describe an agentic system: four components, three design elements, and twelve capabilities."
+---
+
 # Elements of agentic systems
 
 !!! abstract "Page Summary"
@@ -9,9 +13,7 @@ Across all agentic systems, there are three indispensable elements to examine:
 **(2)** the design of the agentic system, and
 **(3)** the capabilities of the agentic system.
 
-<figure style="text-align: center;">
-  <img src="../../assets/elements.jpeg" alt="Elements of Agentic Systems" style="width: min(900px, 80%); display: block; margin: 0 auto;">
-</figure>
+<!-- arc:elements -->
 
 ---
 

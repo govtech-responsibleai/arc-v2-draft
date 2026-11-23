@@ -17,22 +17,30 @@ The ARC risk register is a living document. We welcome new risks, new controls, 
 | `arc-risk-register/crosswalk_references.yaml` | external frameworks and their valid IDs |
 | `arc-risk-register/register.yaml` | register version and release date |
 | `scripts/validate_risk_register.py` | validator (run by the build and by CI) |
-| `scripts/build_risk_register.py`, `scripts/mkdocs_hooks.py` | generate the site's register JSON, Crosswalks page, and full-text register from the YAML on every site build — they are **not committed**, so there is nothing to regenerate |
-| `docs/` | the MkDocs site; `app/` | ARCvisor |
+| `scripts/build_risk_register.py`, `scripts/build_site.py` | generate the site's register JSON, Crosswalks page, and full-text register from the YAML on every site build — they are **not committed**, so there is nothing to regenerate |
+| `docs/` | the website's pages (Markdown; `website/` builds them with Astro Starlight). Pages for each risk, control and element are generated from the YAML, so there is nothing to edit for them |
+| `website/src/pixels/` | the pixel-art sprites and how to add one ([README](website/src/pixels/README.md)) |
+| `app/` | ARCvisor |
 
 Crosswalk IDs must be quoted strings (`- "2.10"`, not `- 2.10`).
 
 ## Workflow
 
 ```bash
-pip install -r requirements.txt            # site + scripts
+pip install -r requirements.txt            # scripts
 python scripts/validate_risk_register.py   # must report 0 errors
-mkdocs build --strict                      # validates again, generates the register's site pages; must build with no warnings
+(cd website && npm install && npm run build)   # validates again, generates the register's pages; fails on any broken link
+(cd website && npm run dev)                    # preview at http://localhost:4321/agentic-risk-capability-framework/, reloading as you edit
 pip install -r app/requirements.txt && python app/tests/test_smoke.py   # if you touched the app or the register schema
 ```
 
 1. Branch from `dev` (the integration branch), not from `main`.
-2. Open a pull request against `dev`. CI runs the validator, builds the site strictly (an invalid register fails the build), and runs the ARCvisor smoke test. Describe *why* the change is right — for a risk, cite the evidence; for a control, say which risk it mitigates and why at that level.
-3. Maintainers merge into `dev`; periodically `dev` is released to `main` via a pull request, which deploys the site and is tagged `v<version>`. Bump `register.yaml` and add a changelog entry (`docs/arc_framework/changelog.md`) in the PR that changes register content: MAJOR for model changes, MINOR for entries added/retired/re-tiered/re-mapped, PATCH for wording.
+2. Open a pull request against `dev`. CI runs the validator, builds the site (an invalid register or a broken link fails the build), checks accessibility and SEO with Lighthouse, and runs the ARCvisor smoke test. Describe *why* the change is right — for a risk, cite the evidence; for a control, say which risk it mitigates and why at that level.
+3. Maintainers merge into `dev`; periodically `dev` is released to `main` via a pull request, which deploys the site and is tagged `v<version>`. Bump `register.yaml` and `CITATION.cff`, and add a changelog entry (`docs/arc_framework/changelog.md`) in the PR that changes register content: MAJOR for model changes, MINOR for entries added/retired/re-tiered/re-mapped, PATCH for wording.
 
 If you would rather describe a proposal than draft it, open an issue.
+
+## Website upkeep
+
+- Dependabot opens weekly PRs for the website's npm packages, grouping Astro and Starlight. Minor and patch updates are safe to merge when CI is green. Read the release notes before a major Astro or Starlight version (about two a year): Astro 7 changed its Markdown pipeline, for example, and `website/src/plugins/heading-ids.mjs` depends on it.
+- The heading-anchor plugin keeps the anchors the site had under MkDocs, so links into the site from elsewhere keep working. Don't remove it without adding redirects.

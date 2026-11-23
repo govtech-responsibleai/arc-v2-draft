@@ -1,4 +1,14 @@
+---
+description: "Why the ARC Framework is built around capabilities, how it relates to other approaches to governing AI agents, and an overview of its parts."
+---
+
 # Introducing the ARC Framework
+
+!!! tip "In short"
+
+    - ARC works out an agentic system's risks from what it is made of and what it can do: its **components**, its **design**, its **capabilities**, and how it uses them.
+    - Each risk in the register comes with technical **controls** at three levels; Level 0 controls are adopted wherever their risk applies.
+    - Organisations adapt ARC to their context, then assess each system against it. [ARC in five minutes](in-five-minutes.md) gives the whole picture.
 
 !!! abstract "Page Summary"
 
@@ -8,9 +18,7 @@
 
 The diagram below provides a conceptual overview of the entire ARC Framework, which we will go through in detail in the following sections.
 
-<figure style="text-align: center;">
-  <img src="../../assets/arc-overview.png" alt="ARC Overview" style="width: min(900px, 80%); display: block; margin: 0 auto;">
-</figure>
+<!-- arc:diagram -->
 
 
 ---

@@ -1,3 +1,7 @@
+---
+description: "The ARC paper, ARCvisor, the interactive register and other resources for applying the ARC Framework."
+---
+
 # Resources
 
 Beyond the [technical governance framework](../arc_framework/introduction.md) and [implementation guide](../implementation/index.md), we have also developed additional tools and resources to help organisations understand and get started with using the ARC framework to govern their agentic AI systems. 
@@ -6,7 +10,7 @@ Beyond the [technical governance framework](../arc_framework/introduction.md) an
 | --- | --- | --- |
 | [ARCvisor Tool](#arcvisor) | AI governance teams, developers | Web-based risk assessment workflow with 50%+ time savings |
 | [Technical Paper](../assets/ARC_Framework-Paper-IASEAI_2026.pdf) | AI governance teams, academia | In-depth technical details and research foundations |
-| [Baseline Risk Register](../arc_framework/risk-register.md) | AI governance teams, developers | Interactive exploration of 66 risks and 103 controls ([full text](../arc_framework/register-full-text.md); [machine-readable YAML](https://github.com/govtech-responsibleai/arc-v2-draft/tree/main/arc-risk-register)) |
+| [Baseline Risk Register](../arc_framework/risk-register.md) | AI governance teams, developers | Interactive exploration of <span data-arc="risks">66</span> risks and <span data-arc="controls">103</span> controls ([full text](../arc_framework/register-full-text.md); [machine-readable YAML](https://github.com/govtech-responsibleai/arc-v2-draft/tree/main/arc-risk-register)) |
 | [ARC Assessment Skill](https://github.com/govtech-responsibleai/arc-v2-draft/tree/main/skills) | Developers using coding agents | An Agent Skill that lets a coding agent assess the system it is building: capabilities from the code, applicable risks and controls from the register, implementation gaps, and a drafted assessment |
 | [Assessment Template](../implementation/assessment-template.md) | AI developers, governance teams | Record of a per-system assessment: capabilities, applicable risks, controls with evidence, residual risks, sign-off |
 | [Changelog](../arc_framework/changelog.md) | Everyone using the register | What changed in each register version, and the versioning policy |
